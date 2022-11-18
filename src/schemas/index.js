@@ -1,3 +1,4 @@
+export * from './edit-link.schema';
 export * from './forgot-password-schema';
 export * from './index';
 export * from './login-schema';

@@ -1,5 +1,5 @@
 import { useDispatch } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Formik } from 'formik';
 
 import { register } from '../redux';
@@ -7,19 +7,22 @@ import { CheckboxFormik, InputFormik } from '../components';
 import { registerSchema } from '../schemas';
 
 const INITIAL_VALUES = {
-	username: 'JuanDa14',
-	name: 'Juan Morales ',
-	email: 'jgamesterror@gmail.com',
-	password: '123456',
-	password2: '123456',
+	username: '',
+	name: '',
+	email: '',
+	password: '',
+	password2: '',
 	terms: false,
 };
 
 const Register = () => {
 	const dispatch = useDispatch();
 
+	const navigate = useNavigate();
+
 	const handleRegister = async (values) => {
 		await dispatch(register(values));
+		navigate('/auth/login');
 	};
 
 	return (

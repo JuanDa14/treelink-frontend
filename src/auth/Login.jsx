@@ -13,8 +13,8 @@ import { InputFormik } from '../components';
 import { login, loginWithFacebook, loginWithGoogle } from '../redux/thunks/auth';
 
 const INITIAL_VALUES = {
-	email: 'jgamesterror@gmail.com',
-	password: '123456',
+	email: '',
+	password: '',
 };
 
 const Login = () => {
@@ -76,7 +76,7 @@ const Login = () => {
 					<Formik
 						initialValues={INITIAL_VALUES}
 						onSubmit={async (values, { setSubmitting }) => {
-							handleLogin(values);
+							await handleLogin(values);
 							setSubmitting(false);
 						}}
 						validationSchema={loginSchema}
@@ -108,7 +108,7 @@ const Login = () => {
 								<button
 									disabled={isSubmitting}
 									type='submit'
-									className='bg-blue-600 text-white font-semibold py-2 px-2 rounded-lg w-full mt-5 hover:bg-blue-700 disabled:bg-blue-500 transition-colors duration-300'
+									className='bg-blue-600 text-white font-semibold py-2 px-2 rounded-lg w-full mt-5 hover:bg-blue-700 disabled:bg-blue-400 transition-colors duration-300'
 								>
 									Iniciar sesion
 								</button>

@@ -16,7 +16,12 @@ export const App = () => {
 			<Suspense fallback={<Spinner />}>
 				<RouterProvider router={router} />
 			</Suspense>
-			<ToastContainer position='top-center' />
+			<ToastContainer
+				autoClose={3000}
+				position='top-center'
+				draggable
+				pauseOnFocusLoss={false}
+			/>
 		</Provider>
 	);
 };

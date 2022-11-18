@@ -22,7 +22,7 @@ export const Navbar = () => {
 	return (
 		<nav className='border-gray-200 px-2 sm:px-4 py-2.5 bg-gray-900'>
 			<div className='container flex flex-wrap justify-between items-center mx-auto'>
-				<a href='https://flowbite.com/' className='flex items-center'>
+				<Link to={'/'} className='flex items-center'>
 					<img
 						src='https://flowbite.com/docs/images/logo.svg'
 						className='mr-3 h-6 sm:h-9'
@@ -31,7 +31,7 @@ export const Navbar = () => {
 					<span className='self-center text-xl font-semibold whitespace-nowrap text-white'>
 						Treelink
 					</span>
-				</a>
+				</Link>
 				<div className='flex items-center md:order-2'>
 					<button
 						onClick={() => dispatch(changeStateMenu())}

@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { updatedUserLink } from '../../redux';
 
 import { closeModal } from '../../redux/slices/uiSlice';
-import { newLinkSchema } from '../../schemas';
+import { editLinkSchema } from '../../schemas';
 import { InputFileFormik } from '../InputFileFormik';
 import { InputFormik } from '../InputFormik';
 
@@ -105,7 +105,7 @@ export const ModalForm = () => {
 									await handleEditLink(values);
 									setSubmitting(false);
 								}}
-								validationSchema={newLinkSchema}
+								validationSchema={editLinkSchema}
 							>
 								{({ handleSubmit, setFieldValue, isSubmitting }) => (
 									<form onSubmit={handleSubmit} noValidate>
@@ -124,6 +124,7 @@ export const ModalForm = () => {
 										/>
 
 										<InputFileFormik
+											disable={isSubmitting}
 											label='Imagen de su hoja de contacto'
 											name='file'
 											setFieldValue={setFieldValue}
