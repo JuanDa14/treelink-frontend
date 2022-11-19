@@ -21,21 +21,23 @@ const Verified = () => {
 
 	return (
 		<div className='w-full h-screen flex items-center'>
-			<div className='max-w-4xl mx-auto text-center bg-gray-700 rounded-lg p-10 text-white'>
+			<div className='max-w-4xl mx-auto text-center  rounded-lg p-10 bg-white shadow-lg text-step--1'>
 				<h1 className='font-bold text-step-3'>
 					Confirma tu cuenta y comienza a crear tu {''}
-					<span className='text-blue-600 uppercase'>arbol de redes sociales </span>
+					<span className='text-blue-700 capitalize block text-step-2'>
+						arbol de redes sociales{' '}
+					</span>
 				</h1>
 				{verified ? (
-					<span className=' text-step-1 flex flex-col gap-3 mt-5 capitalize'>
+					<span className=' text-step-1 flex flex-col gap-3 mt-5 capitalize text-gray-500'>
 						Cuenta Confirmada, por favor...{'  '}
 						<Link to={'/auth/login'} className='underline capitalize font-semibold block'>
 							Inicia Sesion
 						</Link>
 					</span>
 				) : (
-					<span className=' text-step-1 flex flex-col gap-3 mt-5 capitalize'>
-						Confirmando cuenta...{'  '}
+					<span className=' text-step-1 flex flex-col gap-3 mt-5 capitalize text-gray-500 font-semibold'>
+						Confirmando cuenta...
 					</span>
 				)}
 			</div>

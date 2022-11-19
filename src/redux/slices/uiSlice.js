@@ -7,6 +7,7 @@ const initialState = {
 	profile: false,
 	menu: false,
 	menuMobile: false,
+	error: false,
 };
 
 export const uiSlice = createSlice({
@@ -58,6 +59,12 @@ export const uiSlice = createSlice({
 		changeStateMenuMobile: (state) => {
 			state.menuMobile = !state.menuMobile;
 		},
+		errorIsTrue: (state) => {
+			state.error = true;
+		},
+		errorIsFalse: (state) => {
+			state.error = false;
+		},
 	},
 });
 
@@ -76,6 +83,8 @@ export const {
 	closeMenuMobile,
 	changeStateMenu,
 	changeStateMenuMobile,
+	errorIsTrue,
+	errorIsFalse,
 } = uiSlice.actions;
 
 export default uiSlice.reducer;

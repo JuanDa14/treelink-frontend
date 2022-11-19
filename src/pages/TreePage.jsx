@@ -1,13 +1,31 @@
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { LinkList, Spinner } from '../components';
 import { useGetLinksUser } from '../hooks';
+import { errorIsFalse } from '../redux/slices/uiSlice';
 
 const TreePage = () => {
 	const { imageURL, username } = useGetLinksUser();
+	const { error } = useSelector((state) => state.ui);
+
+	const navigate = useNavigate();
+
+	const dispatch = useDispatch();
+
+	useEffect(() => {
+		if (error) {
+			navigate('/auth/login', { replace: true });
+		}
+		return () => {
+			dispatch(errorIsFalse());
+		};
+	}, [error]);
 
 	return (
 		<>
 			{imageURL ? (
-				<main className='w-full bg-gray-300 h-screen'>
+				<main className='w-full h-screen'>
 					<div className='mx-auto max-w-lg pt-20'>
 						<div className='w-full flex flex-col items-center justify-center'>
 							<img
@@ -20,7 +38,7 @@ const TreePage = () => {
 							</span>
 						</div>
 
-						<div className='mt-5 rounded-lg text-gray-500'>
+						<div className='mt-5 rounded-lg'>
 							<LinkList />
 						</div>
 					</div>

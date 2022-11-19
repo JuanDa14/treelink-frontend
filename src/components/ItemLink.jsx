@@ -1,4 +1,4 @@
-import { Link, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
 import { getLinkById } from '../redux/slices/linkSlice';
@@ -11,16 +11,15 @@ export const ItemLink = ({ imageURL, name, url, _id }) => {
 
 	return (
 		<li
-			className={`flex items-center p-5 font-medium
-			text-gray-500 bg-gray-50 rounded-lg hover:text-gray-900 hover:bg-gray-100
-			transition-colors duration-300 ease-in-out shadow-lg mb-3 ${
+			className={`flex items-center p-5 font-medium bg-white rounded-lg
+			transition-colors duration-300 ease-in-out shadow-lg mb-3 hover:cursor-pointer hover:bg-gray-100 ${
 				pathname === '/' ? 'justify-between' : 'justify-center gap-3 '
 			}`}
 		>
-			<Link to={url} target='_blank' className='flex items-center gap-3'>
+			<a href={url} target='_blank' className='flex items-center gap-3'>
 				<img src={imageURL} alt={name} className='w-10 h-10' />
-				<span className='w-full'>{name}</span>
-			</Link>
+				<span className='w-full text-black font-semibold capitalize'>{name}</span>
+			</a>
 			{pathname === '/' && (
 				<div className='flex justify-between gap-2 items-center'>
 					<button
@@ -71,7 +70,7 @@ export const ItemLink = ({ imageURL, name, url, _id }) => {
 
 					{/* //TODO hacer un link que lleve a la ruta del usuario  */}
 
-					<Link to={url} alt={name} target='_blank'>
+					<a href={url} alt={name} target='_blank'>
 						<svg
 							aria-hidden='true'
 							className='w-6 h-6'
@@ -85,7 +84,7 @@ export const ItemLink = ({ imageURL, name, url, _id }) => {
 								clipRule='evenodd'
 							></path>
 						</svg>
-					</Link>
+					</a>
 				</div>
 			)}
 		</li>

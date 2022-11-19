@@ -51,7 +51,7 @@ export const ModalAlerta = () => {
 								<button
 									onClick={() => dispatch(closeAlert())}
 									type='button'
-									className='bg-white rounded-md text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:bg-gray-300'
+									className='bg-white rounded-md text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:bg-gray-300'
 									disabled={loading}
 								>
 									<span className='sr-only'>Cerrar</span>

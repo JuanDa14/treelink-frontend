@@ -2,17 +2,16 @@ import { useRef } from 'react';
 import { ErrorMessage } from 'formik';
 
 export const InputFileFormik = ({ name, label, textButton, setFieldValue, disable }) => {
-	// const [{ onChange, ...field }, { error, touched }] = useField(props, { type: 'file' });
-
 	const imageRef = useRef(null);
 
 	return (
 		<div>
 			<div className='flex items-start flex-col justify-center'>
-				<label className='block mb-2 font-medium text-gray-500' htmlFor='image'>
+				<label className='block mb-2 font-semibold mt-1' htmlFor='image'>
 					{label}
 				</label>
 				<input
+					id='image'
 					type='file'
 					className='hidden'
 					ref={imageRef}
@@ -23,7 +22,7 @@ export const InputFileFormik = ({ name, label, textButton, setFieldValue, disabl
 				<button
 					disabled={disable}
 					type='button'
-					className='flex items-center justify-center w-full px-4 py-2 text-sm font-medium text-white bg-blue-500 border border-transparent rounded-md hover:bg-blue-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500 gap-3'
+					className='flex items-center justify-center w-full px-4 py-2 font-medium text-white bg-slate-800 border border-transparent rounded-md hover:bg-slate-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 gap-3'
 					onClick={() => imageRef.current.click()}
 				>
 					<svg

@@ -5,6 +5,7 @@ import { getUserLinks } from './link';
 import { loginUser, verifiedUser, logout } from '../slices/authSlice';
 import { getLinks } from '../slices/linkSlice';
 import { setCookie, getCookie, removeCookie } from '../../utils';
+import { errorIsTrue } from '../slices/uiSlice';
 
 export const login = (body) => {
 	return async (dispatch) => {
@@ -209,6 +210,7 @@ export const getPublicUserLinks = (username) => {
 				dispatch(getLinks(data.user.links));
 			}
 		} catch (error) {
+			dispatch(errorIsTrue());
 			const { data } = error.response;
 			const message = data.message || data.errors[0].message;
 			toast.error(message);

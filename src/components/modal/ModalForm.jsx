@@ -77,7 +77,7 @@ export const ModalForm = () => {
 								<button
 									onClick={() => dispatch(closeModal())}
 									type='button'
-									className='bg-white rounded-md text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'
+									className='bg-white rounded-md text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2'
 								>
 									<span className='sr-only'>Cerrar</span>
 									<svg
@@ -134,7 +134,7 @@ export const ModalForm = () => {
 										<button
 											disabled={isSubmitting}
 											type='submit'
-											className='mt-3 block text-white bg-blue-600 hover:bg-blue-700  focus:outline-none font-medium rounded-lg w-full px-2 py-2 text-center disabled:bg-blue-500 transition-colors duration-300'
+											className='mt-3 block text-white bg-blue-600 hover:bg-blue-700  focus:outline-none font-medium rounded-lg w-full px-2 py-3 text-center disabled:bg-blue-500 transition-colors duration-300'
 										>
 											Guardar
 										</button>

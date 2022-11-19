@@ -7,7 +7,7 @@ export const InputFormik = ({ text, name, type, placeholder, classNameText, clas
 		<div className='flex flex-col w-full mb-2'>
 			{text && (
 				<span
-					className={`${classNameText ? classNameText : 'text-gray-500 font-semibold'} ${
+					className={`${classNameText ? classNameText : 'font-semibold'} ${
 						error && touched ? 'text-red-500' : ''
 					}`}
 				>
@@ -19,8 +19,8 @@ export const InputFormik = ({ text, name, type, placeholder, classNameText, clas
 				onChange={onChange}
 				value={value}
 				className={`${
-					classNameInput ? classNameInput : 'px-3 py-2 mt-1 text-gray-700 border rounded-lg'
-				} ${error && touched ? 'border-red-500' : ''}`}
+					classNameInput ? classNameInput : 'px-3 py-2 mt-1 border rounded-lg text-black'
+				} ${error && touched ? 'border-red-500 border' : ''}`}
 				name={name}
 				type={type}
 				placeholder={placeholder}

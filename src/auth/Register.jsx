@@ -26,14 +26,15 @@ const Register = () => {
 	};
 
 	return (
-		<div className='w-full h-screen bg-gray-200'>
-			<div className='h-full mx-auto max-w-xl flex flex-col justify-center'>
-				<div className='shadow-lg p-5 rounded-lg bg-gray-50'>
-					<h1 className='font-bold text-step-3 text-blue-600 text-center uppercase'>
-						Registrarse
-					</h1>
-					<p className='font-semibold text-step-0 text-gray-500 text-center mt-2 mb-5'>
-						Treelink es una plataforma que te permite crear y compartir tus redes de contactos
+		<div className='w-full h-screen'>
+			<div className='h-full mx-auto max-w-xl flex flex-col justify-center text-step--1'>
+				<div className='shadow-lg p-5 rounded-lg bg-white'>
+					<h1 className='font-bold text-step-3 text-center'>Registrarse</h1>
+					<p className='font-semibold text-step-0 text-center mt-2 mb-5 text-gray-500'>
+						¿Ya tienes una cuenta?{' '}
+						<Link to='/auth/login' className='hover:underline'>
+							Inicia sesión
+						</Link>
 					</p>
 					<Formik
 						initialValues={INITIAL_VALUES}
@@ -83,16 +84,13 @@ const Register = () => {
 								<button
 									disabled={isSubmitting}
 									type='submit'
-									className='bg-blue-600 text-white font-semibold py-2 px-2 rounded-lg w-full mt-4 hover:bg-blue-700 disabled:bg-blue-500 transition-colors duration-300'
+									className='bg-blue-700 text-white font-semibold py-2 px-2 rounded-lg w-full mt-4 hover:bg-blue-600 disabled:bg-blue-400 transition-colors duration-300'
 								>
 									Registrarse
 								</button>
 							</form>
 						)}
 					</Formik>
-					<Link className='text-gray-500 underline flex justify-center mt-3' to='/auth/login'>
-						Ya tienes una cuenta?
-					</Link>
 				</div>
 			</div>
 		</div>

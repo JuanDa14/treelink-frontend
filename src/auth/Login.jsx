@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Formik } from 'formik';
 
 import { gapi } from 'gapi-script';
@@ -64,13 +64,11 @@ const Login = () => {
 	};
 
 	return (
-		<div className='w-full h-screen bg-gray-200'>
-			<div className='h-full mx-auto max-w-xl flex flex-col justify-center'>
-				<div className='shadow-lg p-5 rounded-md bg-gray-50'>
-					<h1 className='font-bold text-step-3 text-blue-600 text-center uppercase'>
-						Bienvenido
-					</h1>
-					<p className='font-semibold text-step-0 text-gray-500 text-center mb-5'>
+		<div className='w-full h-screen'>
+			<div className='h-full mx-auto max-w-xl flex flex-col justify-center text-step--1'>
+				<div className='shadow-lg p-5 rounded-md bg-white'>
+					<h1 className='font-bold text-step-3 text-center'>Bienvenido</h1>
+					<p className='font-semibold text-step-0 text-center mb-5 text-gray-500'>
 						Seleccina un metodo de autenticacion
 					</p>
 					<Formik
@@ -97,10 +95,7 @@ const Login = () => {
 								/>
 
 								<div>
-									<Link
-										className='text-gray-500 font-semibold underline'
-										to='/auth/forgot-password'
-									>
+									<Link className='font-semibold underline' to='/auth/forgot-password'>
 										¿Olvidaste tu contraseña?
 									</Link>
 								</div>
@@ -108,7 +103,7 @@ const Login = () => {
 								<button
 									disabled={isSubmitting}
 									type='submit'
-									className='bg-blue-600 text-white font-semibold py-2 px-2 rounded-lg w-full mt-5 hover:bg-blue-700 disabled:bg-blue-400 transition-colors duration-300'
+									className='bg-blue-700 text-white font-semibold py-2 px-2 rounded-lg w-full mt-5 hover:bg-blue-600 disabled:bg-blue-400 transition-colors duration-300'
 								>
 									Iniciar sesion
 								</button>
@@ -117,7 +112,7 @@ const Login = () => {
 					</Formik>
 
 					<div className='flex flex-col gap-3 justify-center items-center'>
-						<span className='font-semibold text-gray-600 mt-4 capitalize'>
+						<span className='font-semibold mt-4 text-step--1  capitalize'>
 							Otros metodos de autenticacion
 						</span>
 
@@ -130,7 +125,7 @@ const Login = () => {
 							onAutoLoadFinished={handleAutoLoadFinished}
 							cookiePolicy={'single_host_origin'}
 							icon={false}
-							className='btn btn-google'
+							className={`btn btn-google`}
 							disabled={loadingGoogle}
 						/>
 
@@ -152,8 +147,8 @@ const Login = () => {
 						children={<span>Twitter</span>}
 						className='btn btn-twiter'
 					/> */}
-						<Link className='text-gray-500 underline' to='/auth/register'>
-							No tienes una cuenta?
+						<Link className='underline font-semibold' to='/auth/register'>
+							¿No tienes una cuenta?
 						</Link>
 					</div>
 				</div>

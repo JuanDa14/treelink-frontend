@@ -9,33 +9,32 @@
 	font-weight: bolder;
 	display: block !important;
 	border-radius: 5px !important;
-	text-transform: uppercase;
+	text-transform: uppercase !important;
 	cursor: pointer;
 }
 
 .btn-google {
-	background-color: #dd4b39 !important;
+	background-color: #ed2f16 !important;
 }
 
 .btn-google:hover {
-	background-color: #c23321 !important;
+	background-color: #ed2f16 !important;
 }
 
 .btn-google span {
 	color: white !important;
-	text-transform: uppercase !important;
 	font-weight: bolder !important;
 	font-size: 1rem !important;
 }
 
 .btn-facebook {
-	background-color: #3b5998;
+	background-color: #1f50ba;
 	color: white;
 	border: solid 1px #ccc;
 }
 
 .btn-facebook:hover {
-	background-color: #1f50ba;
+	background-color: #3b5998;
 }
 
 .btn-twiter {
@@ -75,10 +74,6 @@ div .btn.btn-twiter:hover {
 
 .Toastify {
 	font-size: clamp(0.94rem, calc(0.95rem + -0.01vw), 0.94rem);
-}
-
-.typed-cursor {
-	font-size: clamp(1.2rem, calc(1.1rem + 0.47vw), 1.67rem) !important;
 }
 
 .Toastify__toast-body {
