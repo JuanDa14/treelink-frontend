@@ -68,17 +68,30 @@ export const register = (body) => {
 	};
 };
 
-export const loginWithGoogle = (formValues) => {
+export const loginWithGoogle = ({ tokenId, email }) => {
 	return async (dispatch) => {
 		try {
-			const { data } = await userApi.post('/google', formValues);
+			const { data } = await userApi.post(
+				'/google',
+				{
+					email,
+					username: email.split('@')[0],
+				},
+				{
+					headers: {
+						Authorization: `Bearer ${tokenId}`,
+					},
+				}
+			);
 
-			if (data.ok) {
+			if (data.ok && !data.user) return toast.success(data.message);
+
+			if (data.ok && data.user) {
 				setCookie(['accessToken', 'refreshToken'], [data.accessToken, data.refreshToken]);
 
 				dispatch(getUserLinks());
 
-				dispatch(loginUser(data.user));
+				return dispatch(loginUser(data.user));
 			}
 		} catch (error) {
 			const { data } = error.response;
@@ -97,6 +110,7 @@ export const loginWithFacebook = (formValues) => {
 				imageURL: picture.data.url,
 				name,
 				email,
+				username: email.split('@')[0],
 			};
 
 			const { data } = await userApi.post('/facebook', body);

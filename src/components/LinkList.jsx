@@ -10,20 +10,18 @@ export const LinkList = () => {
 	return (
 		<>
 			{links.length > 0 ? (
-				<div>
+				<>
 					{pathname === '/' && (
 						<h1 className='capitalize text-gray-500 font-bold text-step-1 mb-3 text-center mt-5'>
 							Tu <span className='text-blue-500'>arbol</span> de contactos en un solo lugar
 						</h1>
 					)}
-					<div className='shadow mt-5 rounded-lg text-gray-500 -z-10'>
-						<ul>
-							{links.map((link) => (
-								<ItemLink key={link._id} {...link} />
-							))}
-						</ul>
-					</div>
-				</div>
+					<ul className='mt-5 px-5 md:px-0'>
+						{links.map((link) => (
+							<ItemLink key={link._id} {...link} />
+						))}
+					</ul>
+				</>
 			) : (
 				<div className='flex flex-col justify-center text-step-0 text-center h-full'>
 					<p className='font-semibold text-gray-500'>

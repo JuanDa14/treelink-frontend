@@ -20,7 +20,7 @@ const Verified = () => {
 	}, []);
 
 	return (
-		<div className='w-full h-screen flex items-center'>
+		<div className='w-full h-screen flex items-center px-5 md:px-0'>
 			<div className='max-w-4xl mx-auto text-center  rounded-lg p-10 bg-white shadow-lg text-step--1'>
 				<h1 className='font-bold text-step-3'>
 					Confirma tu cuenta y comienza a crear tu {''}

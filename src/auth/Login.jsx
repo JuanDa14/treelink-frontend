@@ -36,10 +36,10 @@ const Login = () => {
 		await dispatch(login(values));
 	};
 
-	const handleLoginSuccess = ({ profileObj }) => {
-		const { email, name, imageUrl } = profileObj;
-
-		dispatch(loginWithGoogle({ email, name, imageURL: imageUrl }));
+	const handleLoginSuccess = ({ tokenId, profileObj }) => {
+		const { email } = profileObj;
+		dispatch(loginWithGoogle({ email, tokenId }));
+		setLoadingGoogle(false);
 	};
 
 	const handleLoginFailure = () => {
@@ -58,6 +58,10 @@ const Login = () => {
 		dispatch(loginWithFacebook({ picture, email, name }));
 	};
 
+	const handleLoginFailureFacebook = (response) => {
+		console.log(response);
+	};
+
 	const handleLoginTwitter = (err, data) => {
 		// TODO falta login con twiter
 		console.log(err, data);
@@ -65,7 +69,7 @@ const Login = () => {
 
 	return (
 		<div className='w-full h-screen'>
-			<div className='h-full mx-auto max-w-xl flex flex-col justify-center text-step--1'>
+			<div className=' p-5 h-full mx-auto max-w-xl flex flex-col justify-center text-step--1 md:p-0'>
 				<div className='shadow-lg p-5 rounded-md bg-white'>
 					<h1 className='font-bold text-step-3 text-center'>Bienvenido</h1>
 					<p className='font-semibold text-step-0 text-center mb-5 text-gray-500'>
@@ -94,7 +98,7 @@ const Login = () => {
 									placeholder='Ingrese su contraseña'
 								/>
 
-								<div>
+								<div className='mt-3'>
 									<Link className='font-semibold underline' to='/auth/forgot-password'>
 										¿Olvidaste tu contraseña?
 									</Link>
@@ -137,6 +141,8 @@ const Login = () => {
 							textButton='Facebook'
 							cssClass='btn btn-facebook'
 							containerStyle={{ width: '100%' }}
+							onFailure={handleLoginFailureFacebook}
+							tag='button'
 						/>
 
 						{/* //TODO falta hacer el login con twitter */}

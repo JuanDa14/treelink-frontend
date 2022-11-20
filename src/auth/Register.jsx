@@ -27,15 +27,10 @@ const Register = () => {
 
 	return (
 		<div className='w-full h-screen'>
-			<div className='h-full mx-auto max-w-xl flex flex-col justify-center text-step--1'>
+			<div className='h-full p-5 mx-auto max-w-xl flex flex-col justify-center text-step--1 md:p-0'>
 				<div className='shadow-lg p-5 rounded-lg bg-white'>
-					<h1 className='font-bold text-step-3 text-center'>Registrarse</h1>
-					<p className='font-semibold text-step-0 text-center mt-2 mb-5 text-gray-500'>
-						¿Ya tienes una cuenta?{' '}
-						<Link to='/auth/login' className='hover:underline'>
-							Inicia sesión
-						</Link>
-					</p>
+					<h1 className='font-bold text-step-3 text-center mb-4'>Registrarse</h1>
+
 					<Formik
 						initialValues={INITIAL_VALUES}
 						onSubmit={async (values, { setSubmitting }) => {
@@ -91,6 +86,12 @@ const Register = () => {
 							</form>
 						)}
 					</Formik>
+					<p className='font-semibold text-step-0 text-center mt-2 mb-5 text-gray-500'>
+						¿Ya tienes una cuenta?{' '}
+						<Link to='/auth/login' className='underline'>
+							Inicia sesión
+						</Link>
+					</p>
 				</div>
 			</div>
 		</div>

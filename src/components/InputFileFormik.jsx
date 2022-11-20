@@ -22,7 +22,7 @@ export const InputFileFormik = ({ name, label, textButton, setFieldValue, disabl
 				<button
 					disabled={disable}
 					type='button'
-					className='flex items-center justify-center w-full px-4 py-2 font-medium text-white bg-slate-800 border border-transparent rounded-md hover:bg-slate-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 gap-3'
+					className='flex items-center justify-center w-full px-4 py-2 font-medium text-white bg-slate-800 border border-transparent rounded-md hover:bg-slate-900 disabled:bg-slate-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 gap-3'
 					onClick={() => imageRef.current.click()}
 				>
 					<svg

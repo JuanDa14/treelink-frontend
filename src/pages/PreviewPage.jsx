@@ -29,7 +29,7 @@ const PreviewPage = () => {
 	return (
 		<Layout>
 			<div className='mt-5 text-step--1'>
-				<div className='flex justify-between items-center gap-5'>
+				<div className='flex flex-col justify-between items-center gap-2'>
 					<h1 className='capitalize text-gray-500 font-bold text-step-1 text-center'>
 						previsualización de <span className='text-blue-500'>mi arbol</span> de contactos
 					</h1>

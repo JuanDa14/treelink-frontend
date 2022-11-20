@@ -13,7 +13,7 @@ export const ModalProfile = () => {
 
 	const imageRef = useRef(null);
 
-	const { name, imageURL, email, username } = useSelector((state) => state.auth.user);
+	const { name, imageURL, username } = useSelector((state) => state.auth.user);
 
 	const { profile } = useSelector((state) => state.ui);
 
@@ -100,9 +100,8 @@ export const ModalProfile = () => {
 							<div>
 								<Formik
 									initialValues={{
-										username,
 										name,
-										email,
+										username,
 										file: null,
 									}}
 									onSubmit={async (values, { setSubmitting }) => {
@@ -111,7 +110,7 @@ export const ModalProfile = () => {
 									}}
 									validationSchema={profileSchema}
 								>
-									{({ handleSubmit, isSubmitting, setFieldValue, values }) => (
+									{({ handleSubmit, isSubmitting, setFieldValue, values, }) => (
 										<form onSubmit={handleSubmit} noValidate>
 											{values.file && (
 												<div className='flex justify-center items-center gap-3'>
@@ -148,7 +147,6 @@ export const ModalProfile = () => {
 												name='file'
 												onChange={(e) => setFieldValue('file', e.target.files[0])}
 											/>
-
 											<InputFormik
 												name='username'
 												text='Nombre de usuario'
@@ -161,13 +159,6 @@ export const ModalProfile = () => {
 												text='Nombre'
 												placeholder='Ingrese su nombre'
 												type='text'
-											/>
-
-											<InputFormik
-												name='email'
-												text='Email'
-												placeholder='Ingrese su correo electronico'
-												type='email'
 											/>
 
 											<button

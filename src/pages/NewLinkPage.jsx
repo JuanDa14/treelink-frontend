@@ -53,6 +53,7 @@ const NewLinkPage = () => {
 							/>
 
 							<InputFileFormik
+								disable={isSubmitting}
 								textButton='Subir imagen'
 								label='Imagen de su hoja de contacto'
 								name='file'
