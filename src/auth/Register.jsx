@@ -29,7 +29,11 @@ const Register = () => {
 		<div className='w-full h-screen'>
 			<div className='h-full p-5 mx-auto max-w-xl flex flex-col justify-center text-step--1 md:p-0'>
 				<div className='shadow-lg p-5 rounded-lg bg-white'>
-					<h1 className='font-bold text-step-3 text-center mb-4'>Registrarse</h1>
+					<h1 className='font-bold text-step-3 text-center'>Registrarse</h1>
+
+					<span className='font-semibold text-gray-500 flex justify-center text-center mb-3 text-step-0'>
+						TreeLink te permite crear tu arbol de contactos y poder compartirlo{' '}
+					</span>
 
 					<Formik
 						initialValues={INITIAL_VALUES}
