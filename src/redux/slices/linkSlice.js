@@ -3,6 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
 	links: [],
 	link: {},
+	loading: false,
 };
 
 export const linkSlice = createSlice({
@@ -30,9 +31,23 @@ export const linkSlice = createSlice({
 				link._id === action.payload._id ? action.payload : link
 			);
 		},
+		startLoading: (state) => {
+			state.loading = true;
+		},
+		finishLoading: (state) => {
+			state.loading = false;
+		},
 	},
 });
 
-export const { getLinks, createLink, deleteLink, getLinkById, updateLink } = linkSlice.actions;
+export const {
+	getLinks,
+	createLink,
+	deleteLink,
+	getLinkById,
+	updateLink,
+	startLoading,
+	finishLoading,
+} = linkSlice.actions;
 
 export default linkSlice.reducer;

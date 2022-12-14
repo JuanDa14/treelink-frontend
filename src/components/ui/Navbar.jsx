@@ -43,7 +43,11 @@ export const Navbar = () => {
 						className='flex mr-3 text-sm bg-gray-800 rounded-full md:mr-0'
 					>
 						<span className='sr-only'>Open user menu</span>
-						<img className='w-10 h-10 rounded-full' src={imageURL} alt='user' />
+						<img
+							className='w-10 h-10 rounded-full object-cover object-center'
+							src={imageURL}
+							alt='user'
+						/>
 					</button>
 					{/* <!-- Dropdown menu --> */}
 					<div

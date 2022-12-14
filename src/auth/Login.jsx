@@ -9,7 +9,7 @@ import FacebookLogin from 'react-facebook-login';
 // import TwitterLogin from 'react-twitter-login';
 
 import { loginSchema } from '../schemas';
-import { InputFormik } from '../components';
+import { InputFormik, Spinner } from '../components';
 import { login, loginWithFacebook, loginWithGoogle } from '../redux/thunks/auth';
 
 const INITIAL_VALUES = {
@@ -21,6 +21,8 @@ const Login = () => {
 	const [loadingGoogle, setLoadingGoogle] = useState(false);
 
 	const dispatch = useDispatch();
+
+	const { checking } = useSelector((state) => state.auth);
 
 	useEffect(() => {
 		const initClient = () => {
@@ -66,6 +68,10 @@ const Login = () => {
 		// TODO falta login con twiter
 		console.log(err, data);
 	};
+
+	if (checking) {
+		return <Spinner />;
+	}
 
 	return (
 		<div className='w-full h-screen'>

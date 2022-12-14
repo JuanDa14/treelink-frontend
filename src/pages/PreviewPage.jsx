@@ -74,7 +74,11 @@ const PreviewPage = () => {
 				</div>
 
 				<div className='w-full flex flex-col items-center justify-center mt-5'>
-					<img className='max-w-lg max-h-24 rounded-full' src={imageURL} alt={username} />
+					<img
+						className='w-24 h-24 object-cover object-center rounded-full'
+						src={imageURL}
+						alt={username}
+					/>
 					<span className='mt-3 capitalize font-bold text-gray-500 text-step-1'>
 						{username}
 					</span>

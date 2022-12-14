@@ -24,7 +24,7 @@ const NewLinkPage = () => {
 
 	return (
 		<Layout>
-			<div className='mt-5 text-step--1'>
+			<div className='container mt-5 text-step--1'>
 				<h1 className='capitalize text-gray-500 font-bold text-step-1 mb-3 text-center'>
 					Crear nueva hoja de contacto para <span className='text-blue-500'>mi arbol</span>
 				</h1>
@@ -63,7 +63,7 @@ const NewLinkPage = () => {
 							<button
 								disabled={isSubmitting}
 								type='submit'
-								className='text-white mt-4 bg-blue-700 hover:bg-blue-600 focus:outline-none font-medium rounded-lg w-full px-2 py-3 text-center disabled:bg-blue-400 transition-colors duration-300'
+								className='text-white mt-4 bg-blue-700 hover:bg-blue-600 focus:outline-none font-semibold rounded-lg w-full px-2 py-2 text-center disabled:bg-blue-400 transition-colors duration-300'
 							>
 								{isSubmitting ? 'Creando...' : 'Crear hoja de contacto'}
 							</button>

@@ -1,9 +1,9 @@
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { Formik } from 'formik';
 
 import { register } from '../redux';
-import { CheckboxFormik, InputFormik } from '../components';
+import { CheckboxFormik, InputFormik, Spinner } from '../components';
 import { registerSchema } from '../schemas';
 
 const INITIAL_VALUES = {
@@ -20,10 +20,16 @@ const Register = () => {
 
 	const navigate = useNavigate();
 
+	const { checking } = useSelector((state) => state.auth);
+
 	const handleRegister = async (values) => {
 		await dispatch(register(values));
 		navigate('/auth/login');
 	};
+
+	if (checking) {
+		return <Spinner />;
+	}
 
 	return (
 		<div className='w-full h-screen'>

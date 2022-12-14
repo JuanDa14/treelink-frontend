@@ -16,14 +16,17 @@ export const ItemLink = ({ imageURL, name, url, _id }) => {
 				pathname === '/' ? 'justify-between' : 'justify-center gap-3 '
 			}`}
 		>
-			<a href={url} target='_blank' className='flex items-center gap-3'>
-				<img src={imageURL} alt={name} className='w-10 h-10' />
-				<span className='w-full text-black font-semibold capitalize'>{name}</span>
+			<a href={url} target='_blank' className='w-full flex  items-center gap-3 justify-center'>
+				<figure>
+					<img src={imageURL} alt={name} className='w-14 h-10 object-cover object-center' />
+				</figure>
+				<span className='text-black font-semibold capitalize'>{name}</span>
 			</a>
 			{pathname === '/' && (
-				<div className='flex justify-between gap-2 items-center'>
+				<div className='w-6/12 flex gap-5 items-center'>
 					<button
 						type='button'
+						className='hover:bg-gray-200 rounded-full p-2 transition-colors duration-300 ease-in-out'
 						onClick={() => {
 							dispatch(getLinkById(_id));
 							dispatch(openModal());
@@ -46,6 +49,7 @@ export const ItemLink = ({ imageURL, name, url, _id }) => {
 					</button>
 
 					<button
+						className='hover:bg-gray-200 rounded-full p-2 transition-colors duration-300 ease-in-out'
 						type='button'
 						onClick={() => {
 							dispatch(openAlert());
@@ -70,7 +74,12 @@ export const ItemLink = ({ imageURL, name, url, _id }) => {
 
 					{/* //TODO hacer un link que lleve a la ruta del usuario  */}
 
-					<a href={url} alt={name} target='_blank'>
+					<a
+						className='hover:bg-gray-200 rounded-full p-2 transition-colors duration-300 ease-in-out'
+						href={url}
+						alt={name}
+						target='_blank'
+					>
 						<svg
 							aria-hidden='true'
 							className='w-6 h-6'

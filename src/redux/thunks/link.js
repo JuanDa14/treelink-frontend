@@ -3,10 +3,19 @@ import { toast } from 'react-toastify';
 import { linkApi } from '../../api';
 import { getCookie } from '../../utils';
 
-import { createLink, deleteLink, getLinks, updateLink } from '../slices/linkSlice';
+import {
+	createLink,
+	deleteLink,
+	finishLoading,
+	getLinks,
+	startLoading,
+	updateLink,
+} from '../slices/linkSlice';
 
 export const getUserLinks = () => {
 	return async (dispatch) => {
+		dispatch(startLoading());
+
 		try {
 			const accessToken = getCookie('accessToken');
 
@@ -23,6 +32,8 @@ export const getUserLinks = () => {
 			const { data } = error.response;
 			const message = data.message || data.errors[0].message;
 			toast.error(message);
+		} finally {
+			dispatch(finishLoading());
 		}
 	};
 };

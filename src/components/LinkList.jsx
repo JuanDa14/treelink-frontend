@@ -3,7 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { ItemLink } from './ItemLink';
 
 export const LinkList = () => {
-	const { links } = useSelector((state) => state.link);
+	const { links, loading } = useSelector((state) => state.link);
 
 	const { pathname } = useLocation();
 
@@ -16,12 +16,16 @@ export const LinkList = () => {
 							Tu <span className='text-blue-500'>arbol</span> de contactos en un solo lugar
 						</h1>
 					)}
-					<ul className='mt-5 px-5 md:px-0'>
+					<ul className='mt-5'>
 						{links.map((link) => (
 							<ItemLink key={link._id} {...link} />
 						))}
 					</ul>
 				</>
+			) : loading ? (
+				<p className='flex justify-center items-center h-full text-step-1 font-semibold text-gray-500 capitalize'>
+					Cargando tus <span className='text-blue-500 ml-2'>hojas...</span>
+				</p>
 			) : (
 				<div className='flex flex-col justify-center text-step-0 text-center h-full'>
 					<p className='font-semibold text-gray-500'>

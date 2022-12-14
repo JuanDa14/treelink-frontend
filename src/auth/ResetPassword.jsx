@@ -55,7 +55,7 @@ const ResetPassword = () => {
 									type='submit'
 									className='w-full bg-blue-700 rounded-lg py-2  mt-2 text-white font-semibold disabled:bg-blue-400 hover:bg-blue-600 transition duration-300'
 								>
-									Restablecer contraseña
+									{isSubmitting ? 'Cargando...' : 'Recuperar contraseña'}
 								</button>
 							</form>
 						)}

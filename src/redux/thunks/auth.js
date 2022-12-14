@@ -2,33 +2,44 @@ import { toast } from 'react-toastify';
 
 import { userApi } from '../../api';
 import { getUserLinks } from './link';
-import { loginUser, verifiedUser, logout } from '../slices/authSlice';
+import {
+	loginUser,
+	verifiedUser,
+	logout,
+	startChecking,
+	finishChecking,
+} from '../slices/authSlice';
 import { getLinks } from '../slices/linkSlice';
 import { setCookie, getCookie, removeCookie } from '../../utils';
 import { errorIsTrue } from '../slices/uiSlice';
 
 export const login = (body) => {
 	return async (dispatch) => {
+		dispatch(startChecking());
 		try {
 			const { data } = await userApi.post('/login', body);
 
 			if (data.ok) {
+				await dispatch(loginUser(data.user));
+
 				setCookie(['accessToken', 'refreshToken'], [data.accessToken, data.refreshToken]);
 
 				dispatch(getUserLinks());
-
-				return dispatch(loginUser(data.user));
 			}
 		} catch (error) {
 			const { data } = error.response;
 			const message = data.message || data.errors[0].message;
 			toast.error(message);
+			dispatch(logoutUser());
+		} finally {
+			dispatch(finishChecking());
 		}
 	};
 };
 
 export const refreshUser = (refreshToken) => {
 	return async (dispatch) => {
+		dispatch(startChecking());
 		try {
 			const { data } = await userApi.get('/refresh', {
 				headers: {
@@ -37,23 +48,24 @@ export const refreshUser = (refreshToken) => {
 			});
 
 			if (data.ok) {
+				await dispatch(loginUser(data.user));
 				setCookie(['accessToken', 'refreshToken'], [data.accessToken, data.refreshToken]);
-
 				dispatch(getUserLinks());
-
-				dispatch(loginUser(data.user));
 			}
 		} catch (error) {
 			const { data } = error.response;
 			const message = data.message || data.errors[0].message;
 			toast.error(message);
 			dispatch(logoutUser());
+		} finally {
+			dispatch(finishChecking());
 		}
 	};
 };
 
 export const register = (body) => {
 	return async () => {
+		dispatch(startChecking());
 		try {
 			const { data } = await userApi.post('/register', body);
 
@@ -64,12 +76,16 @@ export const register = (body) => {
 			const { data } = error.response;
 			const message = data.message || data.errors[0].message;
 			toast.error(message);
+		} finally {
+			dispatch(finishChecking());
 		}
 	};
 };
 
 export const loginWithGoogle = ({ tokenId, email }) => {
 	return async (dispatch) => {
+		dispatch(startChecking());
+
 		try {
 			const { data } = await userApi.post(
 				'/google',
@@ -87,22 +103,26 @@ export const loginWithGoogle = ({ tokenId, email }) => {
 			if (data.ok && !data.user) return toast.success(data.message);
 
 			if (data.ok && data.user) {
+				await dispatch(loginUser(data.user));
+
 				setCookie(['accessToken', 'refreshToken'], [data.accessToken, data.refreshToken]);
 
 				dispatch(getUserLinks());
-
-				return dispatch(loginUser(data.user));
 			}
 		} catch (error) {
 			const { data } = error.response;
 			const message = data.message || data.errors[0].message;
 			toast.error(message);
+		} finally {
+			dispatch(finishChecking());
 		}
 	};
 };
 
 export const loginWithFacebook = (formValues) => {
 	return async (dispatch) => {
+		dispatch(startChecking());
+
 		try {
 			const { picture, name, email } = formValues;
 
@@ -116,11 +136,11 @@ export const loginWithFacebook = (formValues) => {
 			const { data } = await userApi.post('/facebook', body);
 
 			if (data.ok) {
+				await dispatch(loginUser(data.user));
+
 				setCookie(['accessToken', 'refreshToken'], [data.accessToken, data.refreshToken]);
 
 				dispatch(getUserLinks());
-
-				dispatch(loginUser(data.user));
 			}
 
 			// const url = `debug_token?input_token=${token}&access_token=${token}`;
@@ -131,12 +151,16 @@ export const loginWithFacebook = (formValues) => {
 			const { data } = error.response;
 			const message = data.message || data.errors[0].message;
 			toast.error(message);
+		} finally {
+			dispatch(finishChecking());
 		}
 	};
 };
 
 export const verifiedEmail = (token) => {
 	return async (dispatch) => {
+		dispatch(startChecking());
+
 		try {
 			const { data } = await userApi.get(`/verified/${token}`);
 
@@ -147,12 +171,15 @@ export const verifiedEmail = (token) => {
 			const { data } = error.response;
 			const message = data.message || data.errors[0].message;
 			toast.error(message);
+		} finally {
+			dispatch(finishChecking());
 		}
 	};
 };
 
 export const forgotPassword = (email) => {
 	return async () => {
+		dispatch(startChecking());
 		try {
 			const { data } = await userApi.post('/forgot-password', email);
 
@@ -164,12 +191,15 @@ export const forgotPassword = (email) => {
 			const { data } = error.response;
 			const message = data.message || data.errors[0].message;
 			toast.error(message);
+		} finally {
+			dispatch(finishChecking());
 		}
 	};
 };
 
 export const resetPassword = (token, body) => {
 	return async () => {
+		dispatch(startChecking());
 		try {
 			const { data } = await userApi.post(`/reset-password/${token}`, body);
 
@@ -180,12 +210,16 @@ export const resetPassword = (token, body) => {
 			const { data } = error.response;
 			const message = data.message || data.errors[0].message;
 			toast.error(message);
+		} finally {
+			dispatch(finishChecking());
 		}
 	};
 };
 
 export const updatedProfile = (body) => {
 	return async (dispatch) => {
+		dispatch(startChecking());
+
 		try {
 			const accessToken = getCookie('accessToken');
 
@@ -210,12 +244,15 @@ export const updatedProfile = (body) => {
 			const { data } = error.response;
 			const message = data.message || data.errors[0].message;
 			toast.error(message);
+		} finally {
+			dispatch(finishChecking());
 		}
 	};
 };
 
 export const getPublicUserLinks = (username) => {
 	return async (dispatch) => {
+		dispatch(startChecking());
 		try {
 			const { data } = await userApi.get(`/${username}`);
 
@@ -228,6 +265,8 @@ export const getPublicUserLinks = (username) => {
 			const { data } = error.response;
 			const message = data.message || data.errors[0].message;
 			toast.error(message);
+		} finally {
+			dispatch(finishChecking());
 		}
 	};
 };

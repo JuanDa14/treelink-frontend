@@ -13,7 +13,6 @@ export const authSlice = createSlice({
 	reducers: {
 		loginUser: (state, action) => {
 			state.status = 'authenticated';
-			state.checking = true;
 			state.verified = false;
 			state.user = action.payload;
 		},
@@ -27,9 +26,15 @@ export const authSlice = createSlice({
 			state.verified = false;
 			state.user = null;
 		},
+		startChecking: (state) => {
+			state.checking = true;
+		},
+		finishChecking: (state) => {
+			state.checking = false;
+		},
 	},
 });
 
-export const { loginUser, verifiedUser, logout } = authSlice.actions;
+export const { loginUser, verifiedUser, logout, startChecking, finishChecking } = authSlice.actions;
 
 export default authSlice.reducer;

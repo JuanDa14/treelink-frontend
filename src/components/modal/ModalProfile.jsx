@@ -87,7 +87,7 @@ export const ModalProfile = () => {
 
 							<div className='w-full flex flex-col items-center justify-center'>
 								<img
-									className='max-w-lg max-h-24 rounded-full hover:cursor-pointer hover:opacity-90'
+									className='w-24 h-24 object-cover object-center rounded-full hover:cursor-pointer hover:opacity-50'
 									src={imageURL}
 									alt={name}
 									onClick={() => imageRef.current.click()}
@@ -110,12 +110,14 @@ export const ModalProfile = () => {
 									}}
 									validationSchema={profileSchema}
 								>
-									{({ handleSubmit, isSubmitting, setFieldValue, values, }) => (
+									{({ handleSubmit, isSubmitting, setFieldValue, values }) => (
 										<form onSubmit={handleSubmit} noValidate>
 											{values.file && (
 												<div className='flex justify-center items-center gap-3'>
-													<span className='mt-3 mb-3 font-semibold text-red-500 capitalize text-step--1'>
-														La imagen sera cambiada
+													<span className='pt-2 mb-3 font-semibold text-gray-500 capitalize text-step--1'>
+														{imageRef.current &&
+															imageRef.current.files[0].name &&
+															imageRef.current.files[0].name}
 													</span>
 													<button
 														onClick={() => setFieldValue('file', null)}
@@ -166,7 +168,7 @@ export const ModalProfile = () => {
 												disabled={isSubmitting}
 												className='text-white mt-4 bg-gray-700 hover:bg-gray-800 focus:outline-none font-medium rounded-lg w-full px-2 py-2 text-center disabled:bg-gray-500 transition-colors duration-300'
 											>
-												Guardar
+												{isSubmitting ? 'Cargando...' : 'Actualizar'}
 											</button>
 										</form>
 									)}

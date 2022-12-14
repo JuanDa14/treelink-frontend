@@ -45,7 +45,7 @@ const ForgotPassword = () => {
 									type='submit'
 									className='w-full bg-blue-700 rounded-lg py-2 text-white font-semibold hover:bg-blue-600 disabled:bg-blue-400 transition-colors duration-300'
 								>
-									Recuperar contraseña
+									{isSubmitting ? 'Enviando...' : 'Enviar'}
 								</button>
 							</form>
 						)}

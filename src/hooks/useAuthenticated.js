@@ -13,10 +13,8 @@ export const useAuthenticated = () => {
 	const refreshToken = getCookie('refreshToken');
 
 	useEffect(() => {
-		if (refreshToken) {
+		if (refreshToken && !isAuthenticated) {
 			dispatch(refreshUser(refreshToken));
-		} else {
-			dispatch(logoutUser());
 		}
 	}, []);
 

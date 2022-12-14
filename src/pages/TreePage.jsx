@@ -29,7 +29,7 @@ const TreePage = () => {
 					<div className='mx-auto max-w-lg pt-20'>
 						<div className='w-full flex flex-col items-center justify-center'>
 							<img
-								className='max-w-lg max-h-24 rounded-full'
+								className='w-24 h-24 object-cover object-center rounded-full'
 								src={imageURL}
 								alt={username}
 							/>

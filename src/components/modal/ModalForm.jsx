@@ -134,9 +134,9 @@ export const ModalForm = () => {
 										<button
 											disabled={isSubmitting}
 											type='submit'
-											className='mt-3 block text-white bg-blue-600 hover:bg-blue-700  focus:outline-none font-medium rounded-lg w-full px-2 py-3 text-center disabled:bg-blue-500 transition-colors duration-300'
+											className='mt-3 block text-white bg-blue-600 hover:bg-blue-700  focus:outline-none font-semibold rounded-lg w-full px-2 py-2 text-center disabled:bg-blue-500 transition-colors duration-300'
 										>
-											Guardar
+											{isSubmitting ? 'Guardando...' : 'Guardar'}
 										</button>
 									</form>
 								)}
