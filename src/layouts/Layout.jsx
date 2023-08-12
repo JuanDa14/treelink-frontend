@@ -1,10 +1,10 @@
 import { Navbar, Footer } from '../components';
 
-export const Layout = ({ children }) => {
+export const Layout = ({ children, classNameMain }) => {
 	return (
 		<div className='flex flex-col w-full h-screen'>
 			<Navbar />
-			<main className='px-2.5 flex-1 max-w-4xl mx-auto'>{children}</main>
+			<main className={`flex-1 h-full w-full mx-auto ${classNameMain}`}>{children}</main>
 			<Footer />
 		</div>
 	);

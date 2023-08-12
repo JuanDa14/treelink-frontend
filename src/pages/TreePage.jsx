@@ -33,11 +33,8 @@ const TreePage = () => {
 								src={imageURL}
 								alt={username}
 							/>
-							<span className='mt-3 capitalize font-bold text-gray-500 text-step-1'>
-								{username}
-							</span>
+							<span className='mt-3 font-bold text-gray-700 text-step-1'>{username}</span>
 						</div>
-
 						<div className='mt-5 rounded-lg'>
 							<LinkList />
 						</div>

@@ -74,13 +74,23 @@ const Login = () => {
 	}
 
 	return (
-		<div className='w-full h-screen'>
-			<div className=' p-5 h-full mx-auto max-w-xl flex flex-col justify-center text-step--1 md:p-0'>
-				<div className='shadow-lg p-5 rounded-md bg-white'>
-					<h1 className='font-bold text-step-3 text-center'>Bienvenido</h1>
-					<p className='font-semibold text-step-0 text-center mb-5 text-gray-500'>
-						Seleccina un metodo de autenticacion
-					</p>
+		<div className='h-screen w-full flex items-center'>
+			<div className='container max-w-md mx-auto xl:max-w-4xl flex bg-white rounded-lg shadow overflow-hidden'>
+				<div className='relative hidden xl:block xl:w-1/2 h-full'>
+					<img
+						className='absolute h-auto w-full object-cover'
+						src='https://images.unsplash.com/photo-1541233349642-6e425fe6190e'
+						alt='my zomato'
+					/>
+				</div>
+				<div className='w-full xl:w-1/2 p-8'>
+					<h1 className=' text-2xl font-bold'>Bienvenido</h1>
+					<div className='flex items-center gap-2'>
+						<span className='text-gray-600 text-sm'>¿No tienes una cuenta?</span>
+						<Link className='text-gray-700 text-sm font-semibold underline' to='/auth/register'>
+							Registrate
+						</Link>
+					</div>
 					<Formik
 						initialValues={INITIAL_VALUES}
 						onSubmit={async (values, { setSubmitting }) => {
@@ -91,44 +101,51 @@ const Login = () => {
 					>
 						{({ handleSubmit, isSubmitting }) => (
 							<form onSubmit={handleSubmit}>
-								<InputFormik
-									text='Email'
-									name='email'
-									type='email'
-									placeholder='Ingrese su correo electronico'
-								/>
-								<InputFormik
-									text='Password'
-									name='password'
-									type='password'
-									placeholder='Ingrese su contraseña'
-								/>
-
-								<div className='mt-3'>
-									<Link className='font-semibold underline' to='/auth/forgot-password'>
-										¿Olvidaste tu contraseña?
-									</Link>
+								<div className='mb-2 mt-4'>
+									<InputFormik
+										text='Email'
+										name='email'
+										type='email'
+										placeholder='Ingrese su correo electronico'
+										classNameInput={`text-sm appearance-none rounded w-full py-2 px-3 text-gray-700 bg-gray-200 leading-tight focus:outline-none focus:shadow-outline h-10`}
+										classNameText={`block text-gray-700 text-sm font-semibold mb-2`}
+									/>
 								</div>
-
-								<button
-									disabled={isSubmitting}
-									type='submit'
-									className='bg-blue-700 text-white font-semibold py-2 px-2 rounded-lg w-full mt-5 hover:bg-blue-600 disabled:bg-blue-400 transition-colors duration-300'
+								<div className='mb-2 mt-4'>
+									<InputFormik
+										text='Password'
+										name='password'
+										type='password'
+										placeholder='Ingrese su contraseña'
+										classNameInput={`text-sm appearance-none rounded w-full py-2 px-3 text-gray-700 bg-gray-200 leading-tight focus:outline-none focus:shadow-outline h-10`}
+										classNameText={`block text-gray-700 text-sm font-semibold mb-2`}
+									/>
+								</div>
+								<Link
+									className='text-sm text-gray-600 hover:text-gray-800 mt-2 underline'
+									to='/auth/forgot-password'
+									title='Olvidaste tu contraseña?'
 								>
-									Iniciar sesion
-								</button>
+									Olvidaste tu contraseña?
+								</Link>
+								<div className='flex w-full mt-4'>
+									<button
+										disabled={isSubmitting}
+										className='w-full bg-gray-800 hover:bg-grey-900 text-white text-sm py-2 px-4 font-semibold rounded focus:outline-none focus:shadow-outline h-10 disabled:opacity-50'
+										type='submit'
+									>
+										Iniciar sesion
+									</button>
+								</div>
 							</form>
 						)}
 					</Formik>
 
-					<div className='flex flex-col gap-3 justify-center items-center'>
-						<span className='font-semibold mt-4 text-step--1  capitalize'>
-							Otros metodos de autenticacion
-						</span>
-
+					<div className='flex flex-col gap-3 justify-center items-center '>
+						<span className='w-full mt-4 border-t border-b-gray-500'></span>
 						<GoogleLogin
 							clientId={import.meta.env.VITE_APP_GOOGLE_CLIENT_ID}
-							buttonText='Google'
+							buttonText='Iniciar sesion con Google'
 							onSuccess={handleLoginSuccess}
 							onFailure={handleLoginFailure}
 							onRequest={handleRequest}
@@ -138,34 +155,30 @@ const Login = () => {
 							className={`btn btn-google`}
 							disabled={loadingGoogle}
 						/>
-
 						<FacebookLogin
 							appId={import.meta.env.VITE_APP_FACEBOOK_CLIENT_ID}
 							callback={handleLoginFacebook}
 							autoLoad={false}
 							fields='name,email,picture'
-							textButton='Facebook'
+							textButton='Iniciar sesion con Facebook'
 							cssClass='btn btn-facebook'
 							containerStyle={{ width: '100%' }}
 							onFailure={handleLoginFailureFacebook}
 							tag='button'
 						/>
-
-						{/* //TODO falta hacer el login con twitter */}
-						{/* <TwitterLogin
-						authCallback={handleLoginTwitter}
-						consumerKey={import.meta.env.VITE_APP_TWITER_CLIENT_ID}
-						consumerSecret={import.meta.env.VITE_APP_TWITER_SECRET}
-						children={<span>Twitter</span>}
-						className='btn btn-twiter'
-					/> */}
-						<Link className='underline font-semibold' to='/auth/register'>
-							¿No tienes una cuenta?
-						</Link>
 					</div>
 				</div>
 			</div>
 		</div>
+
+		// 				{/* //TODO falta hacer el login con twitter */}
+		// 				{/* <TwitterLogin
+		// 				authCallback={handleLoginTwitter}
+		// 				consumerKey={import.meta.env.VITE_APP_TWITER_CLIENT_ID}
+		// 				consumerSecret={import.meta.env.VITE_APP_TWITER_SECRET}
+		// 				children={<span>Twitter</span>}
+		// 				className='btn btn-twiter'
+		// 			/> */}
 	);
 };
 

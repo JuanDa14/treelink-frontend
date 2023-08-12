@@ -3,13 +3,11 @@ import { Layout } from '../layouts';
 
 export const HomePage = () => {
 	return (
-		<>
-			<Layout>
-				<LinkList />
-				<ModalForm />
-				<ModalAlerta />
-			</Layout>
-		</>
+		<Layout classNameMain={'bg-gray-100'}>
+			<LinkList />
+			<ModalForm />
+			<ModalAlerta />
+		</Layout>
 	);
 };
 

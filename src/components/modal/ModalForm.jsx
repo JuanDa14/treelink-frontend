@@ -77,7 +77,7 @@ export const ModalForm = () => {
 								<button
 									onClick={() => dispatch(closeModal())}
 									type='button'
-									className='bg-white rounded-md text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2'
+									className='bg-white rounded-md text-gray-400 hover:text-gray-500 outline-none'
 								>
 									<span className='sr-only'>Cerrar</span>
 									<svg
@@ -95,9 +95,11 @@ export const ModalForm = () => {
 								</button>
 							</div>
 
-							<Dialog.Title className='capitalize text-gray-500 font-semibold text-step-0 mb-5'>
-								Editar hoja de contacto
+							<Dialog.Title className=' text-gray-900 font-medium text-step-0'>
+								Editar hoja
 							</Dialog.Title>
+
+							<hr className='my-1' />
 
 							<Formik
 								initialValues={initialValues}
@@ -113,14 +115,19 @@ export const ModalForm = () => {
 											text='Nombre de su hoja de contacto'
 											name='name'
 											type='text'
-											placeholder='Ejemplo: Instagram'
+											placeholder='Ingrese el nombre de su hoja de contacto'
+											classNameContainer={`mt-4`}
+											classNameInput={`text-sm appearance-none rounded w-full py-2 px-3 text-gray-700 border-2 leading-tight focus:outline-none focus:shadow-outline h-10`}
+											classNameText={`block text-gray-700 text-sm font-semibold mb-2`}
 										/>
 
 										<InputFormik
-											text='Url de su hoja de contacto'
+											text='URL de su hoja de contacto'
 											name='url'
 											type='url'
-											placeholder='Ejemplo: https://www.instagram.com'
+											placeholder='Ingrese la url de su hoja de contacto'
+											classNameInput={`text-sm appearance-none rounded w-full py-2 px-3 text-gray-700 border-2 leading-tight focus:outline-none focus:shadow-outline h-10`}
+											classNameText={`block text-gray-700 text-sm font-semibold mb-2`}
 										/>
 
 										<InputFileFormik
@@ -129,12 +136,16 @@ export const ModalForm = () => {
 											name='file'
 											setFieldValue={setFieldValue}
 											textButton='Subir imagen'
+											classNameText={`block text-gray-700 text-sm font-semibold mb-2`}
+											classNameButton={
+												'text-white text-sm bg-black focus:outline-none font-semibold rounded'
+											}
 										/>
 
 										<button
 											disabled={isSubmitting}
 											type='submit'
-											className='mt-3 block text-white bg-blue-600 hover:bg-blue-700  focus:outline-none font-semibold rounded-lg w-full px-2 py-2 text-center disabled:bg-blue-500 transition-colors duration-300'
+											className='mt-3 block text-white bg-blue-500 hover:bg-blue-600  focus:outline-none font-semibold rounded-lg w-full px-2 py-2 text-center disabled:opacity-50 transition-colors duration-300'
 										>
 											{isSubmitting ? 'Guardando...' : 'Guardar'}
 										</button>

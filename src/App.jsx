@@ -18,7 +18,7 @@ export const App = () => {
 			</Suspense>
 			<ToastContainer
 				autoClose={3000}
-				position='top-center'
+				position='bottom-right'
 				draggable
 				pauseOnFocusLoss={false}
 			/>

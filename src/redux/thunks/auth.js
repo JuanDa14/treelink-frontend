@@ -178,7 +178,7 @@ export const verifiedEmail = (token) => {
 };
 
 export const forgotPassword = (email) => {
-	return async () => {
+	return async (dispatch) => {
 		dispatch(startChecking());
 		try {
 			const { data } = await userApi.post('/forgot-password', email);
@@ -187,7 +187,6 @@ export const forgotPassword = (email) => {
 				return toast.success(data.message);
 			}
 		} catch (error) {
-			console.log(error.response);
 			const { data } = error.response;
 			const message = data.message || data.errors[0].message;
 			toast.error(message);
@@ -198,7 +197,7 @@ export const forgotPassword = (email) => {
 };
 
 export const resetPassword = (token, body) => {
-	return async () => {
+	return async (dispatch) => {
 		dispatch(startChecking());
 		try {
 			const { data } = await userApi.post(`/reset-password/${token}`, body);

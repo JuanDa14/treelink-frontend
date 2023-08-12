@@ -4,17 +4,18 @@
 
 .btn {
 	border: none !important;
-	padding: 10px 0 !important;
+	padding: 0.5rem 1rem !important;
 	width: 100% !important;
 	font-weight: bolder;
 	display: block !important;
-	border-radius: 5px !important;
-	text-transform: uppercase !important;
+	border-radius: 0.25rem !important;
 	cursor: pointer;
 }
 
 .btn-google {
 	background-color: #ed2f16 !important;
+	font-size: 0.875rem /* 14px */ !important;
+	line-height: 1.25rem /* 20px */ !important;
 }
 
 .btn-google:hover {
@@ -24,13 +25,14 @@
 .btn-google span {
 	color: white !important;
 	font-weight: bolder !important;
-	font-size: 1rem !important;
 }
 
 .btn-facebook {
 	background-color: #1f50ba;
 	color: white;
 	border: solid 1px #ccc;
+	font-size: 0.875rem /* 14px */ !important;
+	line-height: 1.25rem /* 20px */ !important;
 }
 
 .btn-facebook:hover {
@@ -50,7 +52,6 @@
 div .btn.btn-twiter {
 	background-color: rgb(0, 172, 237);
 	border: 0;
-	text-transform: uppercase;
 	font-weight: bolder;
 	font-size: 1rem;
 	border: none;
@@ -58,7 +59,6 @@ div .btn.btn-twiter {
 	width: 100%;
 	display: block;
 	border-radius: 5px;
-	text-transform: uppercase;
 	cursor: pointer;
 	text-align: center;
 	color: white;

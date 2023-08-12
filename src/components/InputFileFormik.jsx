@@ -1,13 +1,21 @@
 import { useRef } from 'react';
 import { ErrorMessage } from 'formik';
 
-export const InputFileFormik = ({ name, label, textButton, setFieldValue, disable }) => {
+export const InputFileFormik = ({
+	name,
+	label,
+	textButton,
+	setFieldValue,
+	disable,
+	classNameText,
+	classNameButton,
+}) => {
 	const imageRef = useRef(null);
 
 	return (
 		<div>
 			<div className='flex items-start flex-col justify-center'>
-				<label className='block mb-2 font-semibold mt-1' htmlFor='image'>
+				<label className={`${classNameText}`} htmlFor='image'>
 					{label}
 				</label>
 				<input
@@ -35,19 +43,19 @@ export const InputFileFormik = ({ name, label, textButton, setFieldValue, disabl
 									d='M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z'
 								/>
 							</svg>
-							<span className='capitalize flex-nowrap text-ellipsis overflow-hidden'>
+							<span className='capitalize text-sm flex-nowrap text-ellipsis overflow-hidden'>
 								{imageRef.current.files[0].name}
 							</span>
 						</p>
 					) : (
-						<p className='flex-1 flex items-center gap-2'>
+						<p className='flex items-center gap-2'>
 							<svg
 								xmlns='http://www.w3.org/2000/svg'
 								fill='none'
 								viewBox='0 0 24 24'
 								strokeWidth={1.5}
 								stroke='currentColor'
-								className='w-6 h-6'
+								className='w-5 h-5'
 							>
 								<path
 									strokeLinecap='round'
@@ -55,14 +63,14 @@ export const InputFileFormik = ({ name, label, textButton, setFieldValue, disabl
 									d='M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z'
 								/>
 							</svg>
-							<span className='capitalize'>unloaded image</span>
+							<span className='capitalize text-sm'>Sin archivo seleccionado</span>
 						</p>
 					)}
 
 					<button
 						disabled={disable}
 						type='button'
-						className='flex-1 flex items-center justify-center w-full px-4 py-1.5 font-medium text-white bg-slate-800 border border-transparent rounded-md hover:bg-slate-900 disabled:bg-slate-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 gap-3'
+						className={`flex gap-2 border p-2 ${classNameButton}`}
 						onClick={() => imageRef.current.click()}
 					>
 						<svg

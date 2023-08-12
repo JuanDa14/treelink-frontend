@@ -16,14 +16,23 @@ const ForgotPassword = () => {
 	};
 
 	return (
-		<div className='w-full h-screen flex items-center mx-auto'>
-			<div className='w-full px-5'>
-				<div className='max-w-4xl mx-auto text-center shadow-lg rounded-lg p-10 bg-white text-step--1'>
-					<h1 className='font-bold text-step-3 mb-3'>Recupera tu contraseña</h1>
-					<span className='text-step-0 text-gray-500'>
-						Ingresa tu correo electronico y te enviaremos un link para recuperar tu contraseña
-					</span>
-
+		<div className='h-screen w-full flex items-center'>
+			<div className='container max-w-md mx-auto xl:max-w-4xl flex flex-row-reverse bg-white rounded-lg shadow overflow-hidden'>
+				<div className='relative hidden xl:block xl:w-1/2 h-full'>
+					<img
+						className='absolute h-auto w-full object-cover'
+						src='https://images.unsplash.com/photo-1541233349642-6e425fe6190e'
+						alt='my zomato'
+					/>
+				</div>
+				<div className='w-full xl:w-1/2 p-8'>
+					<h1 className=' text-2xl font-bold'>Recuperar Cuenta</h1>
+					<div className='flex items-center gap-2'>
+						<span className='text-gray-600 text-sm'>
+							Solo ingresa tu correo electrónico, te enviaremos un enlace para recuperar tu
+							cuenta.
+						</span>
+					</div>
 					<Formik
 						initialValues={INITIAL_VALUES}
 						onSubmit={async (values, { setSubmitting }) => {
@@ -34,16 +43,19 @@ const ForgotPassword = () => {
 					>
 						{({ handleSubmit, isSubmitting }) => (
 							<form className='mt-5' onSubmit={handleSubmit} noValidate>
-								<InputFormik
-									type='email'
-									placeholder='Ingrese su correo electronico'
-									name='email'
-								/>
-
+								<div className='mb-4'>
+									<InputFormik
+										type='email'
+										placeholder='Ingrese su correo electrónico'
+										name='email'
+										classNameInput={`text-sm appearance-none rounded w-full py-2 px-3 text-gray-700 bg-gray-200 leading-tight focus:outline-none focus:shadow-outline h-10`}
+										classNameText={`block text-gray-700 text-sm font-semibold mb-2`}
+									/>
+								</div>
 								<button
 									disabled={isSubmitting}
 									type='submit'
-									className='w-full bg-blue-700 rounded-lg py-2 text-white font-semibold hover:bg-blue-600 disabled:bg-blue-400 transition-colors duration-300'
+									className='w-full bg-gray-800 hover:bg-grey-900 text-white text-sm py-2 px-4 font-semibold rounded focus:outline-none focus:shadow-outline h-10 disabled:opacity-50'
 								>
 									{isSubmitting ? 'Enviando...' : 'Enviar'}
 								</button>

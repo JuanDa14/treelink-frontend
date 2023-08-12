@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 
 import { LinkList } from '../components';
 import { Layout } from '../layouts';
@@ -13,13 +14,14 @@ const PreviewPage = () => {
 		const domain = import.meta.env.VITE_APP_LOCAL_URL;
 		const link = `${domain}/user/${username}`;
 		navigator.clipboard.writeText(link);
+		toast.success('Link copiado al portapapeles');
 		setClipboard(true);
 	};
 
 	useEffect(() => {
 		const timer = setTimeout(() => {
 			setClipboard(false);
-		}, 3000);
+		}, 1000);
 
 		return () => {
 			clearTimeout(timer);
@@ -28,14 +30,10 @@ const PreviewPage = () => {
 
 	return (
 		<Layout>
-			<div className='mt-5 text-step--1'>
+			<div className='mt-5 text-step--1 max-w-4xl mx-auto'>
 				<div className='flex flex-col justify-between items-center gap-2'>
-					<h1 className='capitalize text-gray-500 font-bold text-step-1 text-center'>
-						previsualización de <span className='text-blue-500'>mi arbol</span> de contactos
-					</h1>
-
 					<button
-						className='bg-gray-700 flex items-center gap-1 text-white hover:bg-gray-800 rounded-lg py-2 px-3 font-semibold transition-colors duration-300'
+						className='bg-gray-700 text-step--1 flex items-center gap-1 text-white hover:bg-gray-800 rounded py-2 px-3 font-medium transition-colors duration-300 ease-in-out'
 						onClick={handleCopyLink}
 					>
 						{clipboard ? (
@@ -69,7 +67,7 @@ const PreviewPage = () => {
 								/>
 							</svg>
 						)}
-						Obtener link
+						Copiar link
 					</button>
 				</div>
 
@@ -79,9 +77,7 @@ const PreviewPage = () => {
 						src={imageURL}
 						alt={username}
 					/>
-					<span className='mt-3 capitalize font-bold text-gray-500 text-step-1'>
-						{username}
-					</span>
+					<span className='mt-3 font-medium text-gray-700 text-step-1'>{username}</span>
 				</div>
 
 				<div className='mt-5'>
