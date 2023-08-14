@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux';
 import { InputFormik } from '../components';
 import { forgotPassword } from '../redux';
 import { forgotPasswordSchema } from '../schemas';
+import ImageBackground from '../public/images/background.webp';
 
 const INITIAL_VALUES = {
 	email: '',
@@ -21,8 +22,8 @@ const ForgotPassword = () => {
 				<div className='relative hidden xl:block xl:w-1/2 h-full'>
 					<img
 						className='absolute h-auto w-full object-cover'
-						src='https://images.unsplash.com/photo-1541233349642-6e425fe6190e'
-						alt='my zomato'
+						src={ImageBackground}
+						alt='imagen forgot password'
 					/>
 				</div>
 				<div className='w-full xl:w-1/2 p-8'>

@@ -11,6 +11,7 @@ import FacebookLogin from 'react-facebook-login';
 import { loginSchema } from '../schemas';
 import { InputFormik, Spinner } from '../components';
 import { login, loginWithFacebook, loginWithGoogle } from '../redux/thunks/auth';
+import ImageBackground from '../public/images/background.webp';
 
 const INITIAL_VALUES = {
 	email: '',
@@ -79,15 +80,18 @@ const Login = () => {
 				<div className='relative hidden xl:block xl:w-1/2 h-full'>
 					<img
 						className='absolute h-auto w-full object-cover'
-						src='https://images.unsplash.com/photo-1541233349642-6e425fe6190e'
-						alt='my zomato'
+						src={ImageBackground}
+						alt='imagen login'
 					/>
 				</div>
 				<div className='w-full xl:w-1/2 p-8'>
-					<h1 className=' text-2xl font-bold'>Bienvenido</h1>
+					<h2 className=' text-2xl font-bold'>Bienvenido</h2>
 					<div className='flex items-center gap-2'>
 						<span className='text-gray-600 text-sm'>¿No tienes una cuenta?</span>
-						<Link className='text-gray-700 text-sm font-semibold underline' to='/auth/register'>
+						<Link
+							className='text-gray-700 text-sm font-semibold underline'
+							to='/auth/register'
+						>
 							Registrate
 						</Link>
 					</div>

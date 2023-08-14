@@ -26,7 +26,7 @@ export const ModalForm = () => {
 			setInitialValues({
 				name: link.name,
 				url: link.url,
-				file: null,
+				file: link.imageURL,
 			});
 		}
 	}, [link]);
@@ -131,6 +131,7 @@ export const ModalForm = () => {
 										/>
 
 										<InputFileFormik
+											value={initialValues.file}
 											disable={isSubmitting}
 											label='Imagen de su hoja de contacto'
 											name='file'

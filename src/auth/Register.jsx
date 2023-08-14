@@ -5,6 +5,7 @@ import { Formik } from 'formik';
 import { register } from '../redux';
 import { CheckboxFormik, InputFormik, Spinner } from '../components';
 import { registerSchema } from '../schemas';
+import ImageBackground from '../public/images/background.webp';
 
 const INITIAL_VALUES = {
 	username: '',
@@ -37,8 +38,8 @@ const Register = () => {
 				<div className='relative hidden xl:block xl:w-1/2 h-full'>
 					<img
 						className='absolute h-auto w-full object-cover object-center bg-no-repeat bg-cover bg-center'
-						src='https://images.unsplash.com/photo-1541233349642-6e425fe6190e'
-						alt='my zomato'
+						src={ImageBackground}
+						alt='imagen registro'
 					/>
 				</div>
 				<div className='w-full xl:w-1/2 p-8'>

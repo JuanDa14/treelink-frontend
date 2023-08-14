@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux';
 import { Link, useLocation } from 'react-router-dom';
 import { verifiedEmail } from '../redux';
 import { Spinner } from '../components';
+import ImageBackground from '../public/images/background.webp';
 
 const Verified = () => {
 	const dispatch = useDispatch();
@@ -26,8 +27,8 @@ const Verified = () => {
 				<div className='relative hidden xl:block xl:w-1/2 h-full'>
 					<img
 						className='absolute h-auto w-full object-cover'
-						src='https://images.unsplash.com/photo-1541233349642-6e425fe6190e'
-						alt='my zomato'
+						src={ImageBackground}
+						alt='imagen verified'
 					/>
 				</div>
 				<div className='w-full xl:w-1/2 p-8'>
