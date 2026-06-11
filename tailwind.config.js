@@ -1,8 +1,21 @@
+import tailwindcssAnimate from 'tailwindcss-animate';
+
 /** @type {import('tailwindcss').Config} */
-module.exports = {
-	content: ['./src/**/*.jsx', './*.html'],
+export default {
+	darkMode: ['class'],
+	content: ['./index.html', './src/**/*.{js,jsx}'],
 	theme: {
+		container: {
+			center: true,
+			padding: '1.5rem',
+			screens: {
+				'2xl': '1280px',
+			},
+		},
 		extend: {
+			fontFamily: {
+				sans: ['Inter', 'system-ui', 'sans-serif'],
+			},
 			fontSize: {
 				'step--2': 'clamp(0.7rem, calc(0.87rem + -0.14vw), 0.84rem)',
 				'step--1': 'clamp(0.94rem, calc(0.95rem + -0.01vw), 0.94rem)',
@@ -11,16 +24,61 @@ module.exports = {
 				'step-2': 'clamp(1.35rem, calc(1.17rem + 0.88vw), 2.22rem)',
 				'step-3': 'clamp(1.51rem, calc(1.22rem + 1.45vw), 2.96rem)',
 				'step-4': 'clamp(1.7rem, calc(1.25rem + 2.25vw), 3.95rem)',
-				'step-5': 'clamp(1.91rem, calc(1.25rem + 3.35vw), 5.26rem)',
-				'step-6': 'clamp(2.15rem, calc(1.18rem + 4.86vw), 7.01rem)',
+			},
+			colors: {
+				border: 'hsl(var(--border))',
+				input: 'hsl(var(--input))',
+				ring: 'hsl(var(--ring))',
+				background: 'hsl(var(--background))',
+				foreground: 'hsl(var(--foreground))',
+				primary: {
+					DEFAULT: 'hsl(var(--primary))',
+					foreground: 'hsl(var(--primary-foreground))',
+				},
+				secondary: {
+					DEFAULT: 'hsl(var(--secondary))',
+					foreground: 'hsl(var(--secondary-foreground))',
+				},
+				destructive: {
+					DEFAULT: 'hsl(var(--destructive))',
+					foreground: 'hsl(var(--destructive-foreground))',
+				},
+				muted: {
+					DEFAULT: 'hsl(var(--muted))',
+					foreground: 'hsl(var(--muted-foreground))',
+				},
+				accent: {
+					DEFAULT: 'hsl(var(--accent))',
+					foreground: 'hsl(var(--accent-foreground))',
+				},
+				popover: {
+					DEFAULT: 'hsl(var(--popover))',
+					foreground: 'hsl(var(--popover-foreground))',
+				},
+				card: {
+					DEFAULT: 'hsl(var(--card))',
+					foreground: 'hsl(var(--card-foreground))',
+				},
+			},
+			borderRadius: {
+				lg: 'var(--radius)',
+				md: 'calc(var(--radius) - 2px)',
+				sm: 'calc(var(--radius) - 4px)',
+			},
+			keyframes: {
+				'fade-in': {
+					from: { opacity: '0', transform: 'translateY(8px)' },
+					to: { opacity: '1', transform: 'translateY(0)' },
+				},
+			},
+			animation: {
+				'fade-in': 'fade-in 0.4s ease-out forwards',
 			},
 			gridTemplateColumns: {
 				'fit-200': 'repeat(auto-fit, minmax(200px, 1fr))',
 				'fit-250': 'repeat(auto-fit, minmax(250px, 1fr))',
-				'fit-500': 'repeat(auto-fit, minmax(500px, 1fr))',
 			},
 		},
 	},
-	plugins: [],
-	important: true,
+	plugins: [tailwindcssAnimate],
 };
