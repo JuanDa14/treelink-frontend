@@ -14,6 +14,7 @@ import {
 	startReordering,
 	updateLink,
 } from '../slices/linkSlice';
+import { loginUser } from '../slices/authSlice';
 
 const authHeaders = () => ({
 	Authorization: `Bearer ${getCookie('accessToken')}`,
@@ -141,6 +142,39 @@ export const reorderUserLinks = (linkIds) => {
 			toast.error(message);
 		} finally {
 			dispatch(finishReordering());
+		}
+	};
+};
+
+export const seedDefaultUserData = () => {
+	return async (dispatch, getState) => {
+		dispatch(startLoading());
+
+		try {
+			const { data } = await linkApi.post('/seed-defaults', {}, { headers: authHeaders() });
+
+			if (data.ok) {
+				dispatch(getLinks(data.links));
+
+				if (data.user?.bio) {
+					const currentUser = getState().auth.user;
+					dispatch(loginUser({ ...currentUser, bio: data.user.bio }));
+				}
+
+				toast.success(data.message || 'Enlaces de ejemplo listos. ¡Personalízalos!');
+				return { ok: true };
+			}
+
+			return { ok: false };
+		} catch (error) {
+			const message =
+				error.response?.data?.message ||
+				error.response?.data?.errors?.[0]?.message ||
+				'No se pudieron crear los datos de ejemplo';
+			toast.error(message);
+			return { ok: false };
+		} finally {
+			dispatch(finishLoading());
 		}
 	};
 };

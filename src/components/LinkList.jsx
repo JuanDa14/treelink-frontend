@@ -16,7 +16,7 @@ import {
 	verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
 
-import { reorderUserLinks } from '../redux';
+import { reorderUserLinks, seedDefaultUserData } from '../redux';
 import { DashboardLinkRow } from './DashboardLinkRow';
 import { ItemLink } from './ItemLink';
 import { Spinner } from './Spinner';
@@ -26,6 +26,7 @@ export const LinkList = ({ sortable = false, publicView = false }) => {
 	const dispatch = useDispatch();
 	const { links, loading, reordering } = useSelector((state) => state.link);
 	const [activeId, setActiveId] = useState(null);
+	const [seeding, setSeeding] = useState(false);
 
 	const visibleLinks = useMemo(() => {
 		if (publicView) {
@@ -65,8 +66,21 @@ export const LinkList = ({ sortable = false, publicView = false }) => {
 		return <Spinner className='min-h-[30vh]' label='Cargando enlaces...' />;
 	}
 
+	const handleSeedDefaults = async () => {
+		setSeeding(true);
+		await dispatch(seedDefaultUserData());
+		setSeeding(false);
+	};
+
 	if (visibleLinks.length === 0) {
-		return <EmptyState />;
+		return (
+			<EmptyState
+				description='Empieza desde cero o carga enlaces de ejemplo (Instagram, YouTube, web y contacto) para ver cómo queda tu página.'
+				secondaryLabel='Usar datos de ejemplo'
+				onSecondaryAction={handleSeedDefaults}
+				secondaryLoading={seeding || loading}
+			/>
+		);
 	}
 
 	if (!sortable) {

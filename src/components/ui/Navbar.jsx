@@ -55,24 +55,9 @@ export const Navbar = () => {
 							{label}
 						</NavLink>
 					))}
-					<a
-						href={publicUrl}
-						target='_blank'
-						rel='noopener noreferrer'
-						className='flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-medium text-muted-foreground transition-all hover:text-foreground'
-					>
-						<ExternalLink className='h-4 w-4' />
-						Mi página
-					</a>
 				</div>
 
 				<div className='flex items-center gap-2'>
-					<Button asChild size='sm' variant='outline' className='hidden lg:inline-flex'>
-						<a href={publicUrl} target='_blank' rel='noopener noreferrer'>
-							<ExternalLink className='h-4 w-4' />
-							Mi página
-						</a>
-					</Button>
 					<Button asChild size='sm' className='hidden sm:inline-flex'>
 						<Link to='/new-link'>
 							<Plus className='h-4 w-4' />
@@ -141,16 +126,6 @@ export const Navbar = () => {
 							{label}
 						</NavLink>
 					))}
-					<a
-						href={publicUrl}
-						target='_blank'
-						rel='noopener noreferrer'
-						onClick={() => dispatch(changeStateMenuMobile())}
-						className='flex items-center gap-2 rounded-2xl px-4 py-3 text-sm font-medium text-primary'
-					>
-						<ExternalLink className='h-4 w-4' />
-						Abrir mi página
-					</a>
 					<NavLink
 						to='/new-link'
 						onClick={() => dispatch(changeStateMenuMobile())}
