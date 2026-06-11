@@ -1,9 +1,9 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { GripVertical, Plus, Star } from 'lucide-react';
+import { GripVertical, Plus } from 'lucide-react';
 import { useSelector } from 'react-redux';
 
-import { LinkList, ModalAlerta, ModalForm } from '../components';
+import { FeaturedBadge, LinkList, ModalAlerta, ModalForm } from '../components';
 import { Layout } from '../layouts';
 import { Button } from '@/components/ui/button';
 
@@ -37,12 +37,7 @@ export const HomePage = () => {
 						animate={{ opacity: 1 }}
 						className='flex flex-wrap gap-2 mb-6'
 					>
-						{featuredCount > 0 && (
-							<span className='badge-primary'>
-								<Star className='h-3 w-3 fill-primary' />
-								{featuredCount} destacado{featuredCount > 1 ? 's' : ''}
-							</span>
-						)}
+						<FeaturedBadge count={featuredCount} />
 						{hiddenCount > 0 && (
 							<span className='badge-muted'>
 								{hiddenCount} oculto{hiddenCount > 1 ? 's' : ''}

@@ -2,9 +2,9 @@ import { useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import { Star } from 'lucide-react';
 import { motion } from 'framer-motion';
 
+import { FeaturedStar } from './FeaturedStar';
 import { toggleLinkField } from '../redux';
 import { getLinkById } from '../redux/slices/linkSlice';
 import { openAlert, openModal } from '../redux/slices/uiSlice';
@@ -92,7 +92,7 @@ export const ItemLink = ({
 			<span className='link-pill-public-text flex flex-col items-center min-w-0 text-center'>
 				<span className='flex items-center gap-1.5 font-semibold capitalize truncate w-full justify-center'>
 					{name}
-					{featured === true && <Star className='h-3.5 w-3.5 fill-primary text-primary shrink-0' />}
+					{featured === true && <FeaturedStar />}
 				</span>
 				{description && (
 					<span className='text-xs text-muted-foreground font-normal truncate w-full'>{description}</span>

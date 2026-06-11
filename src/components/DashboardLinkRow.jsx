@@ -1,5 +1,6 @@
 import { ExternalLink, GripVertical, Pencil, Star, Trash2, Eye, EyeOff } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { FeaturedStar } from './FeaturedStar';
 import { LinkThumbnail } from './LinkThumbnail';
 import { cn } from '@/lib/utils';
 
@@ -49,7 +50,7 @@ export const DashboardLinkRow = ({
 			<div className='min-w-0 flex-1'>
 				<div className='flex items-center gap-1.5'>
 					<p className='font-semibold capitalize truncate'>{name}</p>
-					{isFeatured && <Star className='h-3.5 w-3.5 fill-primary text-primary shrink-0' />}
+					{isFeatured && <FeaturedStar />}
 					{isHidden && <span className='badge-muted shrink-0'>Oculto</span>}
 				</div>
 				{description ? (

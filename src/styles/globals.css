@@ -156,11 +156,30 @@
 	}
 
 	.link-pill-featured {
+		position: relative;
+		overflow: hidden;
+		isolation: isolate;
 		min-height: 4rem;
 		border-color: color-mix(in oklch, var(--primary) 55%, var(--border));
 		background: color-mix(in oklch, var(--primary) 8%, var(--card));
 		box-shadow: 0 10px 28px color-mix(in oklch, var(--primary) 18%, transparent);
 		font-size: 1rem;
+		animation: featured-glow-pulse 3.2s ease-in-out infinite;
+	}
+
+	.link-pill-featured::after {
+		content: '';
+		position: absolute;
+		inset: 0;
+		background: linear-gradient(
+			105deg,
+			transparent 35%,
+			color-mix(in oklch, var(--primary) 28%, transparent) 50%,
+			transparent 65%
+		);
+		transform: translateX(-120%);
+		animation: featured-shine-sweep 3.6s ease-in-out infinite;
+		pointer-events: none;
 	}
 
 	.link-pill-public {
@@ -240,8 +259,92 @@
 	}
 
 	.link-pill-dashboard-featured {
+		position: relative;
+		overflow: hidden;
+		isolation: isolate;
 		border-color: color-mix(in oklch, var(--primary) 45%, var(--border));
 		background: color-mix(in oklch, var(--primary) 6%, var(--card));
+		animation: featured-glow-pulse 3.2s ease-in-out infinite;
+	}
+
+	.link-pill-dashboard-featured::after {
+		content: '';
+		position: absolute;
+		inset: 0;
+		border-radius: inherit;
+		background: linear-gradient(
+			105deg,
+			transparent 35%,
+			color-mix(in oklch, var(--primary) 22%, transparent) 50%,
+			transparent 65%
+		);
+		transform: translateX(-120%);
+		animation: featured-shine-sweep 3.6s ease-in-out infinite;
+		pointer-events: none;
+	}
+
+	.mobile-sidebar-panel {
+		background: linear-gradient(
+			180deg,
+			color-mix(in oklch, var(--background) 92%, var(--primary) 8%) 0%,
+			var(--background) 42%,
+			var(--background) 100%
+		);
+		border-left: 1px solid color-mix(in oklch, var(--border) 80%, var(--primary) 20%);
+		box-shadow: -24px 0 48px color-mix(in oklch, var(--foreground) 12%, transparent);
+	}
+
+	.mobile-sidebar-glow {
+		position: absolute;
+		top: -20%;
+		right: -30%;
+		width: 220px;
+		height: 220px;
+		border-radius: 50%;
+		background: color-mix(in oklch, var(--primary) 22%, transparent);
+		filter: blur(48px);
+		animation: mobile-sidebar-float 5s ease-in-out infinite;
+	}
+
+	.mobile-sidebar-link {
+		@apply flex w-full items-center gap-3 rounded-2xl px-3 py-3 text-left transition-colors;
+	}
+
+	.mobile-sidebar-link:hover {
+		background: color-mix(in oklch, var(--secondary) 80%, var(--primary) 20%);
+	}
+
+	.mobile-sidebar-link-active {
+		background: color-mix(in oklch, var(--primary) 12%, var(--secondary));
+		border: 1px solid color-mix(in oklch, var(--primary) 30%, var(--border));
+	}
+
+	.mobile-sidebar-link-accent {
+		background: color-mix(in oklch, var(--primary) 14%, var(--card));
+		border: 1px solid color-mix(in oklch, var(--primary) 35%, var(--border));
+	}
+
+	.mobile-sidebar-link-icon {
+		@apply flex h-10 w-10 shrink-0 items-center justify-center rounded-xl;
+		background: color-mix(in oklch, var(--primary) 10%, var(--secondary));
+		color: var(--primary);
+	}
+
+	.featured-badge-shine {
+		background: linear-gradient(
+			90deg,
+			transparent,
+			color-mix(in oklch, var(--primary) 35%, transparent),
+			transparent
+		);
+	}
+
+	.featured-badge-glow {
+		animation: featured-glow-pulse 2.8s ease-in-out infinite;
+	}
+
+	.featured-star {
+		filter: drop-shadow(0 0 6px color-mix(in oklch, var(--primary) 45%, transparent));
 	}
 
 	.link-pill-dashboard-hidden {
@@ -379,5 +482,40 @@
 		border-color: color-mix(in oklch, var(--primary) 55%, var(--border));
 		background: color-mix(in oklch, var(--primary) 10%, var(--card));
 		color: var(--primary);
+	}
+
+	@keyframes featured-glow-pulse {
+		0%,
+		100% {
+			box-shadow: 0 8px 24px color-mix(in oklch, var(--primary) 14%, transparent);
+		}
+		50% {
+			box-shadow:
+				0 10px 32px color-mix(in oklch, var(--primary) 28%, transparent),
+				0 0 0 1px color-mix(in oklch, var(--primary) 20%, transparent);
+		}
+	}
+
+	@keyframes featured-shine-sweep {
+		0%,
+		18% {
+			transform: translateX(-120%);
+		}
+		55%,
+		100% {
+			transform: translateX(120%);
+		}
+	}
+
+	@keyframes mobile-sidebar-float {
+		0%,
+		100% {
+			transform: translate(0, 0) scale(1);
+			opacity: 0.55;
+		}
+		50% {
+			transform: translate(-12px, 10px) scale(1.08);
+			opacity: 0.85;
+		}
 	}
 }

@@ -1,4 +1,5 @@
 export * from './Navbar';
+export * from './MobileSidebar';
 export * from './Footer';
 export * from './button';
 export * from './input';

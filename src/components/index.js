@@ -5,6 +5,8 @@ export * from './AuthSocialSection';
 export * from './ToastContainerThemed';
 export * from './ResendVerificationButton';
 export * from './TreeProfileHeader';
+export * from './FeaturedStar';
+export * from './FeaturedBadge';
 export * from './EmptyState';
 export * from './InputFileFormik';
 export * from './InputFormik';

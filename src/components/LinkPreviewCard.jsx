@@ -1,4 +1,4 @@
-import { Star } from 'lucide-react';
+import { FeaturedStar } from './FeaturedStar';
 import { LinkThumbnail } from './LinkThumbnail';
 import { cn } from '@/lib/utils';
 
@@ -25,7 +25,7 @@ export const LinkPreviewCard = ({ name, url, description, imageURL, icon, featur
 					<span className='flex flex-col items-start min-w-0 text-left'>
 						<span className='flex items-center gap-1.5 font-semibold capitalize truncate w-full'>
 							{name || 'Nombre del enlace'}
-							{featured && <Star className='h-3.5 w-3.5 fill-primary text-primary shrink-0' />}
+							{featured && <FeaturedStar />}
 						</span>
 						{description && (
 							<span className='text-xs text-muted-foreground font-normal truncate w-full'>{description}</span>
