@@ -7,6 +7,8 @@ import { closeModal } from '../../redux/slices/uiSlice';
 import { editLinkSchema } from '../../schemas';
 import { InputFileFormik } from '../InputFileFormik';
 import { InputFormik } from '../InputFormik';
+import { SwitchFormik } from '../SwitchFormik';
+import { TextareaFormik } from '../TextareaFormik';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 
@@ -18,6 +20,9 @@ export const ModalForm = () => {
 	const [initialValues, setInitialValues] = useState({
 		name: '',
 		url: '',
+		description: '',
+		featured: false,
+		isActive: true,
 		file: null,
 	});
 
@@ -26,6 +31,9 @@ export const ModalForm = () => {
 			setInitialValues({
 				name: link.name,
 				url: link.url,
+				description: link.description || '',
+				featured: Boolean(link.featured),
+				isActive: link.isActive !== false,
 				file: link.imageURL,
 			});
 		}
@@ -38,9 +46,9 @@ export const ModalForm = () => {
 
 	return (
 		<Dialog open={modal} onOpenChange={(open) => !open && dispatch(closeModal())}>
-			<DialogContent>
+			<DialogContent className='max-h-[90vh] overflow-y-auto'>
 				<DialogHeader>
-					<DialogTitle>Editar hoja</DialogTitle>
+					<DialogTitle>Editar enlace</DialogTitle>
 				</DialogHeader>
 				<Formik
 					initialValues={initialValues}
@@ -54,7 +62,7 @@ export const ModalForm = () => {
 					{({ handleSubmit, setFieldValue, isSubmitting }) => (
 						<form onSubmit={handleSubmit} noValidate className='space-y-4'>
 							<InputFormik
-								text='Nombre de la hoja'
+								text='Nombre'
 								name='name'
 								type='text'
 								placeholder='Instagram, LinkedIn...'
@@ -65,6 +73,11 @@ export const ModalForm = () => {
 								type='url'
 								placeholder='https://instagram.com/username'
 							/>
+							<TextareaFormik
+								text='Descripción (opcional)'
+								name='description'
+								placeholder='Texto breve bajo el nombre del enlace'
+							/>
 							<InputFileFormik
 								value={initialValues.file}
 								disable={isSubmitting}
@@ -73,6 +86,18 @@ export const ModalForm = () => {
 								setFieldValue={setFieldValue}
 								textButton='Cambiar imagen'
 							/>
+							<div className='space-y-3'>
+								<SwitchFormik
+									name='featured'
+									label='Destacar enlace'
+									description='Resalta este enlace en tu página pública.'
+								/>
+								<SwitchFormik
+									name='isActive'
+									label='Visible en página pública'
+									description='Desactívalo para ocultarlo sin borrarlo.'
+								/>
+							</div>
 							<Button disabled={isSubmitting} className='w-full' type='submit'>
 								{isSubmitting ? 'Guardando...' : 'Guardar cambios'}
 							</Button>

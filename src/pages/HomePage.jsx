@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { Plus, Link2 } from 'lucide-react';
+import { GripVertical, Plus, Star } from 'lucide-react';
 import { useSelector } from 'react-redux';
 
 import { LinkList, ModalAlerta, ModalForm } from '../components';
@@ -9,6 +9,8 @@ import { Button } from '@/components/ui/button';
 
 export const HomePage = () => {
 	const { links } = useSelector((state) => state.link);
+	const featuredCount = links.filter((link) => link.featured).length;
+	const hiddenCount = links.filter((link) => link.isActive === false).length;
 
 	return (
 		<Layout>
@@ -25,9 +27,29 @@ export const HomePage = () => {
 						</span>
 					</div>
 					<p className='text-muted-foreground'>
-						Organiza y personaliza los enlaces de tu página pública.
+						Arrastra para reordenar, destaca los importantes y oculta los que no quieras mostrar.
 					</p>
 				</motion.div>
+
+				{links.length > 0 && (
+					<motion.div
+						initial={{ opacity: 0 }}
+						animate={{ opacity: 1 }}
+						className='flex flex-wrap gap-2 mb-6'
+					>
+						{featuredCount > 0 && (
+							<span className='inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary'>
+								<Star className='h-3 w-3 fill-primary' />
+								{featuredCount} destacado{featuredCount > 1 ? 's' : ''}
+							</span>
+						)}
+						{hiddenCount > 0 && (
+							<span className='inline-flex items-center gap-1.5 rounded-full bg-secondary px-3 py-1 text-xs font-medium text-muted-foreground'>
+								{hiddenCount} oculto{hiddenCount > 1 ? 's' : ''}
+							</span>
+						)}
+					</motion.div>
+				)}
 
 				<motion.div
 					initial={{ opacity: 0, y: 8 }}
@@ -44,12 +66,12 @@ export const HomePage = () => {
 
 				{links.length > 0 && (
 					<div className='flex items-center gap-2 text-sm text-muted-foreground mb-4'>
-						<Link2 className='h-4 w-4' />
-						<span>Arrastra mentalmente, edita o elimina cada enlace</span>
+						<GripVertical className='h-4 w-4' />
+						<span>Arrastra el icono para cambiar el orden de tus enlaces</span>
 					</div>
 				)}
 
-				<LinkList />
+				<LinkList sortable />
 			</div>
 			<ModalForm />
 			<ModalAlerta />

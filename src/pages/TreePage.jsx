@@ -33,7 +33,7 @@ const TreePage = () => {
 			</div>
 			<main className='relative z-10 max-w-md mx-auto px-5 py-14 sm:py-20'>
 				<TreeProfileHeader imageURL={imageURL} username={username} />
-				<LinkList />
+				<LinkList publicView />
 				<p className='text-center text-xs text-muted-foreground mt-10'>
 					Creado con <span className='font-semibold text-primary'>TreeLink</span>
 				</p>

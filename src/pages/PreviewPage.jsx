@@ -49,7 +49,7 @@ const PreviewPage = () => {
 						<div className='phone-mockup-notch' />
 						<div className='tree-page-bg min-h-[520px] rounded-b-[2rem] px-5 py-8'>
 							<TreeProfileHeader imageURL={imageURL} username={username} subtitle='Toca un enlace para visitarlo' />
-							<LinkList />
+							<LinkList publicView />
 						</div>
 					</div>
 

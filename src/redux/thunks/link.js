@@ -7,23 +7,33 @@ import {
 	createLink,
 	deleteLink,
 	finishLoading,
+	finishReordering,
 	getLinks,
+	reorderLinks,
 	startLoading,
+	startReordering,
 	updateLink,
 } from '../slices/linkSlice';
+
+const authHeaders = () => ({
+	Authorization: `Bearer ${getCookie('accessToken')}`,
+});
+
+const appendLinkFields = (formData, body) => {
+	formData.append('name', body.name);
+	formData.append('url', body.url);
+	formData.append('description', body.description || '');
+	formData.append('featured', String(Boolean(body.featured)));
+	formData.append('isActive', String(body.isActive !== false));
+	if (body.file) formData.append('file', body.file);
+};
 
 export const getUserLinks = () => {
 	return async (dispatch) => {
 		dispatch(startLoading());
 
 		try {
-			const accessToken = getCookie('accessToken');
-
-			const { data } = await linkApi.get('/', {
-				headers: {
-					Authorization: `Bearer ${accessToken}`,
-				},
-			});
+			const { data } = await linkApi.get('/', { headers: authHeaders() });
 
 			if (data.ok) {
 				dispatch(getLinks(data.links));
@@ -41,24 +51,19 @@ export const getUserLinks = () => {
 export const updatedUserLink = (id, body) => {
 	return async (dispatch) => {
 		try {
-			const accessToken = getCookie('accessToken');
-
 			const formData = new FormData();
-
-			formData.append('name', body.name);
-			formData.append('url', body.url);
-			formData.append('file', body.file);
+			appendLinkFields(formData, body);
 
 			const { data } = await linkApi.put(`/${id}`, formData, {
 				headers: {
-					Authorization: `Bearer ${accessToken}`,
+					...authHeaders(),
 					'Content-Type': 'multipart/form-data',
 				},
 			});
 
 			if (data.ok) {
 				dispatch(updateLink(data.link));
-				toast.success('Hoja de arbol actualizada correctamente');
+				toast.success('Enlace actualizado correctamente');
 			}
 		} catch (error) {
 			const { data } = error.response;
@@ -71,24 +76,19 @@ export const updatedUserLink = (id, body) => {
 export const createUserLink = (body) => {
 	return async (dispatch) => {
 		try {
-			const accessToken = getCookie('accessToken');
-
 			const formData = new FormData();
-
-			formData.append('name', body.name);
-			formData.append('url', body.url);
-			formData.append('file', body.file);
+			appendLinkFields(formData, body);
 
 			const { data } = await linkApi.post('/', formData, {
 				headers: {
-					Authorization: `Bearer ${accessToken}`,
+					...authHeaders(),
 					'Content-Type': 'multipart/form-data',
 				},
 			});
 
 			if (data.ok) {
 				dispatch(createLink(data.link));
-				toast.success('Hoja de arbol creada correctamente');
+				toast.success('Enlace creado correctamente');
 			}
 		} catch (error) {
 			const { data } = error.response;
@@ -101,22 +101,63 @@ export const createUserLink = (body) => {
 export const deletedUserLink = (id) => {
 	return async (dispatch) => {
 		try {
-			const accessToken = getCookie('accessToken');
-
-			const { data } = await linkApi.delete(`/${id}`, {
-				headers: {
-					Authorization: `Bearer ${accessToken}`,
-				},
-			});
+			const { data } = await linkApi.delete(`/${id}`, { headers: authHeaders() });
 
 			if (data.ok) {
 				dispatch(deleteLink(id));
-				toast.success('Hoja de arbol eliminada correctamente');
+				toast.success('Enlace eliminado correctamente');
 			}
 		} catch (error) {
-			console.log(error);
 			const { data } = error.response;
 			const message = data.message || data.errors[0].message;
+			toast.error(message);
+		}
+	};
+};
+
+export const reorderUserLinks = (linkIds) => {
+	return async (dispatch, getState) => {
+		const previousLinks = getState().link.links;
+		const optimisticLinks = linkIds
+			.map((id) => previousLinks.find((link) => link._id === id))
+			.filter(Boolean);
+
+		dispatch(reorderLinks(optimisticLinks));
+		dispatch(startReordering());
+
+		try {
+			const { data } = await linkApi.put(
+				'/reorder',
+				{ linkIds },
+				{ headers: authHeaders() }
+			);
+
+			if (data.ok) {
+				dispatch(reorderLinks(data.links));
+			}
+		} catch (error) {
+			dispatch(reorderLinks(previousLinks));
+			const { data } = error.response;
+			const message = data?.message || data?.errors?.[0]?.message || 'No se pudo reordenar';
+			toast.error(message);
+		} finally {
+			dispatch(finishReordering());
+		}
+	};
+};
+
+export const toggleLinkField = (id, field, value) => {
+	return async (dispatch) => {
+		try {
+			const { data } = await linkApi.patch(`/${id}`, { [field]: value }, { headers: authHeaders() });
+
+			if (data.ok) {
+				dispatch(updateLink(data.link));
+				toast.success(field === 'featured' ? 'Destacado actualizado' : 'Visibilidad actualizada');
+			}
+		} catch (error) {
+			const { data } = error.response;
+			const message = data?.message || data?.errors?.[0]?.message || 'No se pudo actualizar';
 			toast.error(message);
 		}
 	};

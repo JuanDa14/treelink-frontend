@@ -1,11 +1,10 @@
 import * as yup from 'yup';
 
 export const editLinkSchema = yup.object().shape({
-	name: yup.string().required('El nombre de su hoja de contacto es requerido').trim(),
-	url: yup
-		.string()
-		.required('La url es de su hoja de contacto es requerido')
-		.url('La url no es valida')
-		.trim(),
+	name: yup.string().required('El nombre del enlace es requerido').trim(),
+	url: yup.string().required('La URL es requerida').url('La URL no es válida').trim(),
+	description: yup.string().max(120, 'Máximo 120 caracteres').trim(),
+	featured: yup.boolean(),
+	isActive: yup.boolean(),
 	file: yup.mixed(),
 });

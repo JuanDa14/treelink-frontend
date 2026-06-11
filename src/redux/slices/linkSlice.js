@@ -4,6 +4,7 @@ const initialState = {
 	links: [],
 	link: {},
 	loading: false,
+	reordering: false,
 };
 
 export const linkSlice = createSlice({
@@ -19,7 +20,7 @@ export const linkSlice = createSlice({
 		},
 
 		createLink: (state, action) => {
-			state.links = [action.payload, ...state.links];
+			state.links = [...state.links, action.payload];
 		},
 
 		deleteLink: (state, action) => {
@@ -31,11 +32,25 @@ export const linkSlice = createSlice({
 				link._id === action.payload._id ? action.payload : link
 			);
 		},
+
+		reorderLinks: (state, action) => {
+			state.links = [...action.payload];
+		},
+
 		startLoading: (state) => {
 			state.loading = true;
 		},
+
 		finishLoading: (state) => {
 			state.loading = false;
+		},
+
+		startReordering: (state) => {
+			state.reordering = true;
+		},
+
+		finishReordering: (state) => {
+			state.reordering = false;
 		},
 	},
 });
@@ -46,8 +61,11 @@ export const {
 	deleteLink,
 	getLinkById,
 	updateLink,
+	reorderLinks,
 	startLoading,
 	finishLoading,
+	startReordering,
+	finishReordering,
 } = linkSlice.actions;
 
 export default linkSlice.reducer;

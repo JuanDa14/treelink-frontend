@@ -155,6 +155,14 @@
 		box-shadow: 0 8px 24px color-mix(in oklch, var(--foreground) 8%, transparent);
 	}
 
+	.link-pill-featured {
+		min-height: 4rem;
+		border-color: color-mix(in oklch, var(--primary) 55%, var(--border));
+		background: color-mix(in oklch, var(--primary) 8%, var(--card));
+		box-shadow: 0 10px 28px color-mix(in oklch, var(--primary) 18%, transparent);
+		font-size: 1rem;
+	}
+
 	.link-pill-dashboard {
 		@apply flex items-center gap-3 h-[4.5rem] px-4 rounded-2xl border-2 border-border bg-card shadow-sm transition-all duration-200;
 	}
