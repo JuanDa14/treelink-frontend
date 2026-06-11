@@ -1,68 +1,58 @@
+# TreeLink Frontend
 
-# TreeLinkApp
+Aplicación web moderna para crear y compartir tu árbol de enlaces de contacto.
 
-Sitio web desarrollado para que puedas mostrar tu arbol de redes a traves del cual podran contactar contigo, interfaz amigable y de facil entendimiento. Que esperas para comenzar a crear tu Arbol 😎
+## Stack
 
-`LINK DEL BACKEND : https://github.com/JuanDa14/treelink-backend`
+- React 18 + Vite 6
+- TailwindCSS + shadcn/ui
+- Redux Toolkit
+- Framer Motion
+- Formik + Yup
 
-## Capturas
+## Requisitos
 
-![App Screenshot](https://res.cloudinary.com/dbvyaguam/image/upload/v1670817839/treelinkApp_zzajod.png)
+- Node.js >= 20
+- Backend TreeLink en ejecución
 
+## Variables de entorno
 
-## 🛠 Skills
-ReactJs, JavaScript, TailwindCss 😉
+Crea un archivo `.env` basado en `.env.development`:
 
-
-## Ejecutar Localmente
-
-Clonar el proyecto
-
-```bash
-  git clone https://github.com/JuanDa14/treelink-frontend
+```env
+VITE_APP_API_URL=http://localhost:4000/api
+VITE_APP_LOCAL_URL=http://localhost:5173
+VITE_APP_GOOGLE_CLIENT_ID=tu_google_client_id
+VITE_APP_FACEBOOK_CLIENT_ID=tu_facebook_app_id
 ```
 
-Ir a la carpeta clonada
+## Instalación
 
 ```bash
-  cd my-project
+npm install
 ```
 
-Instalar las dependencias
+## Desarrollo
 
 ```bash
-  npm install
+npm run dev
 ```
 
-Ejecutar el servidor
+Abre [http://localhost:5173](http://localhost:5173)
+
+## Producción
 
 ```bash
-  npm run dev
+npm run build
+npm run preview
 ```
 
+## Checklist de verificación
 
-## Tech Stack
-
-**Client:** ReactJs, JavaScript, TailwindCSS, Redux
-
-**Server:** Node, Express, JavaScript, Mongoose, MongoDB
-
-
-## Produccion
-
-Para implementar este proyecto en produccion, ejecute
-
-```bash
-  npm run build
-```
-
-```bash
-  npm run start
-```
-
-
-## 🔗 Links
-[![portfolio](https://img.shields.io/badge/my_portfolio-000?style=for-the-badge&logo=ko-fi&logoColor=white)](https://juancode.vercel.app/)
-[![linkedin](https://img.shields.io/badge/linkedin-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/juan-david-morales-paredes-617342224/)
-[![instagram](https://img.shields.io/badge/instagram-1DA1F2?style=for-the-badge&logo=instagram&logoColor=white)](https://www.instagram.com/ju4n.code/)
-
+- [ ] Login y registro funcionan
+- [ ] Login con Google y Facebook
+- [ ] Crear, editar y eliminar hojas
+- [ ] Vista previa y copiar enlace público
+- [ ] Modo claro/oscuro
+- [ ] Perfil de usuario actualizable
+- [ ] Árbol público en `/user/:username`
