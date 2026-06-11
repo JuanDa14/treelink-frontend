@@ -397,26 +397,6 @@
 		background: linear-gradient(180deg, var(--background) 0%, color-mix(in oklch, var(--secondary) 50%, var(--background)) 100%);
 	}
 
-	.footer-logo {
-		@apply flex h-10 w-10 items-center justify-center rounded-full text-sm font-bold;
-		background: var(--primary);
-		color: var(--primary-foreground);
-	}
-
-	.footer-link {
-		@apply font-medium transition-colors;
-		color: var(--muted-foreground);
-	}
-
-	.footer-link:hover {
-		color: var(--primary);
-	}
-
-	.footer-divider {
-		height: 1px;
-		background: color-mix(in oklch, var(--border) 80%, transparent);
-	}
-
 	.public-footer {
 		@apply pt-4;
 	}

@@ -9,7 +9,6 @@ import {
 	LogOut,
 	Plus,
 	Settings,
-	Sparkles,
 	X,
 } from 'lucide-react';
 
@@ -20,6 +19,7 @@ import { Button } from './button';
 import { ThemeToggle } from './theme-toggle';
 import { cn } from '@/lib/utils';
 import { buildPublicUrl } from '../../utils';
+import { TreeLinkLogo } from '../TreeLinkLogo';
 
 const navLinks = [
 	{ to: '/', label: 'Enlaces', icon: Home, description: 'Gestiona tus links' },
@@ -121,10 +121,11 @@ export const MobileSidebar = () => {
 						<div className='mobile-sidebar-glow pointer-events-none' aria-hidden />
 
 						<div className='relative z-10 flex items-center justify-between px-5 pt-5 pb-3'>
-							<div className='flex items-center gap-2'>
-								<Sparkles className='h-4 w-4 text-primary' />
-								<span className='text-sm font-bold tracking-tight'>TreeLink</span>
-							</div>
+							<TreeLinkLogo
+								asLink={false}
+								imageClassName='h-7 w-7'
+								textClassName='text-sm'
+							/>
 							<Button variant='ghost' size='icon' onClick={close} aria-label='Cerrar menú'>
 								<X className='h-5 w-5' />
 							</Button>

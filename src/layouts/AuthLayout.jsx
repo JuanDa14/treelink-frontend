@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
 import { Sparkles } from 'lucide-react';
 import { ThemeToggle } from '@/components/ui/theme-toggle';
+import { TreeLinkLogo } from '../components/TreeLinkLogo';
 
 export const AuthLayout = ({ children, title, subtitle, footer }) => {
 	return (
@@ -51,10 +51,7 @@ export const AuthLayout = ({ children, title, subtitle, footer }) => {
 				>
 					<div className='rounded-3xl border-2 border-border bg-card p-8 md:p-10 shadow-xl'>
 						<div className='mb-8 text-center lg:text-left'>
-							<Link to='/' className='inline-flex items-center gap-2 font-bold text-xl text-primary mb-6'>
-								<span className='flex h-8 w-8 items-center justify-center rounded-full bg-primary text-primary-foreground text-sm'>T</span>
-								TreeLink
-							</Link>
+							<TreeLinkLogo className='mb-6' textClassName='text-xl text-primary' />
 							<h1 className='text-2xl font-bold tracking-tight'>{title}</h1>
 							{subtitle && <p className='text-muted-foreground mt-2'>{subtitle}</p>}
 						</div>

@@ -3,6 +3,7 @@ export * from './FacebookLoginButton';
 export * from './GoogleLoginButton';
 export * from './AuthSocialSection';
 export * from './ToastContainerThemed';
+export * from './TreeLinkLogo';
 export * from './ResendVerificationButton';
 export * from './TreeProfileHeader';
 export * from './FeaturedStar';

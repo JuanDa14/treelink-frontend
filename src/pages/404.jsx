@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { TreePine } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { TREE_LINK_LOGO_SRC } from '@/components/TreeLinkLogo';
 
 const NotFoundPage = () => {
 	return (
@@ -12,9 +12,11 @@ const NotFoundPage = () => {
 				className='text-center space-y-5 max-w-md'
 			>
 				<div className='flex justify-center'>
-					<div className='flex h-16 w-16 items-center justify-center rounded-full bg-primary/10'>
-						<TreePine className='h-8 w-8 text-primary' />
-					</div>
+					<img
+						src={TREE_LINK_LOGO_SRC}
+						alt='TreeLink'
+						className='h-16 w-16 rounded-2xl object-cover shadow-lg'
+					/>
 				</div>
 				<p className='text-7xl font-bold' style={{ color: 'color-mix(in oklch, var(--primary) 25%, transparent)' }}>
 					404

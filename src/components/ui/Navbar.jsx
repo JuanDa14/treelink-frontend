@@ -5,6 +5,7 @@ import { Menu, LogOut, User, Home, Plus, Eye, ExternalLink, X } from 'lucide-rea
 import { logoutUser } from '../../redux';
 import { openProfile, changeStateMenuMobile } from '../../redux/slices/uiSlice';
 import { ModalProfile } from '../modal';
+import { TreeLinkLogo } from '../TreeLinkLogo';
 import { MobileSidebar } from './MobileSidebar';
 import { ThemeToggle } from './theme-toggle';
 import { Button } from './button';
@@ -35,10 +36,7 @@ export const Navbar = () => {
 		<>
 			<nav className='sticky top-0 z-40 border-b border-border/60 bg-background/90 backdrop-blur-lg'>
 				<div className='container flex h-16 items-center justify-between gap-4'>
-					<Link to='/' className='flex items-center gap-2.5 font-bold text-lg shrink-0'>
-						<span className='flex h-8 w-8 items-center justify-center rounded-full bg-primary text-primary-foreground text-sm'>T</span>
-						<span className='hidden sm:inline'>TreeLink</span>
-					</Link>
+					<TreeLinkLogo textClassName='hidden sm:inline' />
 
 					<div className='hidden md:flex items-center gap-1 bg-secondary/80 rounded-full p-1'>
 						{navLinks.map(({ to, label, icon: Icon }) => (
