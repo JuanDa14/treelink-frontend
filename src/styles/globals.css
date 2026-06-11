@@ -163,6 +163,18 @@
 		font-size: 1rem;
 	}
 
+	.link-pill-public {
+		@apply relative justify-center px-12;
+	}
+
+	.link-pill-public-icon {
+		@apply absolute left-4 top-1/2 -translate-y-1/2 shrink-0;
+	}
+
+	.link-pill-public-text {
+		@apply w-full;
+	}
+
 	.link-pill-dashboard {
 		@apply flex items-center gap-3 h-[4.5rem] px-4 rounded-2xl border-2 border-border bg-card shadow-sm transition-all duration-200;
 	}
@@ -207,16 +219,8 @@
 		height: 180px;
 	}
 
-	.google-login-btn {
-		@apply flex w-full justify-center;
-	}
-
-	.google-login-btn > div {
-		width: 100% !important;
-	}
-
-	.google-login-btn iframe {
-		margin: 0 auto;
+	.phone-mockup-screen {
+		@apply relative z-10 flex min-h-[520px] w-full flex-col items-center rounded-b-[2rem] px-4 py-8;
 	}
 
 	.badge-primary {

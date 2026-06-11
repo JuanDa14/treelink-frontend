@@ -22,12 +22,12 @@ const PreviewPage = () => {
 					<p className='text-muted-foreground mt-1'>Así verán tu página los visitantes</p>
 				</motion.div>
 
-				<div className='grid lg:grid-cols-2 gap-10 lg:gap-12 items-start'>
-					<div className='flex justify-center w-full'>
+				<div className='grid items-start gap-10 lg:grid-cols-2 lg:gap-12'>
+					<div className='flex w-full justify-center'>
 						<div className='phone-mockup'>
 							<div className='phone-mockup-notch' />
-							<div className='tree-page-bg tree-page-bg--contained min-h-[520px] rounded-b-[2rem] px-5 py-8'>
-								<div className='relative z-10 mx-auto w-full max-w-[280px]'>
+							<div className='tree-page-bg tree-page-bg--contained phone-mockup-screen'>
+								<div className='w-full'>
 									<TreeProfileHeader
 										imageURL={imageURL}
 										username={username}
@@ -40,7 +40,7 @@ const PreviewPage = () => {
 						</div>
 					</div>
 
-					<div className='space-y-6 w-full'>
+					<div className='w-full space-y-6'>
 						<ShareTreeLinkPanel publicUrl={publicUrl} username={username} />
 						<div className='rounded-2xl border-2 border-dashed border-border bg-secondary p-6 text-center'>
 							<p className='text-sm text-muted-foreground'>

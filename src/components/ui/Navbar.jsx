@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, NavLink } from 'react-router-dom';
-import { Menu, LogOut, User, Home, Plus, Eye } from 'lucide-react';
+import { Menu, LogOut, User, Home, Plus, Eye, ExternalLink } from 'lucide-react';
 import { logoutUser } from '../../redux';
 import { openProfile, changeStateMenuMobile } from '../../redux/slices/uiSlice';
 import { ModalProfile } from '../modal';
@@ -16,6 +16,7 @@ import {
 	DropdownMenuTrigger,
 } from './dropdown-menu';
 import { cn } from '@/lib/utils';
+import { buildPublicUrl } from '../../utils';
 
 const navLinks = [
 	{ to: '/', label: 'Enlaces', icon: Home },
@@ -25,7 +26,8 @@ const navLinks = [
 export const Navbar = () => {
 	const dispatch = useDispatch();
 	const { menuMobile } = useSelector((state) => state.ui);
-	const { name, email, imageURL } = useSelector((state) => state.auth.user);
+	const { name, email, imageURL, username } = useSelector((state) => state.auth.user);
+	const publicUrl = buildPublicUrl(username);
 
 	return (
 		<nav className='sticky top-0 z-40 border-b border-border/60 bg-background/90 backdrop-blur-lg'>
@@ -53,9 +55,24 @@ export const Navbar = () => {
 							{label}
 						</NavLink>
 					))}
+					<a
+						href={publicUrl}
+						target='_blank'
+						rel='noopener noreferrer'
+						className='flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-medium text-muted-foreground transition-all hover:text-foreground'
+					>
+						<ExternalLink className='h-4 w-4' />
+						Mi página
+					</a>
 				</div>
 
 				<div className='flex items-center gap-2'>
+					<Button asChild size='sm' variant='outline' className='hidden lg:inline-flex'>
+						<a href={publicUrl} target='_blank' rel='noopener noreferrer'>
+							<ExternalLink className='h-4 w-4' />
+							Mi página
+						</a>
+					</Button>
 					<Button asChild size='sm' className='hidden sm:inline-flex'>
 						<Link to='/new-link'>
 							<Plus className='h-4 w-4' />
@@ -78,6 +95,12 @@ export const Navbar = () => {
 								<p className='text-xs text-muted-foreground font-normal truncate'>{email}</p>
 							</DropdownMenuLabel>
 							<DropdownMenuSeparator />
+							<DropdownMenuItem asChild className='rounded-xl'>
+								<a href={publicUrl} target='_blank' rel='noopener noreferrer'>
+									<ExternalLink className='mr-2 h-4 w-4' />
+									Abrir mi página
+								</a>
+							</DropdownMenuItem>
 							<DropdownMenuItem onClick={() => dispatch(openProfile())} className='rounded-xl'>
 								<User className='mr-2 h-4 w-4' />
 								Configuración
@@ -118,6 +141,16 @@ export const Navbar = () => {
 							{label}
 						</NavLink>
 					))}
+					<a
+						href={publicUrl}
+						target='_blank'
+						rel='noopener noreferrer'
+						onClick={() => dispatch(changeStateMenuMobile())}
+						className='flex items-center gap-2 rounded-2xl px-4 py-3 text-sm font-medium text-primary'
+					>
+						<ExternalLink className='h-4 w-4' />
+						Abrir mi página
+					</a>
 					<NavLink
 						to='/new-link'
 						onClick={() => dispatch(changeStateMenuMobile())}

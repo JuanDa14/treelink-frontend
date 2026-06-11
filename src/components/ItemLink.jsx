@@ -80,10 +80,16 @@ export const ItemLink = ({
 			whileHover={{ scale: 1.02 }}
 			whileTap={{ scale: 0.98 }}
 			onClick={openLink}
-			className={cn('link-pill w-full', featured === true && 'link-pill-featured')}
+			className={cn('link-pill link-pill-public w-full', featured === true && 'link-pill-featured')}
 		>
-			<LinkThumbnail imageURL={imageURL} icon={icon} name={name} className='h-8 w-8' iconClassName='h-4 w-4' />
-			<span className='flex flex-col items-center min-w-0 text-center'>
+			<LinkThumbnail
+				imageURL={imageURL}
+				icon={icon}
+				name={name}
+				className='link-pill-public-icon h-8 w-8'
+				iconClassName='h-4 w-4'
+			/>
+			<span className='link-pill-public-text flex flex-col items-center min-w-0 text-center'>
 				<span className='flex items-center gap-1.5 font-semibold capitalize truncate w-full justify-center'>
 					{name}
 					{featured === true && <Star className='h-3.5 w-3.5 fill-primary text-primary shrink-0' />}

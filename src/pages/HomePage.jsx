@@ -1,14 +1,17 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { GripVertical, Plus, Star } from 'lucide-react';
+import { ExternalLink, GripVertical, Plus, Star } from 'lucide-react';
 import { useSelector } from 'react-redux';
 
 import { LinkList, ModalAlerta, ModalForm } from '../components';
 import { Layout } from '../layouts';
 import { Button } from '@/components/ui/button';
+import { buildPublicUrl } from '../utils';
 
 export const HomePage = () => {
 	const { links } = useSelector((state) => state.link);
+	const { username } = useSelector((state) => state.auth.user);
+	const publicUrl = buildPublicUrl(username);
 	const featuredCount = links.filter((link) => link.featured).length;
 	const hiddenCount = links.filter((link) => link.isActive === false).length;
 
@@ -55,12 +58,19 @@ export const HomePage = () => {
 					initial={{ opacity: 0, y: 8 }}
 					animate={{ opacity: 1, y: 0 }}
 					transition={{ delay: 0.1 }}
+					className='grid gap-3 mb-6 sm:grid-cols-2'
 				>
-					<Button asChild className='w-full mb-6 h-12' size='lg'>
+					<Button asChild className='w-full h-12' size='lg'>
 						<Link to='/new-link'>
 							<Plus className='mr-2 h-5 w-5' />
 							Añadir nuevo link
 						</Link>
+					</Button>
+					<Button asChild variant='outline' className='w-full h-12' size='lg'>
+						<a href={publicUrl} target='_blank' rel='noopener noreferrer'>
+							<ExternalLink className='mr-2 h-5 w-5' />
+							Abrir mi página
+						</a>
 					</Button>
 				</motion.div>
 
