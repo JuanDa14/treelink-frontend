@@ -12,7 +12,18 @@ node_modules
 dist
 dist-ssr
 *.local
-.env.production
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# Cursor (local IDE config)
+.cursor/
+
+# Local git hooks setup
+.githooks/
+scripts/setup-git-hooks.sh
 
 # Editor directories and files
 .vscode/*
