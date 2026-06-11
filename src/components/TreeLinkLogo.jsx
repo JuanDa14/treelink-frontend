@@ -6,7 +6,7 @@ export const TREE_LINK_LOGO_SRC = '/tree-link.png';
 export const TreeLinkLogo = ({
 	to = '/',
 	asLink = true,
-	showText = true,
+	showText = false,
 	className,
 	imageClassName = 'h-8 w-8',
 	textClassName,

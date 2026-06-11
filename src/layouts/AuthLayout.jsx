@@ -51,7 +51,7 @@ export const AuthLayout = ({ children, title, subtitle, footer }) => {
 				>
 					<div className='rounded-3xl border-2 border-border bg-card p-8 md:p-10 shadow-xl'>
 						<div className='mb-8 text-center lg:text-left'>
-							<TreeLinkLogo className='mb-6' textClassName='text-xl text-primary' />
+							<TreeLinkLogo className='mb-6' imageClassName='h-10 w-10' />
 							<h1 className='text-2xl font-bold tracking-tight'>{title}</h1>
 							{subtitle && <p className='text-muted-foreground mt-2'>{subtitle}</p>}
 						</div>

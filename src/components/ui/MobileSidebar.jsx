@@ -121,11 +121,7 @@ export const MobileSidebar = () => {
 						<div className='mobile-sidebar-glow pointer-events-none' aria-hidden />
 
 						<div className='relative z-10 flex items-center justify-between px-5 pt-5 pb-3'>
-							<TreeLinkLogo
-								asLink={false}
-								imageClassName='h-7 w-7'
-								textClassName='text-sm'
-							/>
+							<TreeLinkLogo asLink={false} imageClassName='h-7 w-7' />
 							<Button variant='ghost' size='icon' onClick={close} aria-label='Cerrar menú'>
 								<X className='h-5 w-5' />
 							</Button>

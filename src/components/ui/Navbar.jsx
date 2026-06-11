@@ -36,7 +36,7 @@ export const Navbar = () => {
 		<>
 			<nav className='sticky top-0 z-40 border-b border-border/60 bg-background/90 backdrop-blur-lg'>
 				<div className='container flex h-16 items-center justify-between gap-4'>
-					<TreeLinkLogo textClassName='hidden sm:inline' />
+					<TreeLinkLogo />
 
 					<div className='hidden md:flex items-center gap-1 bg-secondary/80 rounded-full p-1'>
 						{navLinks.map(({ to, label, icon: Icon }) => (
