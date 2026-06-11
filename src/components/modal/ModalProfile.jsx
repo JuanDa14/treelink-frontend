@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react';
 import { Formik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Camera, Globe, User, Settings, Sparkles } from 'lucide-react';
 
 import { InputFormik, SwitchFormik, TextareaFormik, UsernameField, UsernameSubmitButton } from '../index';
@@ -22,6 +22,7 @@ const TABS = [
 
 export const ModalProfile = () => {
 	const dispatch = useDispatch();
+	const navigate = useNavigate();
 	const imageRef = useRef(null);
 	const profileImageRef = useRef(null);
 	const [activeTab, setActiveTab] = useState('profile');
@@ -208,10 +209,16 @@ export const ModalProfile = () => {
 										</p>
 									</div>
 									{!google && (
-										<Button type='button' variant='outline' asChild className='w-full'>
-											<Link to='/auth/forgot-password' onClick={() => dispatch(closeProfile())}>
-												Cambiar contraseña
-											</Link>
+										<Button
+											type='button'
+											variant='outline'
+											className='w-full'
+											onClick={() => {
+												dispatch(closeProfile());
+												navigate('/auth/forgot-password');
+											}}
+										>
+											Cambiar contraseña
 										</Button>
 									)}
 								</div>
