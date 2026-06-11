@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Trees } from 'lucide-react';
+import { TreePine } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 const NotFoundPage = () => {
@@ -9,17 +9,21 @@ const NotFoundPage = () => {
 			<motion.div
 				initial={{ opacity: 0, scale: 0.95 }}
 				animate={{ opacity: 1, scale: 1 }}
-				className='text-center space-y-4'
+				className='text-center space-y-5 max-w-md'
 			>
 				<div className='flex justify-center'>
-					<Trees className='h-12 w-12 text-primary' />
+					<div className='flex h-16 w-16 items-center justify-center rounded-full bg-primary/10'>
+						<TreePine className='h-8 w-8 text-primary' />
+					</div>
 				</div>
-				<h1 className='text-8xl font-bold text-primary/20'>404</h1>
-				<h2 className='text-2xl font-semibold'>Página no encontrada</h2>
-				<p className='text-muted-foreground max-w-sm'>
+				<p className='text-7xl font-bold' style={{ color: 'color-mix(in oklch, var(--primary) 25%, transparent)' }}>
+					404
+				</p>
+				<h2 className='text-2xl font-bold tracking-tight'>Página no encontrada</h2>
+				<p className='text-muted-foreground'>
 					La ruta que buscas no existe o fue movida.
 				</p>
-				<Button asChild>
+				<Button asChild size='lg'>
 					<Link to='/'>Volver al inicio</Link>
 				</Button>
 			</motion.div>

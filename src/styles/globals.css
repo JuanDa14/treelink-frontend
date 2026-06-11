@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -99,12 +99,78 @@
 }
 
 @layer components {
+	.tree-page-bg {
+		position: relative;
+		min-height: 100vh;
+		background: linear-gradient(180deg, var(--secondary) 0%, var(--background) 40%, var(--background) 100%);
+	}
+
+	.tree-page-bg::before,
+	.tree-page-bg::after {
+		content: '';
+		position: fixed;
+		border-radius: 50%;
+		filter: blur(80px);
+		pointer-events: none;
+		z-index: 0;
+	}
+
+	.tree-page-bg::before {
+		top: -10%;
+		right: -5%;
+		width: 320px;
+		height: 320px;
+		background: color-mix(in oklch, var(--primary) 18%, transparent);
+	}
+
+	.tree-page-bg::after {
+		bottom: 10%;
+		left: -8%;
+		width: 280px;
+		height: 280px;
+		background: color-mix(in oklch, var(--primary) 10%, transparent);
+	}
+
 	.auth-gradient {
-		background: linear-gradient(
-			135deg,
-			var(--secondary) 0%,
-			var(--background) 55%,
-			var(--accent) 100%
-		);
+		position: relative;
+		min-height: 100vh;
+		background: linear-gradient(135deg, var(--background) 0%, var(--secondary) 50%, var(--background) 100%);
+	}
+
+	.auth-gradient::before {
+		content: '';
+		position: absolute;
+		inset: 0;
+		background: radial-gradient(circle at 20% 80%, color-mix(in oklch, var(--primary) 12%, transparent), transparent 50%);
+		pointer-events: none;
+	}
+
+	.link-pill {
+		@apply flex items-center justify-center gap-3 h-14 px-5 rounded-full border-2 border-border bg-card text-card-foreground shadow-sm;
+		transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+	}
+
+	.link-pill:hover {
+		border-color: color-mix(in oklch, var(--primary) 40%, var(--border));
+		box-shadow: 0 8px 24px color-mix(in oklch, var(--foreground) 8%, transparent);
+	}
+
+	.link-pill-dashboard {
+		@apply flex items-center gap-3 h-[4.5rem] px-4 rounded-2xl border-2 border-border bg-card shadow-sm transition-all duration-200;
+	}
+
+	.link-pill-dashboard:hover {
+		border-color: color-mix(in oklch, var(--primary) 35%, var(--border));
+		box-shadow: 0 6px 20px color-mix(in oklch, var(--foreground) 6%, transparent);
+	}
+
+	.phone-mockup {
+		@apply mx-auto w-full max-w-[340px] rounded-[2.75rem] border-[10px] bg-background shadow-2xl overflow-hidden;
+		border-color: color-mix(in oklch, var(--foreground) 10%, transparent);
+	}
+
+	.phone-mockup-notch {
+		@apply mx-auto mt-3 h-6 w-28 rounded-full;
+		background: color-mix(in oklch, var(--foreground) 10%, transparent);
 	}
 }

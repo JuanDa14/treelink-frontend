@@ -1,12 +1,10 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
 
-import { LinkList, Spinner } from '../components';
+import { LinkList, Spinner, TreeProfileHeader } from '../components';
 import { useGetLinksUser } from '../hooks';
 import { errorIsFalse } from '../redux/slices/uiSlice';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { ThemeToggle } from '@/components/ui/theme-toggle';
 
 const TreePage = () => {
@@ -29,24 +27,16 @@ const TreePage = () => {
 	}
 
 	return (
-		<div className='min-h-screen auth-gradient'>
-			<div className='absolute top-4 right-4'>
+		<div className='tree-page-bg'>
+			<div className='absolute top-4 right-4 z-10'>
 				<ThemeToggle />
 			</div>
-			<main className='max-w-lg mx-auto px-4 py-16'>
-				<motion.div
-					initial={{ opacity: 0, y: 20 }}
-					animate={{ opacity: 1, y: 0 }}
-					transition={{ duration: 0.5 }}
-					className='flex flex-col items-center mb-8'
-				>
-					<Avatar className='h-28 w-28 mb-4 ring-4 ring-primary/20 shadow-lg'>
-						<AvatarImage src={imageURL} alt={username} />
-						<AvatarFallback className='text-3xl'>{username?.charAt(0)?.toUpperCase()}</AvatarFallback>
-					</Avatar>
-					<h1 className='text-xl font-bold'>@{username}</h1>
-				</motion.div>
+			<main className='relative z-10 max-w-md mx-auto px-5 py-14 sm:py-20'>
+				<TreeProfileHeader imageURL={imageURL} username={username} />
 				<LinkList />
+				<p className='text-center text-xs text-muted-foreground mt-10'>
+					Creado con <span className='font-semibold text-primary'>TreeLink</span>
+				</p>
 			</main>
 		</div>
 	);

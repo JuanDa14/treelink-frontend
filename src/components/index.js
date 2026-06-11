@@ -1,5 +1,6 @@
 export * from './CheckboxFormik';
 export * from './FacebookLoginButton';
+export * from './TreeProfileHeader';
 export * from './EmptyState';
 export * from './InputFileFormik';
 export * from './InputFormik';
