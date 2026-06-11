@@ -16,7 +16,7 @@ export const TreeLinkLogo = ({
 			<img
 				src={TREE_LINK_LOGO_SRC}
 				alt='TreeLink'
-				className={cn('rounded-xl object-cover', imageClassName)}
+				className={cn('rounded-full object-cover', imageClassName)}
 			/>
 			{showText && (
 				<span className={cn('font-bold text-lg tracking-tight', textClassName)}>TreeLink</span>

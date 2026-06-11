@@ -18,7 +18,7 @@ export const PublicFooter = () => {
 			<img
 				src={TREE_LINK_LOGO_SRC}
 				alt='TreeLink'
-				className='mx-auto mb-2 h-6 w-6 rounded-md object-cover'
+				className='mx-auto mb-2 h-6 w-6 rounded-full object-cover'
 			/>
 			<p className='text-center text-xs text-muted-foreground'>
 				Creado con <span className='font-semibold text-primary'>TreeLink</span>

@@ -10,8 +10,6 @@ const ROOT = join(__dirname, '..');
 const SOURCE = join(ROOT, 'public/tree-link.png');
 const OUT_DIR = join(ROOT, 'public');
 
-const CORNER_RATIO = 0.22;
-
 const PNG_SIZES = {
 	'favicon-16x16.png': 16,
 	'favicon-32x32.png': 32,
@@ -20,18 +18,18 @@ const PNG_SIZES = {
 	'android-chrome-512x512.png': 512,
 };
 
-const createRoundedMask = (size) => {
-	const radius = Math.max(2, Math.round(size * CORNER_RATIO));
+const createCircleMask = (size) => {
+	const center = size / 2;
 
 	return Buffer.from(
 		`<svg width="${size}" height="${size}" xmlns="http://www.w3.org/2000/svg">
-			<rect width="${size}" height="${size}" rx="${radius}" ry="${radius}" fill="#ffffff"/>
+			<circle cx="${center}" cy="${center}" r="${center}" fill="#ffffff"/>
 		</svg>`
 	);
 };
 
 const createRoundedIcon = async (size) => {
-	const mask = createRoundedMask(size);
+	const mask = createCircleMask(size);
 
 	return sharp(SOURCE)
 		.resize(size, size, { fit: 'cover' })

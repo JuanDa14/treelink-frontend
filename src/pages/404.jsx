@@ -15,7 +15,7 @@ const NotFoundPage = () => {
 					<img
 						src={TREE_LINK_LOGO_SRC}
 						alt='TreeLink'
-						className='h-16 w-16 rounded-2xl object-cover shadow-lg'
+						className='h-16 w-16 rounded-full object-cover shadow-lg'
 					/>
 				</div>
 				<p className='text-7xl font-bold' style={{ color: 'color-mix(in oklch, var(--primary) 25%, transparent)' }}>
