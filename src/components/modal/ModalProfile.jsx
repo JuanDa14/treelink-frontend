@@ -11,7 +11,8 @@ import { updatedProfile } from '../../redux';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-import { buildPublicUrl, generateUsername, slugifyUsername } from '../../utils';
+import { buildPublicUrl, slugifyUsername } from '../../utils';
+import { fetchAvailableUsername } from '../../utils/username';
 
 const TABS = [
 	{ id: 'profile', label: 'Perfil', icon: User },
@@ -24,6 +25,7 @@ export const ModalProfile = () => {
 	const imageRef = useRef(null);
 	const profileImageRef = useRef(null);
 	const [activeTab, setActiveTab] = useState('profile');
+	const [generatingUsername, setGeneratingUsername] = useState(false);
 
 	const { name, imageURL, username, email, bio, showBranding, google } = useSelector(
 		(state) => state.auth.user
@@ -82,6 +84,7 @@ export const ModalProfile = () => {
 						bio: bio || '',
 						showBranding: showBranding !== false,
 						file: null,
+						usernameTrusted: false,
 					}}
 					enableReinitialize
 					validationSchema={profileSchema}
@@ -120,25 +123,40 @@ export const ModalProfile = () => {
 										}}
 									/>
 									<div className='space-y-2'>
-										<div className='flex items-end gap-2'>
-											<div className='flex-1'>
-												<UsernameField
-													currentUsername={slugifyUsername(username || '')}
-												/>
-											</div>
-											<Button
-												type='button'
-												variant='outline'
-												size='sm'
-												className='mb-0.5 shrink-0 h-12 rounded-2xl'
-												onClick={() =>
-													setFieldValue('username', generateUsername(values.name || name))
-												}
-											>
-												<Sparkles className='mr-1.5 h-4 w-4' />
-												Autogenerar
-											</Button>
-										</div>
+										<UsernameField
+											currentUsername={slugifyUsername(username || '')}
+											skipAvailabilityCheck={values.usernameTrusted}
+											onManualEdit={() => setFieldValue('usernameTrusted', false)}
+											endAction={
+												<Button
+													type='button'
+													variant='outline'
+													disabled={generatingUsername}
+													className='h-12 shrink-0 rounded-2xl px-3'
+													onClick={async () => {
+														setGeneratingUsername(true);
+														try {
+															const available = await fetchAvailableUsername(
+																values.name || name,
+																username
+															);
+															setFieldValue('username', available);
+															setFieldValue('usernameTrusted', true);
+														} finally {
+															setGeneratingUsername(false);
+														}
+													}}
+												>
+													<Sparkles
+														className={cn(
+															'mr-1.5 h-4 w-4',
+															generatingUsername && 'animate-pulse'
+														)}
+													/>
+													{generatingUsername ? 'Generando...' : 'Autogenerar'}
+												</Button>
+											}
+										/>
 										<p className='text-xs text-muted-foreground'>
 											Sin espacios. Tu link:{' '}
 											<span className='font-mono text-primary'>

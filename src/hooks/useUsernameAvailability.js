@@ -12,11 +12,16 @@ export const USERNAME_STATUS = {
 	INVALID: 'invalid',
 };
 
-export const useUsernameAvailability = (username, currentUsername = '') => {
+export const useUsernameAvailability = (username, currentUsername = '', { enabled = true } = {}) => {
 	const [status, setStatus] = useState(USERNAME_STATUS.IDLE);
 	const debouncedUsername = useDebounce(slugifyUsername(username), 450);
 
 	useEffect(() => {
+		if (!enabled) {
+			setStatus(USERNAME_STATUS.AVAILABLE);
+			return;
+		}
+
 		const slug = debouncedUsername;
 		const current = slugifyUsername(currentUsername);
 
@@ -58,7 +63,7 @@ export const useUsernameAvailability = (username, currentUsername = '') => {
 		return () => {
 			cancelled = true;
 		};
-	}, [debouncedUsername, currentUsername]);
+	}, [debouncedUsername, currentUsername, enabled]);
 
 	return { status, slug: debouncedUsername };
 };

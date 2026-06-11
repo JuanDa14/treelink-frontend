@@ -11,8 +11,11 @@ export const UsernameSubmitButton = ({
 	...props
 }) => {
 	const { values, isSubmitting } = useFormikContext();
-	const { status } = useUsernameAvailability(values.username, currentUsername);
-	const usernameOk = isUsernameReadyToSave(status);
+	const skipCheck = Boolean(values.usernameTrusted);
+	const { status } = useUsernameAvailability(values.username, currentUsername, {
+		enabled: !skipCheck,
+	});
+	const usernameOk = isUsernameReadyToSave(status, skipCheck);
 
 	return (
 		<Button

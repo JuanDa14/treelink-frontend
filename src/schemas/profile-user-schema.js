@@ -11,4 +11,5 @@ export const profileSchema = yup.object().shape({
 	bio: yup.string().max(160, 'Máximo 160 caracteres').trim(),
 	showBranding: yup.boolean(),
 	file: yup.mixed().nullable().notRequired(),
+	usernameTrusted: yup.boolean(),
 });
