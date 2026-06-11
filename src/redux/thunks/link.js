@@ -25,8 +25,12 @@ const appendLinkFields = (formData, body) => {
 	formData.append('description', body.description || '');
 	formData.append('featured', String(Boolean(body.featured)));
 	formData.append('isActive', String(body.isActive !== false));
-	if (body.icon) formData.append('icon', body.icon);
-	if (body.file instanceof File) formData.append('file', body.file);
+	if (body.file instanceof File) {
+		formData.append('file', body.file);
+		formData.append('icon', '');
+	} else if (body.icon) {
+		formData.append('icon', body.icon);
+	}
 };
 
 export const getUserLinks = () => {
@@ -56,10 +60,7 @@ export const updatedUserLink = (id, body) => {
 			appendLinkFields(formData, body);
 
 			const { data } = await linkApi.put(`/${id}`, formData, {
-				headers: {
-					...authHeaders(),
-					'Content-Type': 'multipart/form-data',
-				},
+				headers: authHeaders(),
 			});
 
 			if (data.ok) {
@@ -81,10 +82,7 @@ export const createUserLink = (body) => {
 			appendLinkFields(formData, body);
 
 			const { data } = await linkApi.post('/', formData, {
-				headers: {
-					...authHeaders(),
-					'Content-Type': 'multipart/form-data',
-				},
+				headers: authHeaders(),
 			});
 
 			if (data.ok) {

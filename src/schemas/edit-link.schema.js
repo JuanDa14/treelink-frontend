@@ -7,5 +7,5 @@ export const editLinkSchema = yup.object().shape({
 	featured: yup.boolean(),
 	isActive: yup.boolean(),
 	icon: yup.string().trim(),
-	file: yup.mixed().nullable(),
+	file: yup.mixed().nullable().notRequired(),
 });

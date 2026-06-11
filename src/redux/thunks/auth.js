@@ -221,20 +221,24 @@ export const updatedProfile = (body) => {
 
 		try {
 			const accessToken = getCookie('accessToken');
+			const headers = { Authorization: `Bearer ${accessToken}` };
+			const payload = {
+				username: body.username,
+				name: body.name,
+				bio: body.bio || '',
+				showBranding: body.showBranding !== false,
+			};
 
-			const formData = new FormData();
-			formData.append('username', body.username);
-			formData.append('name', body.name);
-			formData.append('bio', body.bio || '');
-			formData.append('showBranding', String(body.showBranding !== false));
-			if (body.file) formData.append('file', body.file);
+			let data;
 
-			const { data } = await userApi.post('/profile', formData, {
-				headers: {
-					Authorization: `Bearer ${accessToken}`,
-					'Content-Type': 'multipart/form-data',
-				},
-			});
+			if (body.file instanceof File) {
+				const formData = new FormData();
+				Object.entries(payload).forEach(([key, value]) => formData.append(key, String(value)));
+				formData.append('file', body.file);
+				({ data } = await userApi.post('/profile', formData, { headers }));
+			} else {
+				({ data } = await userApi.post('/profile', payload, { headers }));
+			}
 
 			if (data.ok) {
 				dispatch(loginUser(data.user));

@@ -10,5 +10,5 @@ export const profileSchema = yup.object().shape({
 		.required('El nombre es requerido'),
 	bio: yup.string().max(160, 'Máximo 160 caracteres').trim(),
 	showBranding: yup.boolean(),
-	file: yup.mixed(),
+	file: yup.mixed().nullable().notRequired(),
 });

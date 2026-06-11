@@ -6,11 +6,29 @@ import { Button } from '@/components/ui/button';
 import { LINK_ICON_OPTIONS } from '../constants/link-icons';
 import { cn } from '@/lib/utils';
 
+const getPreviewSrc = (fileValue) => {
+	if (!fileValue) return null;
+	if (fileValue instanceof File) return URL.createObjectURL(fileValue);
+	if (typeof fileValue === 'string' && fileValue.startsWith('http')) return fileValue;
+	return null;
+};
+
 export const LinkIconPicker = ({ name = 'icon', fileName = 'file', label = 'Imagen o icono', disable }) => {
 	const fileInputRef = useRef(null);
 	const [field, , helpers] = useField(name);
 	const [fileField, , fileHelpers] = useField(fileName);
-	const [mode, setMode] = useState(field.value ? 'icon' : 'image');
+	const [mode, setMode] = useState(fileField.value ? 'image' : 'icon');
+	const [previewSrc, setPreviewSrc] = useState(() => getPreviewSrc(fileField.value));
+
+	useEffect(() => {
+		const src = getPreviewSrc(fileField.value);
+		setPreviewSrc(src);
+		return () => {
+			if (fileField.value instanceof File && src) {
+				URL.revokeObjectURL(src);
+			}
+		};
+	}, [fileField.value]);
 
 	useEffect(() => {
 		if (fileField.value) {
@@ -33,6 +51,10 @@ export const LinkIconPicker = ({ name = 'icon', fileName = 'file', label = 'Imag
 		setMode('image');
 	};
 
+	const switchToImage = () => {
+		setMode('image');
+	};
+
 	const selectedIcon = LINK_ICON_OPTIONS.find((option) => option.id === field.value);
 
 	return (
@@ -52,7 +74,7 @@ export const LinkIconPicker = ({ name = 'icon', fileName = 'file', label = 'Imag
 				</button>
 				<button
 					type='button'
-					onClick={() => setMode('image')}
+					onClick={switchToImage}
 					className={cn(
 						'rounded-full px-4 py-1.5 text-xs font-semibold transition-all',
 						mode === 'image' ? 'bg-background shadow-sm text-foreground' : 'text-muted-foreground'
@@ -82,21 +104,37 @@ export const LinkIconPicker = ({ name = 'icon', fileName = 'file', label = 'Imag
 				</div>
 			) : (
 				<div className='rounded-2xl border-2 border-dashed border-border p-4'>
-					<div className='flex items-center justify-between gap-4'>
+					<div className='flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4'>
 						<div className='flex items-center gap-3'>
-							<div className='flex h-16 w-16 items-center justify-center rounded-full bg-secondary'>
-								<ImagePlus className='h-6 w-6 text-muted-foreground' />
+							{previewSrc ? (
+								<img
+									src={previewSrc}
+									alt='Vista previa'
+									className='h-16 w-16 rounded-full object-cover ring-2 ring-border'
+								/>
+							) : (
+								<div className='flex h-16 w-16 items-center justify-center rounded-full bg-secondary'>
+									<ImagePlus className='h-6 w-6 text-muted-foreground' />
+								</div>
+							)}
+							<div>
+								<p className='text-sm font-medium text-foreground'>
+									{fileField.value instanceof File ? fileField.value.name : 'Imagen del enlace'}
+								</p>
+								<p className='text-xs text-muted-foreground'>PNG, JPG o WEBP (máx. 5MB)</p>
 							</div>
-							<p className='text-sm text-muted-foreground'>PNG, JPG o WEBP (máx. 5MB)</p>
 						</div>
 						<div>
 							<input
 								ref={fileInputRef}
 								type='file'
-								accept='image/*'
+								accept='image/jpeg,image/png,image/gif,image/webp'
 								className='hidden'
 								disabled={disable}
-								onChange={(e) => handleFileChange(e.target.files?.[0])}
+								onChange={(e) => {
+									handleFileChange(e.target.files?.[0]);
+									e.target.value = '';
+								}}
 							/>
 							<Button
 								type='button'
@@ -106,7 +144,7 @@ export const LinkIconPicker = ({ name = 'icon', fileName = 'file', label = 'Imag
 								onClick={() => fileInputRef.current?.click()}
 							>
 								<Upload className='mr-2 h-4 w-4' />
-								Subir imagen
+								{previewSrc ? 'Cambiar imagen' : 'Subir imagen'}
 							</Button>
 						</div>
 					</div>
