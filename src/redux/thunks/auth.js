@@ -277,6 +277,8 @@ export const sendPasswordResetCode = () => {
 				toast.success(data.message);
 				return { ok: true };
 			}
+
+			return { ok: false };
 		} catch (error) {
 			const message =
 				error.response?.data?.message ||
@@ -295,6 +297,12 @@ export const confirmPasswordReset = ({ code, password }) => {
 		dispatch(startChecking());
 		try {
 			const accessToken = getCookie('accessToken');
+
+			if (!accessToken) {
+				toast.error('Tu sesión expiró. Vuelve a iniciar sesión.');
+				return { ok: false };
+			}
+
 			const { data } = await userApi.post(
 				'/password-reset/confirm',
 				{ code, password },
@@ -305,6 +313,9 @@ export const confirmPasswordReset = ({ code, password }) => {
 				toast.success(data.message);
 				return { ok: true };
 			}
+
+			toast.error(data.message || 'No se pudo actualizar la contraseña');
+			return { ok: false };
 		} catch (error) {
 			const message =
 				error.response?.data?.message ||

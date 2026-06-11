@@ -1,11 +1,12 @@
-import { useField } from 'formik';
+import { useField, useFormikContext } from 'formik';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
 
 export const InputFormik = ({ text, name, type, placeholder, classNameText, classNameInput, classNameContainer }) => {
+	const { submitCount } = useFormikContext();
 	const [{ onChange, value, ...fields }, { error, touched }] = useField(name);
-	const showError = touched && error;
+	const showError = Boolean(error) && (touched || submitCount > 0);
 
 	return (
 		<div className={cn('flex flex-col w-full gap-2', classNameContainer)}>

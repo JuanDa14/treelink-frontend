@@ -27,6 +27,22 @@ const TABS = [
 	{ id: 'account', label: 'Cuenta', icon: Settings },
 ];
 
+const AccountTab = ({ email, google, passwordResetKey }) => (
+	<div className='space-y-4'>
+		<div className='rounded-2xl border-2 border-border bg-secondary px-4 py-3'>
+			<p className='text-xs font-semibold uppercase tracking-wide text-muted-foreground'>Email</p>
+			<p className='text-sm font-medium mt-1'>{email}</p>
+		</div>
+		<div className='rounded-2xl border-2 border-border bg-secondary px-4 py-3'>
+			<p className='text-xs font-semibold uppercase tracking-wide text-muted-foreground'>Tipo de cuenta</p>
+			<p className='text-sm font-medium mt-1'>{google ? 'Google' : 'Email y contraseña'}</p>
+		</div>
+		{!google && (
+			<PasswordResetFlow key={passwordResetKey} email={email} authenticated />
+		)}
+	</div>
+);
+
 export const ModalProfile = () => {
 	const dispatch = useDispatch();
 	const imageRef = useRef(null);
@@ -40,9 +56,28 @@ export const ModalProfile = () => {
 	);
 	const { profile } = useSelector((state) => state.ui);
 
-	const handleUpdatedProfile = async (values, { setSubmitting }) => {
+	const handleUpdatedProfile = async (values, { setSubmitting, setTouched, validateForm }) => {
+		const errors = await validateForm();
+
+		if (Object.keys(errors).length > 0) {
+			setTouched(
+				Object.keys(errors).reduce((acc, key) => {
+					acc[key] = true;
+					return acc;
+				}, {})
+			);
+			setSubmitting(false);
+
+			if (errors.name || errors.username) {
+				setActiveTab('profile');
+			}
+
+			return;
+		}
+
 		const result = await dispatch(updatedProfile(values));
 		setSubmitting(false);
+
 		if (result?.ok) {
 			dispatch(closeProfile());
 		}
@@ -93,153 +128,140 @@ export const ModalProfile = () => {
 					))}
 				</div>
 
-				<Formik
-					initialValues={{
-						name: name || '',
-						username: slugifyUsername(username || ''),
-						bio: bio || '',
-						showBranding: showBranding !== false,
-						file: null,
-						usernameTrusted: false,
-					}}
-					enableReinitialize
-					validationSchema={profileSchema}
-					onSubmit={handleUpdatedProfile}
-				>
-					{({ handleSubmit, setFieldValue, values, errors, submitCount }) => (
-						<form onSubmit={handleSubmit} noValidate className='space-y-4'>
-							{activeTab === 'profile' && (
-								<>
-									<div className='flex flex-col items-center gap-3 py-2'>
-										<button
-											type='button'
-											className='relative group'
-											onClick={() => imageRef.current?.click()}
-										>
-											<img
-												ref={profileImageRef}
-												src={imageURL}
-												alt={name}
-												className='h-24 w-24 rounded-full object-cover ring-4 ring-border'
+				{activeTab === 'account' ? (
+					<AccountTab email={email} google={google} passwordResetKey={passwordResetKey} />
+				) : (
+					<Formik
+						initialValues={{
+							name: name || '',
+							username: slugifyUsername(username || ''),
+							bio: bio || '',
+							showBranding: showBranding !== false,
+							file: null,
+							usernameTrusted: false,
+						}}
+						enableReinitialize
+						validationSchema={profileSchema}
+						validateOnBlur
+						validateOnChange={false}
+						onSubmit={handleUpdatedProfile}
+					>
+						{({ handleSubmit, setFieldValue, values, errors, submitCount }) => (
+							<form onSubmit={handleSubmit} noValidate className='space-y-4'>
+								{activeTab === 'profile' && (
+									<>
+										<div className='flex flex-col items-center gap-3 py-2'>
+											<button
+												type='button'
+												className='relative group'
+												onClick={() => imageRef.current?.click()}
+											>
+												<img
+													ref={profileImageRef}
+													src={imageURL}
+													alt={name}
+													className='h-24 w-24 rounded-full object-cover ring-4 ring-border'
+												/>
+												<span className='profile-avatar-overlay'>
+													<Camera className='h-6 w-6 text-primary-foreground' />
+												</span>
+											</button>
+											<p className='font-medium text-muted-foreground'>{values.name || name}</p>
+										</div>
+										<input
+											type='file'
+											className='hidden'
+											ref={imageRef}
+											accept='image/*'
+											onChange={(e) => {
+												setFieldValue('file', e.target.files[0]);
+												handleChangeImage(e.target.files[0]);
+											}}
+										/>
+										<div className='space-y-2'>
+											<UsernameField
+												currentUsername={slugifyUsername(username || '')}
+												skipAvailabilityCheck={values.usernameTrusted}
+												onManualEdit={() => setFieldValue('usernameTrusted', false)}
+												endAction={
+													<Button
+														type='button'
+														variant='outline'
+														disabled={generatingUsername}
+														className='h-12 shrink-0 rounded-2xl px-3'
+														onClick={async () => {
+															setGeneratingUsername(true);
+															try {
+																const available = await fetchAvailableUsername(
+																	values.name || name,
+																	username
+																);
+																setFieldValue('username', available);
+																setFieldValue('usernameTrusted', true);
+															} finally {
+																setGeneratingUsername(false);
+															}
+														}}
+													>
+														<Sparkles
+															className={cn(
+																'mr-1.5 h-4 w-4',
+																generatingUsername && 'animate-pulse'
+															)}
+														/>
+														{generatingUsername ? 'Generando...' : 'Autogenerar'}
+													</Button>
+												}
 											/>
-											<span className='profile-avatar-overlay'>
-												<Camera className='h-6 w-6 text-primary-foreground' />
-											</span>
-										</button>
-										<p className='font-medium text-muted-foreground'>{values.name || name}</p>
-									</div>
-									<input
-										type='file'
-										className='hidden'
-										ref={imageRef}
-										accept='image/*'
-										onChange={(e) => {
-											setFieldValue('file', e.target.files[0]);
-											handleChangeImage(e.target.files[0]);
-										}}
-									/>
-									<div className='space-y-2'>
-										<UsernameField
-											currentUsername={slugifyUsername(username || '')}
-											skipAvailabilityCheck={values.usernameTrusted}
-											onManualEdit={() => setFieldValue('usernameTrusted', false)}
-											endAction={
-												<Button
-													type='button'
-													variant='outline'
-													disabled={generatingUsername}
-													className='h-12 shrink-0 rounded-2xl px-3'
-													onClick={async () => {
-														setGeneratingUsername(true);
-														try {
-															const available = await fetchAvailableUsername(
-																values.name || name,
-																username
-															);
-															setFieldValue('username', available);
-															setFieldValue('usernameTrusted', true);
-														} finally {
-															setGeneratingUsername(false);
-														}
-													}}
-												>
-													<Sparkles
-														className={cn(
-															'mr-1.5 h-4 w-4',
-															generatingUsername && 'animate-pulse'
-														)}
-													/>
-													{generatingUsername ? 'Generando...' : 'Autogenerar'}
-												</Button>
-											}
+											<p className='text-xs text-muted-foreground'>
+												Sin espacios. Tu link:{' '}
+												<span className='font-mono text-primary'>
+													{buildPublicUrl(values.username)}
+												</span>
+											</p>
+										</div>
+										<InputFormik
+											name='name'
+											text='Nombre para mostrar'
+											placeholder='Juan Morales'
+											type='text'
 										/>
-										<p className='text-xs text-muted-foreground'>
-											Sin espacios. Tu link:{' '}
-											<span className='font-mono text-primary'>
-												{buildPublicUrl(values.username)}
-											</span>
-										</p>
-									</div>
-									<InputFormik name='name' text='Nombre para mostrar' placeholder='Juan Morales' type='text' />
-								</>
-							)}
+									</>
+								)}
 
-							{activeTab === 'page' && (
-								<>
-									<TextareaFormik
-										name='bio'
-										text='Bio de tu página'
-										placeholder='Cuéntale a tus visitantes quién eres o qué haces'
-										rows={3}
-									/>
-									<SwitchFormik
-										name='showBranding'
-										label='Mostrar "Creado con TreeLink"'
-										description='Muestra el pie de página en tu link público.'
-									/>
-									<div className='rounded-2xl border-2 border-border bg-secondary px-4 py-3'>
-										<p className='text-xs font-semibold uppercase tracking-wide text-muted-foreground mb-1'>
-											Vista previa de tu URL
-										</p>
-										<p className='text-sm font-mono break-all'>{buildPublicUrl(values.username)}</p>
-									</div>
-									<Button type='button' variant='outline' asChild className='w-full'>
-										<Link to='/preview' onClick={() => dispatch(closeProfile())}>
-											Ver vista previa completa
-										</Link>
-									</Button>
-								</>
-							)}
-
-							{activeTab === 'account' && (
-								<div className='space-y-4'>
-									<div className='rounded-2xl border-2 border-border bg-secondary px-4 py-3'>
-										<p className='text-xs font-semibold uppercase tracking-wide text-muted-foreground'>Email</p>
-										<p className='text-sm font-medium mt-1'>{email}</p>
-									</div>
-									<div className='rounded-2xl border-2 border-border bg-secondary px-4 py-3'>
-										<p className='text-xs font-semibold uppercase tracking-wide text-muted-foreground'>Tipo de cuenta</p>
-										<p className='text-sm font-medium mt-1'>
-											{google ? 'Google' : 'Email y contraseña'}
-										</p>
-									</div>
-									{!google && (
-										<PasswordResetFlow
-											key={passwordResetKey}
-											email={email}
-											authenticated
+								{activeTab === 'page' && (
+									<>
+										<TextareaFormik
+											name='bio'
+											text='Bio de tu página'
+											placeholder='Cuéntale a tus visitantes quién eres o qué haces'
+											rows={3}
 										/>
-									)}
-								</div>
-							)}
+										<SwitchFormik
+											name='showBranding'
+											label='Mostrar "Creado con TreeLink"'
+											description='Muestra el pie de página en tu link público.'
+										/>
+										<div className='rounded-2xl border-2 border-border bg-secondary px-4 py-3'>
+											<p className='text-xs font-semibold uppercase tracking-wide text-muted-foreground mb-1'>
+												Vista previa de tu URL
+											</p>
+											<p className='text-sm font-mono break-all'>{buildPublicUrl(values.username)}</p>
+										</div>
+										<Button type='button' variant='outline' asChild className='w-full'>
+											<Link to='/preview' onClick={() => dispatch(closeProfile())}>
+												Ver vista previa completa
+											</Link>
+										</Button>
+									</>
+								)}
 
-							{submitCount > 0 && Object.keys(errors).length > 0 && (
-								<div className='rounded-2xl border-2 border-destructive/30 bg-secondary px-4 py-3 text-sm text-destructive'>
-									{Object.values(errors).join('. ')}
-								</div>
-							)}
+								{submitCount > 0 && Object.keys(errors).length > 0 && (
+									<div className='rounded-2xl border-2 border-destructive/30 bg-secondary px-4 py-3 text-sm text-destructive'>
+										Revisa los campos marcados en rojo antes de guardar.
+									</div>
+								)}
 
-							{activeTab !== 'account' && (
 								<UsernameSubmitButton
 									currentUsername={slugifyUsername(username || '')}
 									loadingLabel='Guardando...'
@@ -247,10 +269,10 @@ export const ModalProfile = () => {
 								>
 									Guardar cambios
 								</UsernameSubmitButton>
-							)}
-						</form>
-					)}
-				</Formik>
+							</form>
+						)}
+					</Formik>
+				)}
 			</DialogContent>
 		</Dialog>
 	);

@@ -1,4 +1,4 @@
-import { useField } from 'formik';
+import { useField, useFormikContext } from 'formik';
 import { CheckCircle2, Loader2, XCircle, AlertCircle, Sparkles } from 'lucide-react';
 
 import { Label } from '@/components/ui/label';
@@ -47,11 +47,12 @@ export const UsernameField = ({
 	skipAvailabilityCheck = false,
 	onManualEdit,
 }) => {
+	const { submitCount } = useFormikContext();
 	const [{ onBlur }, { error, touched, value }, { setValue }] = useField(name);
 	const { status } = useUsernameAvailability(value, currentUsername, {
 		enabled: !skipAvailabilityCheck,
 	});
-	const showError = touched && error;
+	const showError = Boolean(error) && (touched || submitCount > 0);
 	const statusInfo = skipAvailabilityCheck ? AUTO_GENERATED_COPY : STATUS_COPY[status];
 	const showStatus =
 		skipAvailabilityCheck || (statusInfo && status !== USERNAME_STATUS.IDLE);

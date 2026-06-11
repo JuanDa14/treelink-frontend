@@ -1,10 +1,11 @@
 import { useState } from 'react';
-import { Formik } from 'formik';
+import { Formik, useField, useFormikContext } from 'formik';
 import { useDispatch } from 'react-redux';
 import { CheckCircle2, KeyRound, MailCheck } from 'lucide-react';
 
 import { InputFormik } from './InputFormik';
 import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
 import {
 	confirmPasswordReset,
 	forgotPassword,
@@ -14,6 +15,107 @@ import {
 import { passwordResetCodeSchema } from '../schemas';
 
 const CODE_FORM_INITIAL = { code: '', password: '', password2: '' };
+
+const CodeInputFormik = () => {
+	const { submitCount } = useFormikContext();
+	const [field, meta, helpers] = useField('code');
+	const showError = Boolean(meta.error) && (meta.touched || submitCount > 0);
+
+	return (
+		<div className='space-y-2'>
+			<label htmlFor='reset-code' className={cn('text-sm font-medium', showError && 'text-destructive')}>
+				Código de verificación
+			</label>
+			<input
+				{...field}
+				id='reset-code'
+				type='text'
+				inputMode='numeric'
+				autoComplete='one-time-code'
+				maxLength={6}
+				placeholder='000000'
+				value={field.value}
+				onChange={(event) => helpers.setValue(event.target.value.replace(/\D/g, '').slice(0, 6))}
+				onBlur={() => helpers.setTouched(true)}
+				className={cn(
+					'flex h-12 w-full rounded-2xl border-2 bg-background px-4 text-center text-2xl font-semibold tracking-[0.4em] text-foreground outline-none transition focus:border-primary',
+					showError ? 'border-destructive focus:border-destructive' : 'border-border'
+				)}
+				aria-invalid={showError}
+			/>
+			{showError && <p className='text-sm text-destructive'>{meta.error}</p>}
+		</div>
+	);
+};
+
+const PasswordResetCodeForm = ({ email, authenticated, onSuccess, onResend, sendingCode }) => {
+	const dispatch = useDispatch();
+
+	const handleConfirmReset = async (values, { setSubmitting }) => {
+		const payload = {
+			code: values.code.trim(),
+			password: values.password,
+		};
+
+		const result = authenticated
+			? await dispatch(confirmPasswordReset(payload))
+			: await dispatch(resetPasswordWithCode({ email, ...payload }));
+
+		setSubmitting(false);
+
+		if (result?.ok) {
+			onSuccess();
+		}
+	};
+
+	return (
+		<Formik
+			initialValues={CODE_FORM_INITIAL}
+			validationSchema={passwordResetCodeSchema}
+			onSubmit={handleConfirmReset}
+		>
+			{({ handleSubmit, isSubmitting }) => (
+				<form
+					onSubmit={(event) => {
+						event.preventDefault();
+						event.stopPropagation();
+						handleSubmit(event);
+					}}
+					noValidate
+					className='space-y-3'
+				>
+					<CodeInputFormik />
+					<InputFormik
+						text='Nueva contraseña'
+						type='password'
+						placeholder='••••••••'
+						name='password'
+					/>
+					<InputFormik
+						text='Confirmar contraseña'
+						type='password'
+						placeholder='••••••••'
+						name='password2'
+					/>
+					<div className='flex flex-col gap-2 sm:flex-row'>
+						<Button
+							type='button'
+							variant='outline'
+							className='w-full sm:flex-1'
+							disabled={sendingCode || isSubmitting}
+							onClick={onResend}
+						>
+							{sendingCode ? 'Reenviando...' : 'Reenviar código'}
+						</Button>
+						<Button disabled={isSubmitting} className='w-full sm:flex-1' type='submit'>
+							{isSubmitting ? 'Guardando...' : 'Actualizar contraseña'}
+						</Button>
+					</div>
+				</form>
+			)}
+		</Formik>
+	);
+};
 
 export const PasswordResetFlow = ({ email, authenticated = false, onComplete }) => {
 	const dispatch = useDispatch();
@@ -32,24 +134,6 @@ export const PasswordResetFlow = ({ email, authenticated = false, onComplete }) 
 			}
 		} finally {
 			setSendingCode(false);
-		}
-	};
-
-	const handleConfirmReset = async (values, { setSubmitting }) => {
-		const payload = {
-			code: values.code.trim(),
-			password: values.password,
-		};
-
-		const result = authenticated
-			? await dispatch(confirmPasswordReset(payload))
-			: await dispatch(resetPasswordWithCode({ email, ...payload }));
-
-		setSubmitting(false);
-
-		if (result?.ok) {
-			setStep('done');
-			onComplete?.();
 		}
 	};
 
@@ -80,61 +164,16 @@ export const PasswordResetFlow = ({ email, authenticated = false, onComplete }) 
 					</p>
 				</div>
 
-				<Formik
-					initialValues={CODE_FORM_INITIAL}
-					validationSchema={passwordResetCodeSchema}
-					onSubmit={handleConfirmReset}
-				>
-					{({ handleSubmit, isSubmitting, values, setFieldValue }) => (
-						<form onSubmit={handleSubmit} noValidate className='space-y-3'>
-							<div className='space-y-2'>
-								<label htmlFor='reset-code' className='text-sm font-medium text-foreground'>
-									Código de verificación
-								</label>
-								<input
-									id='reset-code'
-									name='code'
-									type='text'
-									inputMode='numeric'
-									autoComplete='one-time-code'
-									maxLength={6}
-									placeholder='000000'
-									value={values.code}
-									onChange={(event) =>
-										setFieldValue('code', event.target.value.replace(/\D/g, '').slice(0, 6))
-									}
-									className='flex h-12 w-full rounded-2xl border-2 border-border bg-background px-4 text-center text-2xl font-semibold tracking-[0.4em] text-foreground outline-none transition focus:border-primary'
-								/>
-							</div>
-							<InputFormik
-								text='Nueva contraseña'
-								type='password'
-								placeholder='••••••••'
-								name='password'
-							/>
-							<InputFormik
-								text='Confirmar contraseña'
-								type='password'
-								placeholder='••••••••'
-								name='password2'
-							/>
-							<div className='flex flex-col gap-2 sm:flex-row'>
-								<Button
-									type='button'
-									variant='outline'
-									className='w-full sm:flex-1'
-									disabled={sendingCode || isSubmitting}
-									onClick={handleSendCode}
-								>
-									{sendingCode ? 'Reenviando...' : 'Reenviar código'}
-								</Button>
-								<Button disabled={isSubmitting} className='w-full sm:flex-1' type='submit'>
-									{isSubmitting ? 'Guardando...' : 'Actualizar contraseña'}
-								</Button>
-							</div>
-						</form>
-					)}
-				</Formik>
+				<PasswordResetCodeForm
+					email={email}
+					authenticated={authenticated}
+					sendingCode={sendingCode}
+					onResend={handleSendCode}
+					onSuccess={() => {
+						setStep('done');
+						onComplete?.();
+					}}
+				/>
 			</div>
 		);
 	}
