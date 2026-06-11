@@ -248,12 +248,14 @@ export const forgotPassword = (email) => {
 			const { data } = await userApi.post('/forgot-password', email);
 
 			if (data.ok) {
-				return toast.success(data.message);
+				toast.success(data.message);
+				return { ok: true };
 			}
 		} catch (error) {
 			const { data } = error.response;
 			const message = data.message || data.errors[0].message;
 			toast.error(message);
+			return { ok: false };
 		} finally {
 			dispatch(finishChecking());
 		}
