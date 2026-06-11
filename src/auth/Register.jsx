@@ -1,11 +1,13 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { Formik } from 'formik';
+import { motion } from 'framer-motion';
 
 import { register } from '../redux';
 import { CheckboxFormik, InputFormik, Spinner } from '../components';
 import { registerSchema } from '../schemas';
-import ImageBackground from '../public/images/background.webp';
+import { AuthLayout } from '../layouts/AuthLayout';
+import { Button } from '@/components/ui/button';
 
 const INITIAL_VALUES = {
 	username: '',
@@ -18,9 +20,7 @@ const INITIAL_VALUES = {
 
 const Register = () => {
 	const dispatch = useDispatch();
-
 	const navigate = useNavigate();
-
 	const { checking } = useSelector((state) => state.auth);
 
 	const handleRegister = async (values) => {
@@ -33,103 +33,46 @@ const Register = () => {
 	}
 
 	return (
-		<div className='h-screen w-full flex items-center'>
-			<div className='container max-w-md mx-auto xl:max-w-4xl flex bg-white rounded-lg shadow overflow-hidden'>
-				<div className='relative hidden xl:block xl:w-1/2 h-full'>
-					<img
-						className='absolute h-auto w-full object-cover object-center bg-no-repeat bg-cover bg-center'
-						src={ImageBackground}
-						alt='imagen registro'
-					/>
-				</div>
-				<div className='w-full xl:w-1/2 p-8'>
-					<h1 className=' text-2xl font-bold'>Registrarse</h1>
-					<div className='flex items-center gap-2'>
-						<span className='text-gray-600 text-sm'>¿Ya tienes una cuenta?</span>
-						<Link className='text-gray-700 text-sm font-semibold underline' to='/auth/login'>
-							Inicia sesion
-						</Link>
-					</div>
-					<Formik
-						initialValues={INITIAL_VALUES}
-						onSubmit={async (values, { setSubmitting }) => {
-							await handleRegister(values);
-							setSubmitting(false);
-						}}
-						validationSchema={registerSchema}
+		<AuthLayout
+			title='Crea tu cuenta'
+			subtitle='Empieza a construir tu árbol de enlaces en minutos'
+			footer={
+				<span>
+					¿Ya tienes cuenta?{' '}
+					<Link className='font-semibold text-primary hover:underline' to='/auth/login'>
+						Inicia sesión
+					</Link>
+				</span>
+			}
+		>
+			<Formik
+				initialValues={INITIAL_VALUES}
+				onSubmit={async (values, { setSubmitting }) => {
+					await handleRegister(values);
+					setSubmitting(false);
+				}}
+				validationSchema={registerSchema}
+			>
+				{({ handleSubmit, isSubmitting }) => (
+					<motion.form
+						onSubmit={handleSubmit}
+						initial={{ opacity: 0 }}
+						animate={{ opacity: 1 }}
+						className='space-y-3'
 					>
-						{({ handleSubmit, isSubmitting }) => (
-							<form onSubmit={handleSubmit}>
-								<div className='mb-2 mt-4'>
-									<InputFormik
-										text='Nombre de usuario'
-										name='username'
-										type='text'
-										placeholder='Ingrese su nombre de usuario'
-										classNameInput={`text-sm appearance-none rounded w-full py-2 px-3 text-gray-700 bg-gray-200 leading-tight focus:outline-none focus:shadow-outline h-10`}
-										classNameText={`block text-gray-700 text-sm font-semibold mb-2`}
-									/>
-								</div>
-								<div className='mb-2'>
-									<InputFormik
-										text='Nombre completo'
-										name='name'
-										type='text'
-										placeholder='Ingrese su nombre completo'
-										classNameInput={`text-sm appearance-none rounded w-full py-2 px-3 text-gray-700 bg-gray-200 leading-tight focus:outline-none focus:shadow-outline h-10`}
-										classNameText={`block text-gray-700 text-sm font-semibold mb-2`}
-									/>
-								</div>
-								<div className='mb-2'>
-									<InputFormik
-										text='Email'
-										name='email'
-										type='email'
-										placeholder='Ingrese su correo electronico'
-										classNameInput={`text-sm appearance-none rounded w-full py-2 px-3 text-gray-700 bg-gray-200 leading-tight focus:outline-none focus:shadow-outline h-10`}
-										classNameText={`block text-gray-700 text-sm font-semibold mb-2`}
-									/>
-								</div>
-								<div className='mb-2'>
-									<InputFormik
-										text='Contraseña'
-										name='password'
-										type='password'
-										placeholder='Ingrese su contraseña'
-										classNameInput={`text-sm appearance-none rounded w-full py-2 px-3 text-gray-700 bg-gray-200 leading-tight focus:outline-none focus:shadow-outline h-10`}
-										classNameText={`block text-gray-700 text-sm font-semibold mb-2`}
-									/>
-								</div>
-								<div className='mb-2'>
-									<InputFormik
-										text='Confirmar Contraseña'
-										name='password2'
-										type='password'
-										placeholder='Confirme su contraseña'
-										classNameInput={`text-sm appearance-none rounded w-full py-2 px-3 text-gray-700 bg-gray-200 leading-tight focus:outline-none focus:shadow-outline h-10`}
-										classNameText={`block text-gray-700 text-sm font-semibold mb-2`}
-									/>
-								</div>
-
-								<CheckboxFormik
-									label='Acepto los Términos del servicio y la Política de Privacidad'
-									name='terms'
-								/>
-								<div className='flex w-full mt-4'>
-									<button
-										disabled={isSubmitting}
-										className='w-full bg-gray-800 hover:bg-grey-900 text-white text-sm py-2 px-4 font-semibold rounded focus:outline-none focus:shadow-outline h-10 disabled:opacity-50'
-										type='submit'
-									>
-										Registrarse
-									</button>
-								</div>
-							</form>
-						)}
-					</Formik>
-				</div>
-			</div>
-		</div>
+						<InputFormik text='Nombre de usuario' name='username' type='text' placeholder='juancode' />
+						<InputFormik text='Nombre completo' name='name' type='text' placeholder='Juan Pérez' />
+						<InputFormik text='Email' name='email' type='email' placeholder='tu@email.com' />
+						<InputFormik text='Contraseña' name='password' type='password' placeholder='••••••••' />
+						<InputFormik text='Confirmar contraseña' name='password2' type='password' placeholder='••••••••' />
+						<CheckboxFormik label='Acepto los términos del servicio y la política de privacidad' name='terms' />
+						<Button disabled={isSubmitting} className='w-full mt-2' type='submit'>
+							{isSubmitting ? 'Registrando...' : 'Crear cuenta'}
+						</Button>
+					</motion.form>
+				)}
+			</Formik>
+		</AuthLayout>
 	);
 };
 

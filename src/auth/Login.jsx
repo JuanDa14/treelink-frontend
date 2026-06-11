@@ -1,17 +1,17 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { Formik } from 'formik';
-
-import { gapi } from 'gapi-script';
-import { GoogleLogin } from 'react-google-login';
-import FacebookLogin from 'react-facebook-login';
-// import TwitterLogin from 'react-twitter-login';
+import { GoogleLogin } from '@react-oauth/google';
+import { FacebookLoginButton } from '../components/FacebookLoginButton';
+import { motion } from 'framer-motion';
 
 import { loginSchema } from '../schemas';
 import { InputFormik, Spinner } from '../components';
 import { login, loginWithFacebook, loginWithGoogle } from '../redux/thunks/auth';
-import ImageBackground from '../public/images/background.webp';
+import { AuthLayout } from '../layouts/AuthLayout';
+import { Button } from '@/components/ui/button';
+import { parseGoogleCredential } from '@/lib/jwt';
 
 const INITIAL_VALUES = {
 	email: '',
@@ -20,40 +20,17 @@ const INITIAL_VALUES = {
 
 const Login = () => {
 	const [loadingGoogle, setLoadingGoogle] = useState(false);
-
 	const dispatch = useDispatch();
-
 	const { checking } = useSelector((state) => state.auth);
-
-	useEffect(() => {
-		const initClient = () => {
-			gapi.client.init({
-				clientId: import.meta.env.VITE_APP_GOOGLE_CLIENT_ID,
-				scope: '',
-			});
-		};
-		gapi.load('client:auth2', initClient);
-	});
 
 	const handleLogin = async (values) => {
 		await dispatch(login(values));
 	};
 
-	const handleLoginSuccess = ({ tokenId, profileObj }) => {
-		const { email } = profileObj;
-		dispatch(loginWithGoogle({ email, tokenId }));
-		setLoadingGoogle(false);
-	};
-
-	const handleLoginFailure = () => {
-		setLoadingGoogle(false);
-	};
-
-	const handleRequest = () => {
-		setLoadingGoogle(true);
-	};
-
-	const handleAutoLoadFinished = () => {
+	const handleLoginSuccess = (credentialResponse) => {
+		const { credential } = credentialResponse;
+		const { email } = parseGoogleCredential(credential);
+		dispatch(loginWithGoogle({ email, tokenId: credential }));
 		setLoadingGoogle(false);
 	};
 
@@ -61,128 +38,90 @@ const Login = () => {
 		dispatch(loginWithFacebook({ picture, email, name }));
 	};
 
-	const handleLoginFailureFacebook = (response) => {
-		console.log(response);
-	};
-
-	const handleLoginTwitter = (err, data) => {
-		// TODO falta login con twiter
-		console.log(err, data);
-	};
-
 	if (checking) {
 		return <Spinner />;
 	}
 
 	return (
-		<div className='h-screen w-full flex items-center'>
-			<div className='container max-w-md mx-auto xl:max-w-4xl flex bg-white rounded-lg shadow overflow-hidden'>
-				<div className='relative hidden xl:block xl:w-1/2 h-full'>
-					<img
-						className='absolute h-auto w-full object-cover'
-						src={ImageBackground}
-						alt='imagen login'
-					/>
-				</div>
-				<div className='w-full xl:w-1/2 p-8'>
-					<h2 className=' text-2xl font-bold'>Bienvenido</h2>
-					<div className='flex items-center gap-2'>
-						<span className='text-gray-600 text-sm'>¿No tienes una cuenta?</span>
-						<Link
-							className='text-gray-700 text-sm font-semibold underline'
-							to='/auth/register'
-						>
-							Registrate
-						</Link>
-					</div>
-					<Formik
-						initialValues={INITIAL_VALUES}
-						onSubmit={async (values, { setSubmitting }) => {
-							await handleLogin(values);
-							setSubmitting(false);
-						}}
-						validationSchema={loginSchema}
+		<AuthLayout
+			title='Bienvenido de vuelta'
+			subtitle='Inicia sesión para gestionar tu árbol de enlaces'
+			footer={
+				<span>
+					¿No tienes cuenta?{' '}
+					<Link className='font-semibold text-primary hover:underline' to='/auth/register'>
+						Regístrate
+					</Link>
+				</span>
+			}
+		>
+			<Formik
+				initialValues={INITIAL_VALUES}
+				onSubmit={async (values, { setSubmitting }) => {
+					await handleLogin(values);
+					setSubmitting(false);
+				}}
+				validationSchema={loginSchema}
+			>
+				{({ handleSubmit, isSubmitting }) => (
+					<motion.form
+						onSubmit={handleSubmit}
+						initial={{ opacity: 0 }}
+						animate={{ opacity: 1 }}
+						transition={{ delay: 0.1 }}
+						className='space-y-4'
 					>
-						{({ handleSubmit, isSubmitting }) => (
-							<form onSubmit={handleSubmit}>
-								<div className='mb-2 mt-4'>
-									<InputFormik
-										text='Email'
-										name='email'
-										type='email'
-										placeholder='Ingrese su correo electronico'
-										classNameInput={`text-sm appearance-none rounded w-full py-2 px-3 text-gray-700 bg-gray-200 leading-tight focus:outline-none focus:shadow-outline h-10`}
-										classNameText={`block text-gray-700 text-sm font-semibold mb-2`}
-									/>
-								</div>
-								<div className='mb-2 mt-4'>
-									<InputFormik
-										text='Password'
-										name='password'
-										type='password'
-										placeholder='Ingrese su contraseña'
-										classNameInput={`text-sm appearance-none rounded w-full py-2 px-3 text-gray-700 bg-gray-200 leading-tight focus:outline-none focus:shadow-outline h-10`}
-										classNameText={`block text-gray-700 text-sm font-semibold mb-2`}
-									/>
-								</div>
-								<Link
-									className='text-sm text-gray-600 hover:text-gray-800 mt-2 underline'
-									to='/auth/forgot-password'
-									title='Olvidaste tu contraseña?'
-								>
-									Olvidaste tu contraseña?
-								</Link>
-								<div className='flex w-full mt-4'>
-									<button
-										disabled={isSubmitting}
-										className='w-full bg-gray-800 hover:bg-grey-900 text-white text-sm py-2 px-4 font-semibold rounded focus:outline-none focus:shadow-outline h-10 disabled:opacity-50'
-										type='submit'
-									>
-										Iniciar sesion
-									</button>
-								</div>
-							</form>
-						)}
-					</Formik>
+						<InputFormik
+							text='Email'
+							name='email'
+							type='email'
+							placeholder='tu@email.com'
+						/>
+						<InputFormik
+							text='Contraseña'
+							name='password'
+							type='password'
+							placeholder='••••••••'
+						/>
+						<Link
+							className='text-sm text-muted-foreground hover:text-primary transition-colors inline-block'
+							to='/auth/forgot-password'
+						>
+							¿Olvidaste tu contraseña?
+						</Link>
+						<Button disabled={isSubmitting} className='w-full' type='submit'>
+							{isSubmitting ? 'Iniciando sesión...' : 'Iniciar sesión'}
+						</Button>
+					</motion.form>
+				)}
+			</Formik>
 
-					<div className='flex flex-col gap-3 justify-center items-center '>
-						<span className='w-full mt-4 border-t border-b-gray-500'></span>
-						<GoogleLogin
-							clientId={import.meta.env.VITE_APP_GOOGLE_CLIENT_ID}
-							buttonText='Iniciar sesion con Google'
-							onSuccess={handleLoginSuccess}
-							onFailure={handleLoginFailure}
-							onRequest={handleRequest}
-							onAutoLoadFinished={handleAutoLoadFinished}
-							cookiePolicy={'single_host_origin'}
-							icon={false}
-							className={`btn btn-google`}
-							disabled={loadingGoogle}
-						/>
-						<FacebookLogin
-							appId={import.meta.env.VITE_APP_FACEBOOK_CLIENT_ID}
-							callback={handleLoginFacebook}
-							autoLoad={false}
-							fields='name,email,picture'
-							textButton='Iniciar sesion con Facebook'
-							cssClass='btn btn-facebook'
-							containerStyle={{ width: '100%' }}
-							onFailure={handleLoginFailureFacebook}
-							tag='button'
-						/>
-					</div>
+			<div className='relative my-6'>
+				<div className='absolute inset-0 flex items-center'>
+					<span className='w-full border-t' />
+				</div>
+				<div className='relative flex justify-center text-xs uppercase'>
+					<span className='bg-card px-2 text-muted-foreground'>O continúa con</span>
 				</div>
 			</div>
-		</div>
 
-		// 				{/* //TODO falta hacer el login con twitter */}
-		// 				{/* <TwitterLogin
-		// 				authCallback={handleLoginTwitter}
-		// 				consumerKey={import.meta.env.VITE_APP_TWITER_CLIENT_ID}
-		// 				consumerSecret={import.meta.env.VITE_APP_TWITER_SECRET}
-		// 				children={<span>Twitter</span>}
-		// 				className='btn btn-twiter'
-		// 			/> */}
+			<div className='flex flex-col gap-3'>
+				<div className='flex justify-center'>
+					<GoogleLogin
+						onSuccess={handleLoginSuccess}
+						onError={() => setLoadingGoogle(false)}
+						useOneTap={false}
+						theme='outline'
+						size='large'
+						text='signin_with'
+						shape='rectangular'
+						width='100%'
+						locale='es'
+					/>
+				</div>
+				<FacebookLoginButton onSuccess={handleLoginFacebook} disabled={loadingGoogle} />
+			</div>
+		</AuthLayout>
 	);
 };
 

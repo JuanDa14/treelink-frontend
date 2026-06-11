@@ -1,66 +1,50 @@
 import { useEffect } from 'react';
-import { useSelector } from 'react-redux';
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { Link, useLocation } from 'react-router-dom';
+import { CheckCircle2, Loader2 } from 'lucide-react';
+import { motion } from 'framer-motion';
+
 import { verifiedEmail } from '../redux';
-import { Spinner } from '../components';
-import ImageBackground from '../public/images/background.webp';
+import { AuthLayout } from '../layouts/AuthLayout';
+import { Button } from '@/components/ui/button';
 
 const Verified = () => {
 	const dispatch = useDispatch();
-
 	const { verified } = useSelector((state) => state.auth);
-
 	const { search } = useLocation();
 
 	useEffect(() => {
 		const token = search.split('=')[1];
-
 		if (token) {
 			dispatch(verifiedEmail(token));
 		}
-	}, []);
+	}, [dispatch, search]);
 
 	return (
-		<div className='h-screen w-full flex items-center'>
-			<div className='container max-w-md mx-auto xl:max-w-4xl flex flex-row-reverse bg-white rounded-lg shadow overflow-hidden'>
-				<div className='relative hidden xl:block xl:w-1/2 h-full'>
-					<img
-						className='absolute h-auto w-full object-cover'
-						src={ImageBackground}
-						alt='imagen verified'
-					/>
-				</div>
-				<div className='w-full xl:w-1/2 p-8'>
-					<h1 className=' text-2xl font-bold'>Verificar Cuenta</h1>
-					<div className='flex items-center gap-2 mt-2'>
-						{verified ? (
-							<span className='text-gray-600 text-sm'>
-								Tu cuenta ha sido verificada, ahora puedes iniciar sesion.
-							</span>
-						) : (
-							<>
-								<span className='text-gray-600 text-sm'>
-									Estamos verificando tu cuenta, esto puede tardar unos segundos...
-								</span>
-							</>
-						)}
+		<AuthLayout title='Verificar cuenta'>
+			<div className='flex flex-col items-center text-center gap-4 py-4'>
+				{verified ? (
+					<motion.div
+						initial={{ scale: 0 }}
+						animate={{ scale: 1 }}
+						className='flex flex-col items-center gap-4'
+					>
+						<CheckCircle2 className='h-16 w-16 text-primary' />
+						<p className='text-muted-foreground'>
+							Tu cuenta ha sido verificada correctamente. Ya puedes iniciar sesión.
+						</p>
+						<Button asChild className='w-full'>
+							<Link to='/auth/login'>Iniciar sesión</Link>
+						</Button>
+					</motion.div>
+				) : (
+					<div className='flex flex-col items-center gap-3'>
+						<Loader2 className='h-10 w-10 animate-spin text-primary' />
+						<p className='text-sm text-muted-foreground'>Verificando tu cuenta...</p>
 					</div>
-					{verified ? (
-						<div className='w-full flex flex-col gap-2 mt-2 items-center'>
-							<Link
-								to={'/auth/login'}
-								className='w-full text-center bg-gray-800 hover:bg-grey-900 text-white text-sm py-2 px-4 font-semibold rounded focus:outline-none focus:shadow-outline h-10 disabled:opacity-50'
-							>
-								Inicia Sesion
-							</Link>
-						</div>
-					) : (
-						<Spinner className='h-full pb-10' />
-					)}
-				</div>
+				)}
 			</div>
-		</div>
+		</AuthLayout>
 	);
 };
 
