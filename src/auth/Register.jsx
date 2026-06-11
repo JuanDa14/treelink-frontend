@@ -60,8 +60,8 @@ const Register = () => {
 						animate={{ opacity: 1 }}
 						className='space-y-3'
 					>
-						<InputFormik text='Nombre de usuario' name='username' type='text' placeholder='juancode' />
-						<InputFormik text='Nombre completo' name='name' type='text' placeholder='Juan Pérez' />
+						<InputFormik text='Nombre de usuario (sin espacios)' name='username' type='text' placeholder='juan-morales' />
+						<InputFormik text='Nombre para mostrar' name='name' type='text' placeholder='Juan Morales' />
 						<InputFormik text='Email' name='email' type='email' placeholder='tu@email.com' />
 						<InputFormik text='Contraseña' name='password' type='password' placeholder='••••••••' />
 						<InputFormik text='Confirmar contraseña' name='password2' type='password' placeholder='••••••••' />

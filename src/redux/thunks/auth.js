@@ -254,7 +254,7 @@ export const getPublicUserLinks = (username) => {
 	return async (dispatch) => {
 		dispatch(startChecking());
 		try {
-			const { data } = await userApi.get(`/${username}`);
+			const { data } = await userApi.get(`/${encodeURIComponent(username)}`);
 
 			if (data.ok) {
 				dispatch(loginUser(data.user));

@@ -3,11 +3,12 @@ import { motion } from 'framer-motion';
 
 import { LinkList, ShareTreeLinkPanel, TreeProfileHeader } from '../components';
 import { Layout } from '../layouts';
+import { buildPublicUrl } from '../utils';
 
 const PreviewPage = () => {
 	const { imageURL, username, name, bio } = useSelector((state) => state.auth.user);
 
-	const publicUrl = `${import.meta.env.VITE_APP_LOCAL_URL}/user/${username}`;
+	const publicUrl = buildPublicUrl(username);
 
 	return (
 		<Layout>

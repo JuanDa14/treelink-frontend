@@ -11,6 +11,7 @@ import { updatedProfile } from '../../redux';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import { buildPublicUrl, slugifyUsername } from '../../utils';
 
 const TABS = [
 	{ id: 'profile', label: 'Perfil', icon: User },
@@ -29,7 +30,7 @@ export const ModalProfile = () => {
 	);
 	const { profile } = useSelector((state) => state.ui);
 
-	const publicUrl = `${import.meta.env.VITE_APP_LOCAL_URL}/user/${username}`;
+	const publicUrl = buildPublicUrl(username);
 
 	const handleUpdatedProfile = async (values) => {
 		await dispatch(updatedProfile(values));
@@ -120,8 +121,20 @@ export const ModalProfile = () => {
 											handleChangeImage(e.target.files[0]);
 										}}
 									/>
-									<InputFormik name='username' text='Nombre de usuario' placeholder='juancode' type='text' />
-									<InputFormik name='name' text='Nombre para mostrar' placeholder='Tu nombre' type='text' />
+									<InputFormik
+										name='username'
+										text='Nombre de usuario (URL pública)'
+										placeholder='juan-morales'
+										type='text'
+										classNameContainer='space-y-1'
+									/>
+									<p className='text-xs text-muted-foreground -mt-2 mb-2'>
+										Sin espacios. Tu link:{' '}
+										<span className='font-mono text-primary'>
+											{buildPublicUrl(values.username || slugifyUsername(username))}
+										</span>
+									</p>
+									<InputFormik name='name' text='Nombre para mostrar' placeholder='Juan Morales' type='text' />
 								</>
 							)}
 

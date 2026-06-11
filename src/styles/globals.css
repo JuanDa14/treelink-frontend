@@ -188,8 +188,10 @@
 	}
 
 	.badge-muted {
-		@apply text-[10px] font-semibold uppercase tracking-wide text-muted-foreground px-1.5 py-0.5 rounded-full shrink-0;
+		@apply inline-flex items-center justify-center text-[10px] font-semibold uppercase tracking-wide text-muted-foreground px-2 rounded-full shrink-0 leading-none;
 		background: var(--secondary);
+		min-height: 1.25rem;
+		min-width: 2.75rem;
 	}
 
 	.badge-primary-icon {

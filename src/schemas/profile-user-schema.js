@@ -1,11 +1,8 @@
 import * as yup from 'yup';
+import { usernameField } from './username.schema';
 
 export const profileSchema = yup.object().shape({
-	username: yup
-		.string()
-		.trim()
-		.min(3, 'El nombre de usuario debe tener al menos 3 caracteres')
-		.required('El nombre de usuario es requerido'),
+	username: usernameField,
 	name: yup
 		.string()
 		.trim()

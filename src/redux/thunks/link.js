@@ -147,7 +147,14 @@ export const reorderUserLinks = (linkIds) => {
 };
 
 export const toggleLinkField = (id, field, value) => {
-	return async (dispatch) => {
+	return async (dispatch, getState) => {
+		const previousLinks = getState().link.links;
+		const currentLink = previousLinks.find((link) => link._id === id);
+
+		if (currentLink) {
+			dispatch(updateLink({ ...currentLink, [field]: value }));
+		}
+
 		try {
 			const { data } = await linkApi.patch(`/${id}`, { [field]: value }, { headers: authHeaders() });
 
@@ -156,8 +163,13 @@ export const toggleLinkField = (id, field, value) => {
 				toast.success(field === 'featured' ? 'Destacado actualizado' : 'Visibilidad actualizada');
 			}
 		} catch (error) {
-			const { data } = error.response;
-			const message = data?.message || data?.errors?.[0]?.message || 'No se pudo actualizar';
+			if (currentLink) {
+				dispatch(updateLink(currentLink));
+			}
+			const message =
+				error.response?.data?.message ||
+				error.response?.data?.errors?.[0]?.message ||
+				'No se pudo actualizar';
 			toast.error(message);
 		}
 	};

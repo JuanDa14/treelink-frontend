@@ -55,7 +55,7 @@ export const ItemLink = ({
 					isActive={isActive}
 					isDragging={isDragging}
 					dragHandleProps={{ ...attributes, ...listeners }}
-					onToggleFeatured={() => dispatch(toggleLinkField(_id, 'featured', !featured))}
+					onToggleFeatured={() => dispatch(toggleLinkField(_id, 'featured', featured !== true))}
 					onToggleActive={() => dispatch(toggleLinkField(_id, 'isActive', isActive === false))}
 					onEdit={() => {
 						dispatch(getLinkById(_id));
@@ -77,13 +77,13 @@ export const ItemLink = ({
 			whileHover={{ scale: 1.02 }}
 			whileTap={{ scale: 0.98 }}
 			onClick={openLink}
-			className={cn('link-pill w-full', featured && 'link-pill-featured')}
+			className={cn('link-pill w-full', featured === true && 'link-pill-featured')}
 		>
 			<img src={imageURL} alt='' className='h-8 w-8 shrink-0 rounded-full object-cover' loading='lazy' />
 			<span className='flex flex-col items-center min-w-0 text-center'>
 				<span className='flex items-center gap-1.5 font-semibold capitalize truncate w-full justify-center'>
 					{name}
-					{featured && <Star className='h-3.5 w-3.5 fill-primary text-primary shrink-0' />}
+					{featured === true && <Star className='h-3.5 w-3.5 fill-primary text-primary shrink-0' />}
 				</span>
 				{description && (
 					<span className='text-xs text-muted-foreground font-normal truncate w-full'>{description}</span>

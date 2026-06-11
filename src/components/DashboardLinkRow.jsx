@@ -2,6 +2,12 @@ import { ExternalLink, GripVertical, Pencil, Star, Trash2, Eye, EyeOff } from 'l
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
+const stopAndRun = (handler) => (event) => {
+	event.preventDefault();
+	event.stopPropagation();
+	handler();
+};
+
 export const DashboardLinkRow = ({
 	imageURL,
 	name,
@@ -17,12 +23,15 @@ export const DashboardLinkRow = ({
 	onDelete,
 	onOpen,
 }) => {
+	const isHidden = isActive === false;
+	const isFeatured = featured === true;
+
 	return (
 		<div
 			className={cn(
 				'link-pill-dashboard group',
-				featured && 'link-pill-dashboard-featured',
-				isActive === false && 'link-pill-dashboard-hidden',
+				isFeatured && 'link-pill-dashboard-featured',
+				isHidden && 'link-pill-dashboard-hidden',
 				isDragging && 'link-pill-dashboard-dragging'
 			)}
 		>
@@ -38,8 +47,8 @@ export const DashboardLinkRow = ({
 			<div className='min-w-0 flex-1'>
 				<div className='flex items-center gap-1.5'>
 					<p className='font-semibold capitalize truncate'>{name}</p>
-					{featured && <Star className='h-3.5 w-3.5 fill-primary text-primary shrink-0' />}
-					{isActive === false && <span className='badge-muted shrink-0'>Oculto</span>}
+					{isFeatured && <Star className='h-3.5 w-3.5 fill-primary text-primary shrink-0' />}
+					{isHidden && <span className='badge-muted shrink-0'>Oculto</span>}
 				</div>
 				{description ? (
 					<p className='text-xs text-muted-foreground truncate'>{description}</p>
@@ -47,28 +56,35 @@ export const DashboardLinkRow = ({
 					<p className='text-xs text-muted-foreground truncate'>{url}</p>
 				)}
 			</div>
-			<div className='link-actions'>
+			<div className='link-actions' onPointerDown={(e) => e.stopPropagation()}>
 				<Button
 					variant='ghost'
 					size='icon'
-					className={cn('link-action-btn', featured && 'link-action-btn-active')}
-					title={featured ? 'Quitar destacado' : 'Destacar'}
+					className={cn('link-action-btn', isFeatured && 'link-action-btn-active')}
+					title={isFeatured ? 'Quitar destacado' : 'Destacar'}
 					type='button'
-					onClick={onToggleFeatured}
+					onClick={stopAndRun(onToggleFeatured)}
 				>
-					<Star className={cn('h-4 w-4', featured && 'fill-primary')} />
+					<Star className={cn('h-4 w-4', isFeatured && 'fill-primary')} />
+				</Button>
+				<Button
+					variant='ghost'
+					size='icon'
+					className={cn('link-action-btn', isHidden && 'link-action-btn-active')}
+					title={isHidden ? 'Mostrar enlace' : 'Ocultar enlace'}
+					type='button'
+					onClick={stopAndRun(onToggleActive)}
+				>
+					{isHidden ? <EyeOff className='h-4 w-4' /> : <Eye className='h-4 w-4' />}
 				</Button>
 				<Button
 					variant='ghost'
 					size='icon'
 					className='link-action-btn'
-					title={isActive === false ? 'Mostrar enlace' : 'Ocultar enlace'}
+					title='Editar'
 					type='button'
-					onClick={onToggleActive}
+					onClick={stopAndRun(onEdit)}
 				>
-					{isActive === false ? <EyeOff className='h-4 w-4' /> : <Eye className='h-4 w-4' />}
-				</Button>
-				<Button variant='ghost' size='icon' className='link-action-btn' title='Editar' type='button' onClick={onEdit}>
 					<Pencil className='h-4 w-4' />
 				</Button>
 				<Button
@@ -77,11 +93,18 @@ export const DashboardLinkRow = ({
 					className='link-action-btn link-action-btn-danger'
 					title='Eliminar'
 					type='button'
-					onClick={onDelete}
+					onClick={stopAndRun(onDelete)}
 				>
 					<Trash2 className='h-4 w-4' />
 				</Button>
-				<Button variant='ghost' size='icon' className='link-action-btn' title='Abrir' type='button' onClick={onOpen}>
+				<Button
+					variant='ghost'
+					size='icon'
+					className='link-action-btn'
+					title='Abrir'
+					type='button'
+					onClick={stopAndRun(onOpen)}
+				>
 					<ExternalLink className='h-4 w-4' />
 				</Button>
 			</div>
