@@ -64,7 +64,7 @@ export const refreshUser = (refreshToken) => {
 };
 
 export const register = (body) => {
-	return async () => {
+	return async (dispatch) => {
 		dispatch(startChecking());
 		try {
 			const { data } = await userApi.post('/register', body);

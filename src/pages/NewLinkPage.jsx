@@ -1,10 +1,16 @@
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { Formik } from 'formik';
+import { motion } from 'framer-motion';
+import { ArrowLeft } from 'lucide-react';
+import { Link } from 'react-router-dom';
+
 import { InputFileFormik, InputFormik } from '../components';
 import { createUserLink } from '../redux';
 import { Layout } from '../layouts';
 import { newLinkSchema } from '../schemas';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 
 const INITIAL_VALUES = {
 	name: '',
@@ -14,7 +20,6 @@ const INITIAL_VALUES = {
 
 const NewLinkPage = () => {
 	const dispatch = useDispatch();
-
 	const navigate = useNavigate();
 
 	const handleNewLink = async (values) => {
@@ -23,60 +28,62 @@ const NewLinkPage = () => {
 	};
 
 	return (
-		<Layout classNameMain={'bg-gray-100'}>
-			<div className='container mt-10 mx-auto'>
-				<div className='max-w-lg mx-auto'>
-					<Formik
-						initialValues={INITIAL_VALUES}
-						onSubmit={async (values, { setSubmitting }) => {
-							await handleNewLink(values);
-							setSubmitting(false);
-						}}
-						validationSchema={newLinkSchema}
-					>
-						{({ handleSubmit, setFieldValue, isSubmitting }) => (
-							<form onSubmit={handleSubmit} noValidate>
-								<InputFormik
-									text='Nombre de su hoja de contacto'
-									name='name'
-									type='text'
-									placeholder='Instagram, Facebook, Twitter...'
-									classNameInput={`text-sm appearance-none rounded w-full py-2 px-3 text-gray-700 border-2 leading-tight focus:outline-none focus:shadow-outline h-10`}
-									classNameText={`block text-gray-700 text-sm font-semibold mb-2`}
-								/>
+		<Layout>
+			<div className='container py-8 max-w-xl'>
+				<Button variant='ghost' size='sm' asChild className='mb-4'>
+					<Link to='/'>
+						<ArrowLeft className='mr-2 h-4 w-4' />
+						Volver
+					</Link>
+				</Button>
 
-								<InputFormik
-									text='URL de su hoja de contacto'
-									name='url'
-									type='url'
-									placeholder='https://instagram.com/username'
-									classNameInput={`text-sm appearance-none rounded w-full py-2 px-3 text-gray-700 border-2 leading-tight focus:outline-none focus:shadow-outline h-10`}
-									classNameText={`block text-gray-700 text-sm font-semibold mb-2`}
-								/>
-
-								<InputFileFormik
-									disable={isSubmitting}
-									textButton='Subir imagen'
-									label='Imagen de su hoja de contacto'
-									name='file'
-									setFieldValue={setFieldValue}
-									classNameText={`block text-gray-700 text-sm font-semibold mb-2`}
-									classNameButton={
-										'text-white text-sm bg-black focus:outline-none font-semibold rounded'
-									}
-								/>
-
-								<button
-									disabled={isSubmitting}
-									type='submit'
-									className='text-white mt-4 bg-blue-500 hover:bg-blue-600 focus:outline-none font-semibold rounded w-full px-2 py-2 text-center disabled:bg-blue-200 transition-colors duration-300'
-								>
-									{isSubmitting ? 'Creando...' : 'Guardar'}
-								</button>
-							</form>
-						)}
-					</Formik>
-				</div>
+				<motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}>
+					<Card>
+						<CardHeader>
+							<CardTitle>Nueva hoja de contacto</CardTitle>
+							<CardDescription>
+								Añade un enlace con imagen para que aparezca en tu árbol público.
+							</CardDescription>
+						</CardHeader>
+						<CardContent>
+							<Formik
+								initialValues={INITIAL_VALUES}
+								onSubmit={async (values, { setSubmitting }) => {
+									await handleNewLink(values);
+									setSubmitting(false);
+								}}
+								validationSchema={newLinkSchema}
+							>
+								{({ handleSubmit, setFieldValue, isSubmitting }) => (
+									<form onSubmit={handleSubmit} noValidate className='space-y-4'>
+										<InputFormik
+											text='Nombre'
+											name='name'
+											type='text'
+											placeholder='Instagram, LinkedIn, Portfolio...'
+										/>
+										<InputFormik
+											text='URL'
+											name='url'
+											type='url'
+											placeholder='https://instagram.com/username'
+										/>
+										<InputFileFormik
+											disable={isSubmitting}
+											textButton='Seleccionar imagen'
+											label='Imagen de la hoja'
+											name='file'
+											setFieldValue={setFieldValue}
+										/>
+										<Button disabled={isSubmitting} className='w-full' type='submit'>
+											{isSubmitting ? 'Creando...' : 'Crear hoja'}
+										</Button>
+									</form>
+								)}
+							</Formik>
+						</CardContent>
+					</Card>
+				</motion.div>
 			</div>
 		</Layout>
 	);

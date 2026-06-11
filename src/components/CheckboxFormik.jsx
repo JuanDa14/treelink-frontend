@@ -1,31 +1,28 @@
-import { ErrorMessage, useField } from 'formik';
+import { useField } from 'formik';
+import { cn } from '@/lib/utils';
 
 export const CheckboxFormik = ({ label, ...props }) => {
 	const [field, { error, touched }] = useField({ ...props, type: 'checkbox' });
+	const showError = touched && error;
 
 	return (
-		<div>
-			<div className='flex items-center gap-2'>
+		<div className='space-y-1'>
+			<div className='flex items-start gap-3'>
 				<input
 					type='checkbox'
 					{...field}
 					{...props}
-					className='w-3 h-3 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 rounded-lg'
+					id={props.id || props.name}
+					className='mt-1 h-4 w-4 rounded border-input text-primary focus:ring-primary'
 				/>
 				<label
 					htmlFor={props.id || props.name}
-					className={`text-sm ${error && touched && 'text-red-500'}`}
+					className={cn('text-sm leading-relaxed', showError && 'text-destructive')}
 				>
 					{label}
 				</label>
 			</div>
-			{/* <ErrorMessage name={props.name}>
-				{(error) => (
-					<span className='text-red-500 text-start mt-1 text-sm'>
-						{error[0].toUpperCase() + error.slice(1)}
-					</span>
-				)}
-			</ErrorMessage> */}
+			{showError && <p className='text-sm text-destructive'>{error}</p>}
 		</div>
 	);
 };

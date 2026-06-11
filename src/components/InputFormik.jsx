@@ -1,37 +1,31 @@
-import { useField, ErrorMessage } from 'formik';
+import { useField } from 'formik';
+import { Label } from '@/components/ui/label';
+import { Input } from '@/components/ui/input';
+import { cn } from '@/lib/utils';
 
-export const InputFormik = ({
-	text,
-	name,
-	type,
-	placeholder,
-	classNameText,
-	classNameInput,
-	classNameContainer,
-}) => {
-	const [{ onChange, value, ...fields }, { error }] = useField(name);
+export const InputFormik = ({ text, name, type, placeholder, classNameText, classNameInput, classNameContainer }) => {
+	const [{ onChange, value, ...fields }, { error, touched }] = useField(name);
+	const showError = touched && error;
 
 	return (
-		<div className={`flex flex-col w-full mb-4 ${classNameContainer}`}>
-			{text && <label className={`${classNameText} ${error && 'text-red-500'}`}>{text}</label>}
-			<input
+		<div className={cn('flex flex-col w-full gap-2', classNameContainer)}>
+			{text && (
+				<Label htmlFor={name} className={cn(classNameText, showError && 'text-destructive')}>
+					{text}
+				</Label>
+			)}
+			<Input
 				{...fields}
+				id={name}
 				onChange={onChange}
 				value={value}
-				className={`px-3 py-2 border rounded-lg text-black ${classNameInput} ${
-					error && 'border-red-500 border'
-				}`}
 				name={name}
 				type={type}
 				placeholder={placeholder}
+				className={cn(classNameInput, showError && 'border-destructive focus-visible:ring-destructive')}
+				aria-invalid={showError}
 			/>
-			{/* <ErrorMessage name={name}>
-				{(error) => (
-					<span className='text-red-500 text-start mt-1 text-sm'>
-						{error[0].toUpperCase() + error.slice(1)}
-					</span>
-				)}
-			</ErrorMessage> */}
+			{showError && <p className='text-sm text-destructive'>{error}</p>}
 		</div>
 	);
 };

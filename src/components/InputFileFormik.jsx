@@ -1,10 +1,14 @@
 import { useRef } from 'react';
 import { ErrorMessage } from 'formik';
+import { ImagePlus, Upload } from 'lucide-react';
+import { Label } from '@/components/ui/label';
+import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
 
 export const InputFileFormik = ({
 	name,
 	label,
-	textButton,
+	textButton = 'Subir imagen',
 	setFieldValue,
 	disable,
 	classNameText,
@@ -20,96 +24,60 @@ export const InputFileFormik = ({
 		const reader = new FileReader();
 		reader.readAsDataURL(file);
 		reader.onloadend = () => {
-			previewImageRef.current.src = reader.result;
+			if (previewImageRef.current) {
+				previewImageRef.current.src = reader.result;
+			}
 		};
 	};
 
-	return (
-		<div className={classNameContainer}>
-			<div className='flex items-start flex-col justify-center'>
-				<label className={`${classNameText}`} htmlFor='image'>
-					{label}
-				</label>
-				<input
-					id='image'
-					type='file'
-					className='hidden'
-					ref={imageRef}
-					name={name}
-					onChange={(e) => {
-						handleChangeImage(e.target.files[0]);
-						setFieldValue(name, e.target.files[0]);
-					}}
-				/>
-				<div className='flex justify-between items-center w-full'>
-					{imageRef.current && imageRef.current.files[0] ? (
-						<div className='flex-1 flex items-center gap-2'>
-							<img
-								ref={previewImageRef}
-								alt='imagen preview'
-								className='w-24 h-24 object-cover object-center rounded'
-							/>
-						</div>
-					) : (
-						<>
-							{value ? (
-								<img
-									src={value}
-									alt='imagen preview'
-									className='w-24 h-24 object-cover object-center rounded'
-								/>
-							) : (
-								<p className='flex items-center gap-2'>
-									<svg
-										xmlns='http://www.w3.org/2000/svg'
-										fill='none'
-										viewBox='0 0 24 24'
-										strokeWidth={1.5}
-										stroke='currentColor'
-										className='w-5 h-5'
-									>
-										<path
-											strokeLinecap='round'
-											strokeLinejoin='round'
-											d='M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z'
-										/>
-									</svg>
-									<span className='capitalize text-sm'>Sin archivo seleccionado</span>
-								</p>
-							)}
-						</>
-					)}
+	const previewSrc = imageRef.current?.files?.[0] ? null : value;
 
-					<button
-						disabled={disable}
-						type='button'
-						className={`flex gap-2 border p-2 disabled:opacity-50 ${classNameButton}`}
-						onClick={() => imageRef.current.click()}
-					>
-						<svg
-							xmlns='http://www.w3.org/2000/svg'
-							fill='none'
-							viewBox='0 0 24 24'
-							strokeWidth='1.5'
-							stroke='currentColor'
-							className='w-6 h-6'
-						>
-							<path
-								strokeLinecap='round'
-								strokeLinejoin='round'
-								d='M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5'
-							/>
-						</svg>
-						{textButton}
-					</button>
+	return (
+		<div className={cn('space-y-2', classNameContainer)}>
+			{label && <Label className={classNameText}>{label}</Label>}
+			<input
+				id='image'
+				type='file'
+				accept='image/*'
+				className='hidden'
+				ref={imageRef}
+				name={name}
+				onChange={(e) => {
+					const file = e.target.files[0];
+					handleChangeImage(file);
+					setFieldValue(name, file);
+				}}
+			/>
+			<div className='flex items-center justify-between gap-4 rounded-lg border border-dashed p-4'>
+				<div className='flex items-center gap-3'>
+					{previewSrc || previewImageRef.current ? (
+						<img
+							ref={previewImageRef}
+							src={previewSrc || undefined}
+							alt='Vista previa'
+							className='h-20 w-20 rounded-lg object-cover'
+						/>
+					) : (
+						<div className='flex h-20 w-20 items-center justify-center rounded-lg bg-muted'>
+							<ImagePlus className='h-6 w-6 text-muted-foreground' />
+						</div>
+					)}
+					<p className='text-sm text-muted-foreground'>PNG, JPG o WEBP (máx. 5MB)</p>
 				</div>
+				<Button
+					disabled={disable}
+					type='button'
+					variant='outline'
+					size='sm'
+					className={classNameButton}
+					onClick={() => imageRef.current?.click()}
+				>
+					<Upload className='mr-2 h-4 w-4' />
+					{textButton}
+				</Button>
 			</div>
 			<ErrorMessage name={name}>
-				{(error) => (
-					<span className='text-red-500 font-semibold text-start mt-1'>
-						{error[0].toUpperCase() + error.slice(1)}
-					</span>
-				)}
+				{(error) => <span className='text-sm text-destructive'>{error}</span>}
 			</ErrorMessage>
 		</div>
 	);
