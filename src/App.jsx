@@ -1,9 +1,11 @@
 import { Suspense } from 'react';
 import { Provider } from 'react-redux';
 import { RouterProvider } from 'react-router-dom';
+import { GoogleOAuthProvider } from '@react-oauth/google';
 import { ToastContainer } from 'react-toastify';
 
 import { Spinner } from './components';
+import { ThemeProvider } from './providers/theme-provider';
 import { store } from './redux';
 import { router } from './routes';
 
@@ -13,15 +15,21 @@ import 'react-toastify/dist/ReactToastify.css';
 export const App = () => {
 	return (
 		<Provider store={store}>
-			<Suspense fallback={<Spinner />}>
-				<RouterProvider router={router} />
-			</Suspense>
-			<ToastContainer
-				autoClose={3000}
-				position='bottom-right'
-				draggable
-				pauseOnFocusLoss={false}
-			/>
+			<ThemeProvider defaultTheme='system' storageKey='treelink-theme'>
+				<GoogleOAuthProvider clientId={import.meta.env.VITE_APP_GOOGLE_CLIENT_ID}>
+					<Suspense fallback={<Spinner />}>
+						<RouterProvider router={router} />
+					</Suspense>
+					<ToastContainer
+						autoClose={3000}
+						position='bottom-right'
+						draggable
+						pauseOnFocusLoss={false}
+						theme='colored'
+						toastClassName='!rounded-lg !text-sm'
+					/>
+				</GoogleOAuthProvider>
+			</ThemeProvider>
 		</Provider>
 	);
 };
