@@ -3,12 +3,10 @@ import { Button } from '@/components/ui/button';
 import { useTheme } from '@/providers/theme-provider';
 
 export function ThemeToggle() {
-	const { theme, setTheme } = useTheme();
+	const { resolvedTheme, setTheme } = useTheme();
 
 	const toggleTheme = () => {
-		if (theme === 'light') setTheme('dark');
-		else if (theme === 'dark') setTheme('system');
-		else setTheme('light');
+		setTheme(resolvedTheme === 'dark' ? 'light' : 'dark');
 	};
 
 	return (

@@ -5,6 +5,8 @@ import { getUserLinks } from './link';
 import {
 	loginUser,
 	verifiedUser,
+	verificationFailed,
+	setVerificationHint,
 	logout,
 	startChecking,
 	finishChecking,
@@ -27,8 +29,19 @@ export const login = (body) => {
 				dispatch(getUserLinks());
 			}
 		} catch (error) {
-			const { data } = error.response;
-			const message = data.message || data.errors[0].message;
+			const message =
+				error.response?.data?.message ||
+				error.response?.data?.errors?.[0]?.message ||
+				'No se pudo iniciar sesión';
+
+			if (message.toLowerCase().includes('verifica')) {
+				dispatch(
+					setVerificationHint(
+						'Revisa tu bandeja de entrada y haz clic en el enlace de verificación. Si no lo encuentras, revisa spam.'
+					)
+				);
+			}
+
 			toast.error(message);
 			dispatch(logoutUser());
 		} finally {
@@ -70,12 +83,18 @@ export const register = (body) => {
 			const { data } = await userApi.post('/register', body);
 
 			if (data.ok) {
-				return toast.success(data.message);
+				toast.success('Revisa tu correo para verificar tu cuenta');
+				return { ok: true, message: data.message };
 			}
+
+			return { ok: false };
 		} catch (error) {
-			const { data } = error.response;
-			const message = data.message || data.errors[0].message;
+			const message =
+				error.response?.data?.message ||
+				error.response?.data?.errors?.[0]?.message ||
+				'No se pudo registrar la cuenta';
 			toast.error(message);
+			return { ok: false };
 		} finally {
 			dispatch(finishChecking());
 		}
@@ -110,8 +129,19 @@ export const loginWithGoogle = ({ tokenId, email }) => {
 				dispatch(getUserLinks());
 			}
 		} catch (error) {
-			const { data } = error.response;
-			const message = data.message || data.errors[0].message;
+			const message =
+				error.response?.data?.message ||
+				error.response?.data?.errors?.[0]?.message ||
+				'No se pudo iniciar sesión con Google';
+
+			if (message.toLowerCase().includes('verifica')) {
+				dispatch(
+					setVerificationHint(
+						'Revisa tu bandeja de entrada y haz clic en el enlace de verificación. Si no lo encuentras, revisa spam.'
+					)
+				);
+			}
+
 			toast.error(message);
 		} finally {
 			dispatch(finishChecking());
@@ -166,11 +196,20 @@ export const verifiedEmail = (token) => {
 
 			if (data.ok) {
 				dispatch(verifiedUser());
+				toast.success('Cuenta verificada correctamente');
+				return { ok: true };
 			}
+
+			dispatch(verificationFailed('No se pudo verificar la cuenta'));
+			return { ok: false };
 		} catch (error) {
-			const { data } = error.response;
-			const message = data.message || data.errors[0].message;
+			const message =
+				error.response?.data?.message ||
+				error.response?.data?.errors?.[0]?.message ||
+				'El enlace de verificación no es válido o ya expiró';
+			dispatch(verificationFailed(message));
 			toast.error(message);
+			return { ok: false };
 		} finally {
 			dispatch(finishChecking());
 		}

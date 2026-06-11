@@ -173,13 +173,50 @@
 	}
 
 	.phone-mockup {
-		@apply mx-auto w-full max-w-[340px] rounded-[2.75rem] border-[10px] bg-background shadow-2xl overflow-hidden;
+		@apply w-full max-w-[340px] rounded-[2.75rem] border-[10px] bg-background shadow-2xl overflow-hidden;
 		border-color: color-mix(in oklch, var(--foreground) 10%, transparent);
 	}
 
 	.phone-mockup-notch {
 		@apply mx-auto mt-3 h-6 w-28 rounded-full;
 		background: color-mix(in oklch, var(--foreground) 10%, transparent);
+	}
+
+	.tree-page-bg--contained {
+		min-height: auto;
+		overflow: hidden;
+		isolation: isolate;
+	}
+
+	.tree-page-bg--contained::before,
+	.tree-page-bg--contained::after {
+		position: absolute;
+	}
+
+	.tree-page-bg--contained::before {
+		top: -12%;
+		right: -18%;
+		width: 200px;
+		height: 200px;
+	}
+
+	.tree-page-bg--contained::after {
+		bottom: 8%;
+		left: -20%;
+		width: 180px;
+		height: 180px;
+	}
+
+	.google-login-btn {
+		@apply flex w-full justify-center;
+	}
+
+	.google-login-btn > div {
+		width: 100% !important;
+	}
+
+	.google-login-btn iframe {
+		margin: 0 auto;
 	}
 
 	.badge-primary {

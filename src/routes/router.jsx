@@ -35,6 +35,10 @@ export const router = createBrowserRouter([
 				element: <Verified />,
 			},
 			{
+				path: 'verified/:token',
+				element: <Verified />,
+			},
+			{
 				path: 'forgot-password',
 				element: <ForgotPassword />,
 			},

@@ -4,6 +4,8 @@ const initialState = {
 	status: 'not-authenticated',
 	checking: false,
 	verified: false,
+	verificationError: null,
+	verificationHint: null,
 	user: {},
 };
 
@@ -14,16 +16,30 @@ export const authSlice = createSlice({
 		loginUser: (state, action) => {
 			state.status = 'authenticated';
 			state.verified = false;
+			state.verificationHint = null;
 			state.user = action.payload;
 		},
 		verifiedUser: (state) => {
 			state.verified = true;
+			state.verificationError = null;
+		},
+		verificationFailed: (state, action) => {
+			state.verified = false;
+			state.verificationError = action.payload;
+		},
+		setVerificationHint: (state, action) => {
+			state.verificationHint = action.payload;
+		},
+		clearVerificationHint: (state) => {
+			state.verificationHint = null;
 		},
 
 		logout: (state) => {
 			state.status = 'not-authenticated';
 			state.checking = false;
 			state.verified = false;
+			state.verificationError = null;
+			state.verificationHint = null;
 			state.user = null;
 		},
 		startChecking: (state) => {
@@ -35,6 +51,15 @@ export const authSlice = createSlice({
 	},
 });
 
-export const { loginUser, verifiedUser, logout, startChecking, finishChecking } = authSlice.actions;
+export const {
+	loginUser,
+	verifiedUser,
+	verificationFailed,
+	setVerificationHint,
+	clearVerificationHint,
+	logout,
+	startChecking,
+	finishChecking,
+} = authSlice.actions;
 
 export default authSlice.reducer;

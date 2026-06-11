@@ -2,30 +2,50 @@ import { createContext, useContext, useEffect, useState } from 'react';
 
 const ThemeProviderContext = createContext({
 	theme: 'system',
+	resolvedTheme: 'light',
 	setTheme: () => null,
 });
 
+const getSystemTheme = () =>
+	window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+
+const resolveTheme = (theme) => (theme === 'system' ? getSystemTheme() : theme);
+
 export function ThemeProvider({ children, defaultTheme = 'system', storageKey = 'treelink-theme', ...props }) {
-	const [theme, setTheme] = useState(() => localStorage.getItem(storageKey) || defaultTheme);
+	const [theme, setThemeState] = useState(() => localStorage.getItem(storageKey) || defaultTheme);
+	const [resolvedTheme, setResolvedTheme] = useState(() => resolveTheme(theme));
 
 	useEffect(() => {
 		const root = window.document.documentElement;
+		const next = resolveTheme(theme);
+
 		root.classList.remove('light', 'dark');
+		root.classList.add(next);
+		setResolvedTheme(next);
+	}, [theme]);
 
-		if (theme === 'system') {
-			const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-			root.classList.add(systemTheme);
-			return;
-		}
+	useEffect(() => {
+		if (theme !== 'system') return undefined;
 
-		root.classList.add(theme);
+		const media = window.matchMedia('(prefers-color-scheme: dark)');
+		const onChange = () => {
+			const root = window.document.documentElement;
+			const next = getSystemTheme();
+			root.classList.remove('light', 'dark');
+			root.classList.add(next);
+			setResolvedTheme(next);
+		};
+
+		media.addEventListener('change', onChange);
+		return () => media.removeEventListener('change', onChange);
 	}, [theme]);
 
 	const value = {
 		theme,
+		resolvedTheme,
 		setTheme: (newTheme) => {
 			localStorage.setItem(storageKey, newTheme);
-			setTheme(newTheme);
+			setThemeState(newTheme);
 		},
 	};
 
