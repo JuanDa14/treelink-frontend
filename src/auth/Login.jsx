@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Formik } from 'formik';
 import { motion } from 'framer-motion';
 import { loginSchema } from '../schemas';
-import { InputFormik, Spinner, AuthSocialSection } from '../components';
+import { InputFormik, Spinner, AuthSocialSection, ResendVerificationButton } from '../components';
 import { login, loginWithFacebook, loginWithGoogle } from '../redux/thunks/auth';
 import { AuthLayout } from '../layouts/AuthLayout';
 import { Button } from '@/components/ui/button';
@@ -52,13 +52,6 @@ const Login = () => {
 				</span>
 			}
 		>
-			{verificationHint && (
-				<div className='mb-4 rounded-2xl border-2 border-primary/30 bg-secondary px-4 py-3 text-sm'>
-					<p className='font-medium text-foreground'>Verifica tu cuenta</p>
-					<p className='text-muted-foreground mt-1'>{verificationHint}</p>
-				</div>
-			)}
-
 			<Formik
 				initialValues={INITIAL_VALUES}
 				onSubmit={async (values, { setSubmitting }) => {
@@ -67,7 +60,7 @@ const Login = () => {
 				}}
 				validationSchema={loginSchema}
 			>
-				{({ handleSubmit, isSubmitting }) => (
+				{({ handleSubmit, isSubmitting, values }) => (
 					<motion.form
 						onSubmit={handleSubmit}
 						initial={{ opacity: 0 }}
@@ -75,6 +68,15 @@ const Login = () => {
 						transition={{ delay: 0.1 }}
 						className='space-y-4'
 					>
+						{verificationHint && (
+							<div className='rounded-2xl border-2 border-primary/30 bg-secondary px-4 py-3 text-sm space-y-3'>
+								<div>
+									<p className='font-medium text-foreground'>Verifica tu cuenta</p>
+									<p className='text-muted-foreground mt-1'>{verificationHint}</p>
+								</div>
+								<ResendVerificationButton email={values.email} />
+							</div>
+						)}
 						<InputFormik
 							text='Email'
 							name='email'
@@ -88,7 +90,13 @@ const Login = () => {
 								type='password'
 								placeholder='••••••••'
 							/>
-							<div className='flex justify-end'>
+							<div className='flex flex-wrap items-center justify-between gap-2'>
+								<Link
+									className='text-sm font-medium text-primary hover:underline'
+									to='/auth/resend-verification'
+								>
+									Reenviar verificación
+								</Link>
 								<Link
 									className='text-sm font-medium text-primary hover:underline'
 									to='/auth/forgot-password'

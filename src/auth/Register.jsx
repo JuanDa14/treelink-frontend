@@ -13,6 +13,7 @@ import {
 	UsernameField,
 	UsernameSubmitButton,
 	AuthSocialSection,
+	ResendVerificationButton,
 } from '../components';
 import { registerSchema } from '../schemas';
 import { AuthLayout } from '../layouts/AuthLayout';
@@ -71,7 +72,8 @@ const Register = () => {
 						<strong className='text-foreground'>{pendingEmail}</strong>. Abre el enlace de verificación
 						para activar tu cuenta y luego inicia sesión.
 					</p>
-					<Button asChild className='w-full h-12'>
+					<ResendVerificationButton email={pendingEmail} className='w-full' />
+					<Button asChild variant='outline' className='w-full h-12'>
 						<Link to='/auth/login'>Ir a iniciar sesión</Link>
 					</Button>
 				</div>

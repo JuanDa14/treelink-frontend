@@ -7,6 +7,7 @@ const Register = lazy(() => import('../auth/Register'));
 const ForgotPassword = lazy(() => import('../auth/ForgotPassword'));
 const ResetPassword = lazy(() => import('../auth/ResetPassword'));
 const Verified = lazy(() => import('../auth/Verified'));
+const ResendVerification = lazy(() => import('../auth/ResendVerification'));
 
 const PrivateRouter = lazy(() => import('./PrivateRouter'));
 const HomePage = lazy(() => import('../pages/HomePage'));
@@ -41,6 +42,10 @@ export const router = createBrowserRouter([
 			{
 				path: 'forgot-password',
 				element: <ForgotPassword />,
+			},
+			{
+				path: 'resend-verification',
+				element: <ResendVerification />,
 			},
 			{
 				path: 'reset-password',

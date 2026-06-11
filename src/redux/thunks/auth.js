@@ -216,6 +216,31 @@ export const verifiedEmail = (token) => {
 	};
 };
 
+export const resendVerification = (body) => {
+	return async () => {
+		try {
+			const { data } = await userApi.post('/resend-verification', body);
+
+			if (data.ok) {
+				toast.success(data.message);
+				return { ok: true, remaining: data.remaining };
+			}
+
+			return { ok: false };
+		} catch (error) {
+			const message =
+				error.response?.data?.message ||
+				error.response?.data?.errors?.[0]?.message ||
+				'No se pudo reenviar el correo';
+			toast.error(message);
+			return {
+				ok: false,
+				remaining: error.response?.data?.remaining,
+			};
+		}
+	};
+};
+
 export const forgotPassword = (email) => {
 	return async (dispatch) => {
 		dispatch(startChecking());
