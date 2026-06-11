@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Camera, Globe, User, Settings, Sparkles } from 'lucide-react';
 
-import { InputFormik, SwitchFormik, TextareaFormik } from '../index';
+import { InputFormik, SwitchFormik, TextareaFormik, UsernameField, UsernameSubmitButton } from '../index';
 import { closeProfile } from '../../redux/slices/uiSlice';
 import { profileSchema } from '../../schemas';
 import { updatedProfile } from '../../redux';
@@ -87,7 +87,7 @@ export const ModalProfile = () => {
 					validationSchema={profileSchema}
 					onSubmit={handleUpdatedProfile}
 				>
-					{({ handleSubmit, isSubmitting, setFieldValue, values, errors, submitCount }) => (
+					{({ handleSubmit, setFieldValue, values, errors, submitCount }) => (
 						<form onSubmit={handleSubmit} noValidate className='space-y-4'>
 							{activeTab === 'profile' && (
 								<>
@@ -122,11 +122,8 @@ export const ModalProfile = () => {
 									<div className='space-y-2'>
 										<div className='flex items-end gap-2'>
 											<div className='flex-1'>
-												<InputFormik
-													name='username'
-													text='Nombre de usuario (URL pública)'
-													placeholder='juan-morales'
-													type='text'
+												<UsernameField
+													currentUsername={slugifyUsername(username || '')}
 												/>
 											</div>
 											<Button
@@ -209,9 +206,13 @@ export const ModalProfile = () => {
 							)}
 
 							{activeTab !== 'account' && (
-								<Button type='submit' disabled={isSubmitting} className='w-full'>
-									{isSubmitting ? 'Guardando...' : 'Guardar cambios'}
-								</Button>
+								<UsernameSubmitButton
+									currentUsername={slugifyUsername(username || '')}
+									loadingLabel='Guardando...'
+									className='w-full'
+								>
+									Guardar cambios
+								</UsernameSubmitButton>
 							)}
 						</form>
 					)}

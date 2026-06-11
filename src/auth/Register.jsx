@@ -4,10 +4,9 @@ import { Formik } from 'formik';
 import { motion } from 'framer-motion';
 
 import { register } from '../redux';
-import { CheckboxFormik, InputFormik, Spinner } from '../components';
+import { CheckboxFormik, InputFormik, Spinner, UsernameField, UsernameSubmitButton } from '../components';
 import { registerSchema } from '../schemas';
 import { AuthLayout } from '../layouts/AuthLayout';
-import { Button } from '@/components/ui/button';
 
 const INITIAL_VALUES = {
 	username: '',
@@ -53,22 +52,22 @@ const Register = () => {
 				}}
 				validationSchema={registerSchema}
 			>
-				{({ handleSubmit, isSubmitting }) => (
+				{({ handleSubmit }) => (
 					<motion.form
 						onSubmit={handleSubmit}
 						initial={{ opacity: 0 }}
 						animate={{ opacity: 1 }}
 						className='space-y-3'
 					>
-						<InputFormik text='Nombre de usuario (sin espacios)' name='username' type='text' placeholder='juan-morales' />
+						<UsernameField text='Nombre de usuario (sin espacios)' />
 						<InputFormik text='Nombre para mostrar' name='name' type='text' placeholder='Juan Morales' />
 						<InputFormik text='Email' name='email' type='email' placeholder='tu@email.com' />
 						<InputFormik text='Contraseña' name='password' type='password' placeholder='••••••••' />
 						<InputFormik text='Confirmar contraseña' name='password2' type='password' placeholder='••••••••' />
 						<CheckboxFormik label='Acepto los términos del servicio y la política de privacidad' name='terms' />
-						<Button disabled={isSubmitting} className='w-full mt-2' type='submit'>
-							{isSubmitting ? 'Registrando...' : 'Crear cuenta'}
-						</Button>
+						<UsernameSubmitButton loadingLabel='Registrando...' className='w-full mt-2'>
+							Crear cuenta
+						</UsernameSubmitButton>
 					</motion.form>
 				)}
 			</Formik>

@@ -4,6 +4,8 @@ export * from './TreeProfileHeader';
 export * from './EmptyState';
 export * from './InputFileFormik';
 export * from './InputFormik';
+export * from './UsernameField';
+export * from './UsernameSubmitButton';
 export * from './DashboardLinkRow';
 export * from './LinkIconPicker';
 export * from './LinkPreviewCard';
