@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 import { ArrowLeft, Link2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
-import { InputFileFormik, InputFormik, LinkPreviewCard, SwitchFormik, TextareaFormik } from '../components';
+import { InputFormik, LinkIconPicker, LinkPreviewCard, SwitchFormik, TextareaFormik } from '../components';
 import { createUserLink } from '../redux';
 import { Layout } from '../layouts';
 import { newLinkSchema } from '../schemas';
@@ -17,6 +17,7 @@ const INITIAL_VALUES = {
 	description: '',
 	featured: false,
 	isActive: true,
+	icon: 'link',
 	file: null,
 };
 
@@ -47,7 +48,7 @@ const NewLinkPage = () => {
 					}}
 					validationSchema={newLinkSchema}
 				>
-					{({ handleSubmit, setFieldValue, values, isSubmitting }) => (
+					{({ handleSubmit, values, isSubmitting }) => (
 						<div className='grid lg:grid-cols-[1fr_320px] gap-8 items-start'>
 							<motion.div
 								initial={{ opacity: 0, y: 16 }}
@@ -61,7 +62,7 @@ const NewLinkPage = () => {
 									<div>
 										<h1 className='text-2xl font-bold tracking-tight'>Nuevo enlace</h1>
 										<p className='text-sm text-muted-foreground'>
-											Personaliza cómo se verá en tu página pública.
+											Elige un icono o sube tu propia imagen.
 										</p>
 									</div>
 								</div>
@@ -84,13 +85,7 @@ const NewLinkPage = () => {
 										name='description'
 										placeholder='Ej: Sígueme para contenido diario'
 									/>
-									<InputFileFormik
-										disable={isSubmitting}
-										textButton='Seleccionar imagen'
-										label='Imagen del enlace'
-										name='file'
-										setFieldValue={setFieldValue}
-									/>
+									<LinkIconPicker disable={isSubmitting} />
 									<div className='space-y-3'>
 										<SwitchFormik
 											name='featured'

@@ -1,9 +1,8 @@
 import { Star } from 'lucide-react';
+import { LinkThumbnail } from './LinkThumbnail';
 import { cn } from '@/lib/utils';
 
-export const LinkPreviewCard = ({ name, url, description, imageURL, featured, isActive }) => {
-	const previewImage = typeof imageURL === 'string' ? imageURL : imageURL ? URL.createObjectURL(imageURL) : null;
-
+export const LinkPreviewCard = ({ name, url, description, imageURL, icon, featured, isActive }) => {
 	return (
 		<div className='rounded-3xl border-2 border-border bg-card p-6 shadow-sm sticky top-24'>
 			<p className='text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-4'>Vista previa</p>
@@ -16,11 +15,13 @@ export const LinkPreviewCard = ({ name, url, description, imageURL, featured, is
 						isActive === false && 'opacity-50'
 					)}
 				>
-					{previewImage ? (
-						<img src={previewImage} alt='' className='h-8 w-8 shrink-0 rounded-full object-cover' />
-					) : (
-						<div className='h-8 w-8 shrink-0 rounded-full bg-secondary' />
-					)}
+					<LinkThumbnail
+						imageURL={imageURL instanceof File ? URL.createObjectURL(imageURL) : imageURL}
+						icon={icon}
+						name={name}
+						className='h-8 w-8'
+						iconClassName='h-4 w-4'
+					/>
 					<span className='flex flex-col items-start min-w-0 text-left'>
 						<span className='flex items-center gap-1.5 font-semibold capitalize truncate w-full'>
 							{name || 'Nombre del enlace'}

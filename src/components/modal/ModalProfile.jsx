@@ -2,7 +2,7 @@ import { useRef, useState } from 'react';
 import { Formik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { Camera, Globe, User, Settings } from 'lucide-react';
+import { Camera, Globe, User, Settings, Sparkles } from 'lucide-react';
 
 import { InputFormik, SwitchFormik, TextareaFormik } from '../index';
 import { closeProfile } from '../../redux/slices/uiSlice';
@@ -11,7 +11,7 @@ import { updatedProfile } from '../../redux';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-import { buildPublicUrl, slugifyUsername } from '../../utils';
+import { buildPublicUrl, generateUsername, slugifyUsername } from '../../utils';
 
 const TABS = [
 	{ id: 'profile', label: 'Perfil', icon: User },
@@ -30,11 +30,12 @@ export const ModalProfile = () => {
 	);
 	const { profile } = useSelector((state) => state.ui);
 
-	const publicUrl = buildPublicUrl(username);
-
-	const handleUpdatedProfile = async (values) => {
-		await dispatch(updatedProfile(values));
-		dispatch(closeProfile());
+	const handleUpdatedProfile = async (values, { setSubmitting }) => {
+		const result = await dispatch(updatedProfile(values));
+		setSubmitting(false);
+		if (result?.ok) {
+			dispatch(closeProfile());
+		}
 	};
 
 	const handleChangeImage = (file) => {
@@ -77,19 +78,16 @@ export const ModalProfile = () => {
 				<Formik
 					initialValues={{
 						name: name || '',
-						username: username || '',
+						username: slugifyUsername(username || ''),
 						bio: bio || '',
 						showBranding: showBranding !== false,
 						file: null,
 					}}
 					enableReinitialize
-					onSubmit={async (values, { setSubmitting }) => {
-						await handleUpdatedProfile(values);
-						setSubmitting(false);
-					}}
 					validationSchema={profileSchema}
+					onSubmit={handleUpdatedProfile}
 				>
-					{({ handleSubmit, isSubmitting, setFieldValue, values }) => (
+					{({ handleSubmit, isSubmitting, setFieldValue, values, errors, submitCount }) => (
 						<form onSubmit={handleSubmit} noValidate className='space-y-4'>
 							{activeTab === 'profile' && (
 								<>
@@ -109,7 +107,7 @@ export const ModalProfile = () => {
 												<Camera className='h-6 w-6 text-primary-foreground' />
 											</span>
 										</button>
-										<p className='font-medium text-muted-foreground'>{name}</p>
+										<p className='font-medium text-muted-foreground'>{values.name || name}</p>
 									</div>
 									<input
 										type='file'
@@ -121,19 +119,36 @@ export const ModalProfile = () => {
 											handleChangeImage(e.target.files[0]);
 										}}
 									/>
-									<InputFormik
-										name='username'
-										text='Nombre de usuario (URL pública)'
-										placeholder='juan-morales'
-										type='text'
-										classNameContainer='space-y-1'
-									/>
-									<p className='text-xs text-muted-foreground -mt-2 mb-2'>
-										Sin espacios. Tu link:{' '}
-										<span className='font-mono text-primary'>
-											{buildPublicUrl(values.username || slugifyUsername(username))}
-										</span>
-									</p>
+									<div className='space-y-2'>
+										<div className='flex items-end gap-2'>
+											<div className='flex-1'>
+												<InputFormik
+													name='username'
+													text='Nombre de usuario (URL pública)'
+													placeholder='juan-morales'
+													type='text'
+												/>
+											</div>
+											<Button
+												type='button'
+												variant='outline'
+												size='sm'
+												className='mb-0.5 shrink-0 h-12 rounded-2xl'
+												onClick={() =>
+													setFieldValue('username', generateUsername(values.name || name))
+												}
+											>
+												<Sparkles className='mr-1.5 h-4 w-4' />
+												Autogenerar
+											</Button>
+										</div>
+										<p className='text-xs text-muted-foreground'>
+											Sin espacios. Tu link:{' '}
+											<span className='font-mono text-primary'>
+												{buildPublicUrl(values.username)}
+											</span>
+										</p>
+									</div>
 									<InputFormik name='name' text='Nombre para mostrar' placeholder='Juan Morales' type='text' />
 								</>
 							)}
@@ -155,7 +170,7 @@ export const ModalProfile = () => {
 										<p className='text-xs font-semibold uppercase tracking-wide text-muted-foreground mb-1'>
 											Vista previa de tu URL
 										</p>
-										<p className='text-sm font-mono break-all'>{publicUrl}</p>
+										<p className='text-sm font-mono break-all'>{buildPublicUrl(values.username)}</p>
 									</div>
 									<Button type='button' variant='outline' asChild className='w-full'>
 										<Link to='/preview' onClick={() => dispatch(closeProfile())}>
@@ -184,6 +199,12 @@ export const ModalProfile = () => {
 											</Link>
 										</Button>
 									)}
+								</div>
+							)}
+
+							{submitCount > 0 && Object.keys(errors).length > 0 && (
+								<div className='rounded-2xl border-2 border-destructive/30 bg-secondary px-4 py-3 text-sm text-destructive'>
+									{Object.values(errors).join('. ')}
 								</div>
 							)}
 

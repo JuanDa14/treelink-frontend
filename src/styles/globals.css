@@ -321,4 +321,22 @@
 	.Toastify__toast--error .treelink-toast-progress {
 		background: var(--destructive) !important;
 	}
+
+	.link-icon-option {
+		@apply flex h-11 w-11 items-center justify-center rounded-2xl border-2 transition-all;
+		border-color: var(--border);
+		background: var(--card);
+		color: var(--muted-foreground);
+	}
+
+	.link-icon-option:hover {
+		border-color: color-mix(in oklch, var(--primary) 35%, var(--border));
+		color: var(--primary);
+	}
+
+	.link-icon-option-active {
+		border-color: color-mix(in oklch, var(--primary) 55%, var(--border));
+		background: color-mix(in oklch, var(--primary) 10%, var(--card));
+		color: var(--primary);
+	}
 }

@@ -6,5 +6,6 @@ export const editLinkSchema = yup.object().shape({
 	description: yup.string().max(120, 'Máximo 120 caracteres').trim(),
 	featured: yup.boolean(),
 	isActive: yup.boolean(),
-	file: yup.mixed(),
+	icon: yup.string().trim(),
+	file: yup.mixed().nullable(),
 });

@@ -238,12 +238,18 @@ export const updatedProfile = (body) => {
 
 			if (data.ok) {
 				dispatch(loginUser(data.user));
-				return toast.success('Perfil actualizado');
+				toast.success('Perfil actualizado');
+				return { ok: true };
 			}
+
+			return { ok: false };
 		} catch (error) {
-			const { data } = error.response;
-			const message = data.message || data.errors[0].message;
+			const message =
+				error.response?.data?.message ||
+				error.response?.data?.errors?.[0]?.message ||
+				'No se pudo actualizar el perfil';
 			toast.error(message);
+			return { ok: false };
 		} finally {
 			dispatch(finishChecking());
 		}

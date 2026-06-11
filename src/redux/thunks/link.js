@@ -25,7 +25,8 @@ const appendLinkFields = (formData, body) => {
 	formData.append('description', body.description || '');
 	formData.append('featured', String(Boolean(body.featured)));
 	formData.append('isActive', String(body.isActive !== false));
-	if (body.file) formData.append('file', body.file);
+	if (body.icon) formData.append('icon', body.icon);
+	if (body.file instanceof File) formData.append('file', body.file);
 };
 
 export const getUserLinks = () => {

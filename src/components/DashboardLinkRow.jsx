@@ -1,5 +1,6 @@
 import { ExternalLink, GripVertical, Pencil, Star, Trash2, Eye, EyeOff } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { LinkThumbnail } from './LinkThumbnail';
 import { cn } from '@/lib/utils';
 
 const stopAndRun = (handler) => (event) => {
@@ -10,6 +11,7 @@ const stopAndRun = (handler) => (event) => {
 
 export const DashboardLinkRow = ({
 	imageURL,
+	icon,
 	name,
 	url,
 	description,
@@ -43,7 +45,7 @@ export const DashboardLinkRow = ({
 			>
 				<GripVertical className='h-4 w-4' />
 			</button>
-			<img src={imageURL} alt={name} className='h-10 w-10 shrink-0 rounded-full object-cover' loading='lazy' />
+			<LinkThumbnail imageURL={imageURL} icon={icon} name={name} className='h-10 w-10' iconClassName='h-5 w-5' />
 			<div className='min-w-0 flex-1'>
 				<div className='flex items-center gap-1.5'>
 					<p className='font-semibold capitalize truncate'>{name}</p>
@@ -77,14 +79,7 @@ export const DashboardLinkRow = ({
 				>
 					{isHidden ? <EyeOff className='h-4 w-4' /> : <Eye className='h-4 w-4' />}
 				</Button>
-				<Button
-					variant='ghost'
-					size='icon'
-					className='link-action-btn'
-					title='Editar'
-					type='button'
-					onClick={stopAndRun(onEdit)}
-				>
+				<Button variant='ghost' size='icon' className='link-action-btn' title='Editar' type='button' onClick={stopAndRun(onEdit)}>
 					<Pencil className='h-4 w-4' />
 				</Button>
 				<Button
@@ -97,14 +92,7 @@ export const DashboardLinkRow = ({
 				>
 					<Trash2 className='h-4 w-4' />
 				</Button>
-				<Button
-					variant='ghost'
-					size='icon'
-					className='link-action-btn'
-					title='Abrir'
-					type='button'
-					onClick={stopAndRun(onOpen)}
-				>
+				<Button variant='ghost' size='icon' className='link-action-btn' title='Abrir' type='button' onClick={stopAndRun(onOpen)}>
 					<ExternalLink className='h-4 w-4' />
 				</Button>
 			</div>

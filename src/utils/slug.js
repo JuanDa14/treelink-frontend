@@ -17,3 +17,13 @@ export const buildPublicUrl = (username) => {
 };
 
 export const USERNAME_REGEX = /^[a-z0-9][a-z0-9_-]*[a-z0-9]$|^[a-z0-9]{3}$/;
+
+export const generateUsername = (source = '') => {
+	const base = slugifyUsername(source) || 'usuario';
+	if (base.length >= 3 && base.length <= 24) {
+		const suffix = Math.floor(100 + Math.random() * 900);
+		return `${base}-${suffix}`.slice(0, 30);
+	}
+	const suffix = Math.floor(1000 + Math.random() * 9000);
+	return `usuario-${suffix}`;
+};

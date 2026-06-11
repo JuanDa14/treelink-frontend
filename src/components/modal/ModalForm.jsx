@@ -5,8 +5,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { updatedUserLink } from '../../redux';
 import { closeModal } from '../../redux/slices/uiSlice';
 import { editLinkSchema } from '../../schemas';
-import { InputFileFormik } from '../InputFileFormik';
 import { InputFormik } from '../InputFormik';
+import { LinkIconPicker } from '../LinkIconPicker';
 import { SwitchFormik } from '../SwitchFormik';
 import { TextareaFormik } from '../TextareaFormik';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
@@ -23,24 +23,27 @@ export const ModalForm = () => {
 		description: '',
 		featured: false,
 		isActive: true,
+		icon: 'link',
 		file: null,
 	});
 
 	useEffect(() => {
-		if (link) {
+		if (link?._id) {
 			setInitialValues({
 				name: link.name,
 				url: link.url,
 				description: link.description || '',
 				featured: Boolean(link.featured),
 				isActive: link.isActive !== false,
-				file: link.imageURL,
+				icon: link.icon || (link.imageURL ? '' : 'link'),
+				file: link.imageURL || null,
 			});
 		}
 	}, [link]);
 
-	const handleEditLink = async (values) => {
+	const handleEditLink = async (values, { setSubmitting }) => {
 		await dispatch(updatedUserLink(link._id, values));
+		setSubmitting(false);
 		dispatch(closeModal());
 	};
 
@@ -53,13 +56,10 @@ export const ModalForm = () => {
 				<Formik
 					initialValues={initialValues}
 					enableReinitialize
-					onSubmit={async (values, { setSubmitting }) => {
-						await handleEditLink(values);
-						setSubmitting(false);
-					}}
+					onSubmit={handleEditLink}
 					validationSchema={editLinkSchema}
 				>
-					{({ handleSubmit, setFieldValue, isSubmitting }) => (
+					{({ handleSubmit, isSubmitting }) => (
 						<form onSubmit={handleSubmit} noValidate className='space-y-4'>
 							<InputFormik
 								text='Nombre'
@@ -78,14 +78,7 @@ export const ModalForm = () => {
 								name='description'
 								placeholder='Texto breve bajo el nombre del enlace'
 							/>
-							<InputFileFormik
-								value={initialValues.file}
-								disable={isSubmitting}
-								label='Imagen'
-								name='file'
-								setFieldValue={setFieldValue}
-								textButton='Cambiar imagen'
-							/>
+							<LinkIconPicker disable={isSubmitting} />
 							<div className='space-y-3'>
 								<SwitchFormik
 									name='featured'

@@ -9,10 +9,12 @@ import { toggleLinkField } from '../redux';
 import { getLinkById } from '../redux/slices/linkSlice';
 import { openAlert, openModal } from '../redux/slices/uiSlice';
 import { DashboardLinkRow } from './DashboardLinkRow';
+import { LinkThumbnail } from './LinkThumbnail';
 import { cn } from '@/lib/utils';
 
 export const ItemLink = ({
 	imageURL,
+	icon,
 	name,
 	url,
 	description,
@@ -48,6 +50,7 @@ export const ItemLink = ({
 			<div ref={setNodeRef} style={style}>
 				<DashboardLinkRow
 					imageURL={imageURL}
+					icon={icon}
 					name={name}
 					url={url}
 					description={description}
@@ -79,7 +82,7 @@ export const ItemLink = ({
 			onClick={openLink}
 			className={cn('link-pill w-full', featured === true && 'link-pill-featured')}
 		>
-			<img src={imageURL} alt='' className='h-8 w-8 shrink-0 rounded-full object-cover' loading='lazy' />
+			<LinkThumbnail imageURL={imageURL} icon={icon} name={name} className='h-8 w-8' iconClassName='h-4 w-4' />
 			<span className='flex flex-col items-center min-w-0 text-center'>
 				<span className='flex items-center gap-1.5 font-semibold capitalize truncate w-full justify-center'>
 					{name}
