@@ -38,13 +38,13 @@ export const HomePage = () => {
 						className='flex flex-wrap gap-2 mb-6'
 					>
 						{featuredCount > 0 && (
-							<span className='inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary'>
+							<span className='badge-primary'>
 								<Star className='h-3 w-3 fill-primary' />
 								{featuredCount} destacado{featuredCount > 1 ? 's' : ''}
 							</span>
 						)}
 						{hiddenCount > 0 && (
-							<span className='inline-flex items-center gap-1.5 rounded-full bg-secondary px-3 py-1 text-xs font-medium text-muted-foreground'>
+							<span className='badge-muted'>
 								{hiddenCount} oculto{hiddenCount > 1 ? 's' : ''}
 							</span>
 						)}

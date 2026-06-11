@@ -225,8 +225,9 @@ export const updatedProfile = (body) => {
 			const formData = new FormData();
 			formData.append('username', body.username);
 			formData.append('name', body.name);
-			formData.append('email', body.email);
-			formData.append('file', body.file);
+			formData.append('bio', body.bio || '');
+			formData.append('showBranding', String(body.showBranding !== false));
+			if (body.file) formData.append('file', body.file);
 
 			const { data } = await userApi.post('/profile', formData, {
 				headers: {

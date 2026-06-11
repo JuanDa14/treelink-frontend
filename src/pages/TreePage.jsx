@@ -3,12 +3,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 import { LinkList, Spinner, TreeProfileHeader } from '../components';
+import { PublicFooter } from '../components/ui/Footer';
 import { useGetLinksUser } from '../hooks';
 import { errorIsFalse } from '../redux/slices/uiSlice';
 import { ThemeToggle } from '@/components/ui/theme-toggle';
 
 const TreePage = () => {
-	const { imageURL, username } = useGetLinksUser();
+	useGetLinksUser();
+	const { imageURL, username, name, bio, showBranding } = useSelector((state) => state.auth.user);
 	const { error } = useSelector((state) => state.ui);
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
@@ -32,11 +34,14 @@ const TreePage = () => {
 				<ThemeToggle />
 			</div>
 			<main className='relative z-10 max-w-md mx-auto px-5 py-14 sm:py-20'>
-				<TreeProfileHeader imageURL={imageURL} username={username} />
+				<TreeProfileHeader
+					imageURL={imageURL}
+					username={username}
+					name={name}
+					subtitle={bio}
+				/>
 				<LinkList publicView />
-				<p className='text-center text-xs text-muted-foreground mt-10'>
-					Creado con <span className='font-semibold text-primary'>TreeLink</span>
-				</p>
+				{showBranding !== false && <PublicFooter />}
 			</main>
 		</div>
 	);

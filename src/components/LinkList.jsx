@@ -1,7 +1,8 @@
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
 	DndContext,
+	DragOverlay,
 	closestCenter,
 	KeyboardSensor,
 	PointerSensor,
@@ -14,7 +15,9 @@ import {
 	sortableKeyboardCoordinates,
 	verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
+
 import { reorderUserLinks } from '../redux';
+import { DashboardLinkRow } from './DashboardLinkRow';
 import { ItemLink } from './ItemLink';
 import { Spinner } from './Spinner';
 import { EmptyState } from './EmptyState';
@@ -22,6 +25,7 @@ import { EmptyState } from './EmptyState';
 export const LinkList = ({ sortable = false, publicView = false }) => {
 	const dispatch = useDispatch();
 	const { links, loading, reordering } = useSelector((state) => state.link);
+	const [activeId, setActiveId] = useState(null);
 
 	const visibleLinks = useMemo(() => {
 		if (publicView) {
@@ -30,12 +34,19 @@ export const LinkList = ({ sortable = false, publicView = false }) => {
 		return links;
 	}, [links, publicView]);
 
+	const activeLink = links.find((link) => link._id === activeId);
+
 	const sensors = useSensors(
-		useSensor(PointerSensor, { activationConstraint: { distance: 6 } }),
+		useSensor(PointerSensor, { activationConstraint: { distance: 4 } }),
 		useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates })
 	);
 
+	const handleDragStart = ({ active }) => {
+		setActiveId(active.id);
+	};
+
 	const handleDragEnd = ({ active, over }) => {
+		setActiveId(null);
 		if (!over || active.id === over.id) return;
 
 		const oldIndex = links.findIndex((link) => link._id === active.id);
@@ -44,6 +55,10 @@ export const LinkList = ({ sortable = false, publicView = false }) => {
 		const linkIds = reordered.map((link) => link._id);
 
 		dispatch(reorderUserLinks(linkIds));
+	};
+
+	const handleDragCancel = () => {
+		setActiveId(null);
 	};
 
 	if (loading) {
@@ -70,10 +85,12 @@ export const LinkList = ({ sortable = false, publicView = false }) => {
 		<DndContext
 			sensors={sensors}
 			collisionDetection={closestCenter}
+			onDragStart={handleDragStart}
 			onDragEnd={handleDragEnd}
+			onDragCancel={handleDragCancel}
 		>
 			<SortableContext items={links.map((link) => link._id)} strategy={verticalListSortingStrategy}>
-				<ul className={`space-y-3 w-full ${reordering ? 'opacity-80 pointer-events-none' : ''}`}>
+				<ul className={`space-y-3 w-full ${reordering ? 'pointer-events-none' : ''}`}>
 					{links.map((link) => (
 						<li key={link._id}>
 							<ItemLink {...link} sortable />
@@ -81,6 +98,21 @@ export const LinkList = ({ sortable = false, publicView = false }) => {
 					))}
 				</ul>
 			</SortableContext>
+
+			<DragOverlay dropAnimation={{ duration: 220, easing: 'cubic-bezier(0.18, 0.67, 0.6, 1)' }}>
+				{activeLink ? (
+					<DashboardLinkRow
+						{...activeLink}
+						isDragging
+						dragHandleProps={{}}
+						onToggleFeatured={() => {}}
+						onToggleActive={() => {}}
+						onEdit={() => {}}
+						onDelete={() => {}}
+						onOpen={() => {}}
+					/>
+				) : null}
+			</DragOverlay>
 		</DndContext>
 	);
 };

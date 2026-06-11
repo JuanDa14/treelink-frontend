@@ -25,8 +25,9 @@ export const App = () => {
 						position='bottom-right'
 						draggable
 						pauseOnFocusLoss={false}
-						theme='colored'
-						toastClassName='!rounded-lg !text-sm'
+						theme='light'
+						toastClassName='treelink-toast'
+						progressClassName='treelink-toast-progress'
 					/>
 				</GoogleOAuthProvider>
 			</ThemeProvider>

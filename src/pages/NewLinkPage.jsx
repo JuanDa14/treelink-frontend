@@ -55,7 +55,7 @@ const NewLinkPage = () => {
 								className='rounded-3xl border-2 border-border bg-card p-8 shadow-sm'
 							>
 								<div className='flex items-center gap-3 mb-6'>
-									<div className='flex h-12 w-12 items-center justify-center rounded-full bg-primary/10'>
+									<div className='flex h-12 w-12 items-center justify-center rounded-full badge-primary-icon'>
 										<Link2 className='h-6 w-6 text-primary' />
 									</div>
 									<div>

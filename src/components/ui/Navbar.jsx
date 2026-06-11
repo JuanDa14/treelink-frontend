@@ -80,7 +80,7 @@ export const Navbar = () => {
 							<DropdownMenuSeparator />
 							<DropdownMenuItem onClick={() => dispatch(openProfile())} className='rounded-xl'>
 								<User className='mr-2 h-4 w-4' />
-								Perfil
+								Configuración
 							</DropdownMenuItem>
 							<DropdownMenuItem onClick={() => dispatch(logoutUser())} className='rounded-xl'>
 								<LogOut className='mr-2 h-4 w-4' />

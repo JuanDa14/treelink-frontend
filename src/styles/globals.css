@@ -181,4 +181,142 @@
 		@apply mx-auto mt-3 h-6 w-28 rounded-full;
 		background: color-mix(in oklch, var(--foreground) 10%, transparent);
 	}
+
+	.badge-primary {
+		@apply inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium text-primary;
+		background: color-mix(in oklch, var(--primary) 12%, var(--secondary));
+	}
+
+	.badge-muted {
+		@apply text-[10px] font-semibold uppercase tracking-wide text-muted-foreground px-1.5 py-0.5 rounded-full shrink-0;
+		background: var(--secondary);
+	}
+
+	.badge-primary-icon {
+		background: color-mix(in oklch, var(--primary) 12%, var(--secondary));
+	}
+
+	.link-pill-dashboard-featured {
+		border-color: color-mix(in oklch, var(--primary) 45%, var(--border));
+		background: color-mix(in oklch, var(--primary) 6%, var(--card));
+	}
+
+	.link-pill-dashboard-hidden {
+		opacity: 0.65;
+	}
+
+	.link-pill-dashboard-dragging {
+		box-shadow: 0 16px 40px color-mix(in oklch, var(--foreground) 14%, transparent);
+		border-color: color-mix(in oklch, var(--primary) 50%, var(--border));
+		transform: scale(1.03) rotate(-0.5deg);
+		cursor: grabbing;
+	}
+
+	.link-drag-handle {
+		@apply cursor-grab active:cursor-grabbing touch-none p-1 -ml-1 rounded-lg transition-colors;
+		color: var(--muted-foreground);
+	}
+
+	.link-drag-handle:hover {
+		color: var(--foreground);
+		background: color-mix(in oklch, var(--primary) 10%, transparent);
+	}
+
+	.link-actions {
+		@apply flex items-center gap-0.5 shrink-0;
+	}
+
+	.link-action-btn {
+		@apply h-8 w-8 rounded-full;
+		color: var(--muted-foreground);
+	}
+
+	.link-action-btn:hover {
+		color: var(--foreground);
+		background: var(--secondary);
+	}
+
+	.link-action-btn-active {
+		color: var(--primary);
+		background: color-mix(in oklch, var(--primary) 12%, var(--secondary));
+	}
+
+	.link-action-btn-danger:hover {
+		color: var(--destructive);
+		background: color-mix(in oklch, var(--destructive) 10%, var(--secondary));
+	}
+
+	.app-footer {
+		border-top: 1px solid color-mix(in oklch, var(--border) 60%, transparent);
+		background: linear-gradient(180deg, var(--background) 0%, color-mix(in oklch, var(--secondary) 50%, var(--background)) 100%);
+	}
+
+	.footer-logo {
+		@apply flex h-10 w-10 items-center justify-center rounded-full text-sm font-bold;
+		background: var(--primary);
+		color: var(--primary-foreground);
+	}
+
+	.footer-link {
+		@apply font-medium transition-colors;
+		color: var(--muted-foreground);
+	}
+
+	.footer-link:hover {
+		color: var(--primary);
+	}
+
+	.footer-divider {
+		height: 1px;
+		background: color-mix(in oklch, var(--border) 80%, transparent);
+	}
+
+	.public-footer {
+		@apply pt-4;
+	}
+
+	.profile-avatar-overlay {
+		@apply absolute inset-0 flex items-center justify-center rounded-full opacity-0 group-hover:opacity-100 transition-opacity;
+		background: color-mix(in oklch, var(--foreground) 45%, transparent);
+	}
+
+	.share-social-btn {
+		@apply inline-flex items-center justify-center gap-2 rounded-2xl border-2 px-3 py-2.5 text-sm font-semibold transition-all;
+		border-color: var(--border);
+		background: var(--card);
+		color: var(--foreground);
+	}
+
+	.share-social-btn:hover {
+		border-color: color-mix(in oklch, var(--primary) 40%, var(--border));
+		background: color-mix(in oklch, var(--primary) 8%, var(--card));
+		color: var(--primary);
+	}
+
+	.treelink-toast {
+		@apply !rounded-2xl !text-sm !font-medium !shadow-lg;
+		background: var(--card) !important;
+		color: var(--foreground) !important;
+		border: 2px solid var(--border) !important;
+	}
+
+	.treelink-toast .Toastify__toast-icon svg {
+		fill: var(--primary) !important;
+	}
+
+	.Toastify__toast--error.treelink-toast {
+		border-color: color-mix(in oklch, var(--destructive) 40%, var(--border)) !important;
+	}
+
+	.Toastify__toast--error.treelink-toast .Toastify__toast-icon svg {
+		fill: var(--destructive) !important;
+	}
+
+	.treelink-toast-progress {
+		background: var(--primary) !important;
+	}
+
+	.Toastify__toast--error .treelink-toast-progress {
+		background: var(--destructive) !important;
+	}
 }
