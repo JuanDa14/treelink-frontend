@@ -1,32 +1,73 @@
-import { useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useEffect, useRef, useState } from 'react';
 import { Link, useLocation, useParams } from 'react-router-dom';
 import { CheckCircle2, Loader2, XCircle } from 'lucide-react';
 import { motion } from 'framer-motion';
 
-import { verifiedEmail } from '../redux';
+import { userApi } from '../api';
 import { AuthLayout } from '../layouts/AuthLayout';
 import { Button } from '@/components/ui/button';
+import { extractVerificationToken } from '../utils/verification';
+
+const STATUS = {
+	loading: 'loading',
+	success: 'success',
+	already: 'already',
+	error: 'error',
+	idle: 'idle',
+};
 
 const Verified = () => {
-	const dispatch = useDispatch();
-	const { verified, verificationError, checking } = useSelector((state) => state.auth);
-	const { search } = useLocation();
+	const { search, hash } = useLocation();
 	const { token: tokenParam } = useParams();
+	const [status, setStatus] = useState(STATUS.loading);
+	const [errorMessage, setErrorMessage] = useState('');
+	const verifiedRef = useRef(false);
 
 	useEffect(() => {
-		const token =
-			tokenParam || new URLSearchParams(search).get('token') || search.split('token=')[1]?.split('&')[0];
+		if (verifiedRef.current) return;
 
-		if (token) {
-			dispatch(verifiedEmail(token));
+		const token = extractVerificationToken({ tokenParam, search, hash });
+
+		if (!token) {
+			setStatus(STATUS.error);
+			setErrorMessage('El enlace de verificación no es válido. Revisa el correo e inténtalo de nuevo.');
+			return;
 		}
-	}, [dispatch, search, tokenParam]);
 
-	const isLoading = checking && !verified && !verificationError;
+		verifiedRef.current = true;
+
+		userApi
+			.get(`/verified/${encodeURIComponent(token)}`)
+			.then(({ data }) => {
+				if (data?.alreadyVerified) {
+					setStatus(STATUS.already);
+					return;
+				}
+				setStatus(STATUS.success);
+			})
+			.catch((error) => {
+				const message =
+					error.response?.data?.message ||
+					error.response?.data?.errors?.[0]?.message ||
+					'No se pudo verificar tu cuenta. El enlace puede haber expirado.';
+
+				if (message.toLowerCase().includes('ya esta verificado')) {
+					setStatus(STATUS.already);
+					return;
+				}
+
+				setStatus(STATUS.error);
+				setErrorMessage(message);
+			});
+	}, [tokenParam, search, hash]);
+
+	const isLoading = status === STATUS.loading;
 
 	return (
-		<AuthLayout title='Verificación de cuenta' subtitle='Estamos confirmando tu correo electrónico'>
+		<AuthLayout
+			title='Verificación de cuenta'
+			subtitle={isLoading ? 'Estamos confirmando tu correo electrónico' : 'Resultado de la verificación'}
+		>
 			<div className='flex flex-col items-center text-center gap-4 py-4'>
 				{isLoading && (
 					<div className='flex flex-col items-center gap-3'>
@@ -35,7 +76,7 @@ const Verified = () => {
 					</div>
 				)}
 
-				{verified && (
+				{(status === STATUS.success || status === STATUS.already) && (
 					<motion.div
 						initial={{ scale: 0.9, opacity: 0 }}
 						animate={{ scale: 1, opacity: 1 }}
@@ -43,8 +84,9 @@ const Verified = () => {
 					>
 						<CheckCircle2 className='h-16 w-16 text-primary' />
 						<p className='text-muted-foreground leading-relaxed'>
-							Tu cuenta ha sido verificada correctamente. Ya puedes iniciar sesión y empezar a crear tu
-							TreeLink.
+							{status === STATUS.already
+								? 'Tu cuenta ya estaba verificada. Puedes iniciar sesión con normalidad.'
+								: 'Tu cuenta ha sido verificada correctamente. Ya puedes iniciar sesión y empezar a crear tu TreeLink.'}
 						</p>
 						<Button asChild className='w-full h-12'>
 							<Link to='/auth/login'>Iniciar sesión</Link>
@@ -52,14 +94,14 @@ const Verified = () => {
 					</motion.div>
 				)}
 
-				{verificationError && !isLoading && (
+				{status === STATUS.error && (
 					<motion.div
 						initial={{ scale: 0.9, opacity: 0 }}
 						animate={{ scale: 1, opacity: 1 }}
 						className='flex flex-col items-center gap-4'
 					>
 						<XCircle className='h-16 w-16 text-destructive' />
-						<p className='text-muted-foreground leading-relaxed'>{verificationError}</p>
+						<p className='text-muted-foreground leading-relaxed'>{errorMessage}</p>
 						<div className='flex flex-col gap-2 w-full'>
 							<Button asChild variant='outline' className='w-full h-12'>
 								<Link to='/auth/register'>Crear cuenta</Link>

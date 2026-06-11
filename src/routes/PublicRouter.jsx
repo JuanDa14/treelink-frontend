@@ -1,10 +1,16 @@
-import { Navigate, Outlet } from 'react-router-dom';
+import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import { useAuthenticated } from '../hooks';
 
 export const PublicRouter = () => {
-	const { isAuthenticated } = useAuthenticated();
+	const location = useLocation();
+	const isVerificationRoute = location.pathname.startsWith('/auth/verified');
+	const { isAuthenticated } = useAuthenticated({ skipRefresh: isVerificationRoute });
 
-	return isAuthenticated ? <Navigate to='/' /> : <Outlet />;
+	if (isAuthenticated && !isVerificationRoute) {
+		return <Navigate to='/' />;
+	}
+
+	return <Outlet />;
 };
 
 export default PublicRouter;
