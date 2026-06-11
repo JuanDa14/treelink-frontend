@@ -1,13 +1,20 @@
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { Formik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { Camera, Globe, User, Settings, Sparkles, MailCheck } from 'lucide-react';
+import { Camera, Globe, User, Settings, Sparkles } from 'lucide-react';
 
-import { InputFormik, SwitchFormik, TextareaFormik, UsernameField, UsernameSubmitButton } from '../index';
+import {
+	InputFormik,
+	PasswordResetFlow,
+	SwitchFormik,
+	TextareaFormik,
+	UsernameField,
+	UsernameSubmitButton,
+} from '../index';
 import { closeProfile } from '../../redux/slices/uiSlice';
 import { profileSchema } from '../../schemas';
-import { forgotPassword, updatedProfile } from '../../redux';
+import { updatedProfile } from '../../redux';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
@@ -26,20 +33,12 @@ export const ModalProfile = () => {
 	const profileImageRef = useRef(null);
 	const [activeTab, setActiveTab] = useState('profile');
 	const [generatingUsername, setGeneratingUsername] = useState(false);
-	const [sendingPasswordReset, setSendingPasswordReset] = useState(false);
-	const [passwordResetSent, setPasswordResetSent] = useState(false);
+	const [passwordResetKey, setPasswordResetKey] = useState(0);
 
 	const { name, imageURL, username, email, bio, showBranding, google } = useSelector(
 		(state) => state.auth.user
 	);
 	const { profile } = useSelector((state) => state.ui);
-
-	useEffect(() => {
-		if (!profile) {
-			setPasswordResetSent(false);
-			setSendingPasswordReset(false);
-		}
-	}, [profile]);
 
 	const handleUpdatedProfile = async (values, { setSubmitting }) => {
 		const result = await dispatch(updatedProfile(values));
@@ -60,20 +59,16 @@ export const ModalProfile = () => {
 		};
 	};
 
-	const handleSendPasswordReset = async () => {
-		setSendingPasswordReset(true);
-		try {
-			const result = await dispatch(forgotPassword({ email }));
-			if (result?.ok) {
-				setPasswordResetSent(true);
-			}
-		} finally {
-			setSendingPasswordReset(false);
-		}
-	};
-
 	return (
-		<Dialog open={profile} onOpenChange={(open) => !open && dispatch(closeProfile())}>
+		<Dialog
+			open={profile}
+			onOpenChange={(open) => {
+				if (!open) {
+					setPasswordResetKey((current) => current + 1);
+					dispatch(closeProfile());
+				}
+			}}
+		>
 			<DialogContent className='max-w-lg max-h-[90vh] overflow-y-auto'>
 				<DialogHeader>
 					<DialogTitle>Configuración</DialogTitle>
@@ -229,49 +224,11 @@ export const ModalProfile = () => {
 										</p>
 									</div>
 									{!google && (
-										<div className='rounded-2xl border-2 border-border bg-secondary px-4 py-3 space-y-3'>
-											<p className='text-xs font-semibold uppercase tracking-wide text-muted-foreground'>
-												Contraseña
-											</p>
-											{passwordResetSent ? (
-												<div className='space-y-3'>
-													<div className='flex items-start gap-3'>
-														<MailCheck className='h-5 w-5 shrink-0 text-primary mt-0.5' />
-														<p className='text-sm text-foreground'>
-															Revisa tu correo. Te enviamos un enlace a{' '}
-															<span className='font-medium'>{email}</span> para restablecer tu
-															contraseña.
-														</p>
-													</div>
-													<Button
-														type='button'
-														variant='outline'
-														size='sm'
-														className='w-full'
-														disabled={sendingPasswordReset}
-														onClick={handleSendPasswordReset}
-													>
-														{sendingPasswordReset ? 'Enviando...' : 'Reenviar enlace'}
-													</Button>
-												</div>
-											) : (
-												<>
-													<p className='text-sm text-muted-foreground'>
-														Te enviaremos un enlace a tu correo para crear una nueva contraseña sin
-														salir de la configuración.
-													</p>
-													<Button
-														type='button'
-														variant='outline'
-														className='w-full'
-														disabled={sendingPasswordReset}
-														onClick={handleSendPasswordReset}
-													>
-														{sendingPasswordReset ? 'Enviando...' : 'Enviar enlace de restablecimiento'}
-													</Button>
-												</>
-											)}
-										</div>
+										<PasswordResetFlow
+											key={passwordResetKey}
+											email={email}
+											authenticated
+										/>
 									)}
 								</div>
 							)}

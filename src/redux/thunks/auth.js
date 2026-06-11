@@ -262,6 +262,85 @@ export const forgotPassword = (email) => {
 	};
 };
 
+export const sendPasswordResetCode = () => {
+	return async (dispatch) => {
+		dispatch(startChecking());
+		try {
+			const accessToken = getCookie('accessToken');
+			const { data } = await userApi.post(
+				'/password-reset/send',
+				{},
+				{ headers: { Authorization: `Bearer ${accessToken}` } }
+			);
+
+			if (data.ok) {
+				toast.success(data.message);
+				return { ok: true };
+			}
+		} catch (error) {
+			const message =
+				error.response?.data?.message ||
+				error.response?.data?.errors?.[0]?.message ||
+				'No se pudo enviar el código';
+			toast.error(message);
+			return { ok: false };
+		} finally {
+			dispatch(finishChecking());
+		}
+	};
+};
+
+export const confirmPasswordReset = ({ code, password }) => {
+	return async (dispatch) => {
+		dispatch(startChecking());
+		try {
+			const accessToken = getCookie('accessToken');
+			const { data } = await userApi.post(
+				'/password-reset/confirm',
+				{ code, password },
+				{ headers: { Authorization: `Bearer ${accessToken}` } }
+			);
+
+			if (data.ok) {
+				toast.success(data.message);
+				return { ok: true };
+			}
+		} catch (error) {
+			const message =
+				error.response?.data?.message ||
+				error.response?.data?.errors?.[0]?.message ||
+				'No se pudo actualizar la contraseña';
+			toast.error(message);
+			return { ok: false };
+		} finally {
+			dispatch(finishChecking());
+		}
+	};
+};
+
+export const resetPasswordWithCode = ({ email, code, password }) => {
+	return async (dispatch) => {
+		dispatch(startChecking());
+		try {
+			const { data } = await userApi.post('/reset-password-code', { email, code, password });
+
+			if (data.ok) {
+				toast.success(data.message);
+				return { ok: true };
+			}
+		} catch (error) {
+			const message =
+				error.response?.data?.message ||
+				error.response?.data?.errors?.[0]?.message ||
+				'No se pudo actualizar la contraseña';
+			toast.error(message);
+			return { ok: false };
+		} finally {
+			dispatch(finishChecking());
+		}
+	};
+};
+
 export const resetPassword = (token, body) => {
 	return async (dispatch) => {
 		dispatch(startChecking());
@@ -269,12 +348,16 @@ export const resetPassword = (token, body) => {
 			const { data } = await userApi.post(`/reset-password/${token}`, body);
 
 			if (data.ok) {
-				return toast.success(data.message);
+				toast.success(data.message);
+				return { ok: true };
 			}
 		} catch (error) {
-			const { data } = error.response;
-			const message = data.message || data.errors[0].message;
+			const message =
+				error.response?.data?.message ||
+				error.response?.data?.errors?.[0]?.message ||
+				'No se pudo restablecer la contraseña';
 			toast.error(message);
+			return { ok: false };
 		} finally {
 			dispatch(finishChecking());
 		}

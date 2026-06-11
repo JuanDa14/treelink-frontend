@@ -21,6 +21,7 @@ export * from './SwitchFormik';
 export * from './TextareaFormik';
 export * from './ItemLink';
 export * from './LinkList';
+export * from './PasswordResetFlow';
 export * from './Spinner';
 export * from './modal';
 export * from './ui';
