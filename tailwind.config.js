@@ -14,7 +14,12 @@ export default {
 		},
 		extend: {
 			fontFamily: {
-				sans: ['"DM Sans"', 'system-ui', 'sans-serif'],
+				sans: ['Figtree', 'system-ui', 'sans-serif'],
+				display: ['Outfit', 'Figtree', 'system-ui', 'sans-serif'],
+			},
+			boxShadow: {
+				soft: 'var(--shadow-soft)',
+				lift: 'var(--shadow-lift)',
 			},
 			fontSize: {
 				'step--2': 'clamp(0.7rem, calc(0.87rem + -0.14vw), 0.84rem)',
