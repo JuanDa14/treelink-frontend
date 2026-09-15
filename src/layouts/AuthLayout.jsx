@@ -1,62 +1,93 @@
 import { motion } from 'framer-motion';
-import { Sparkles } from 'lucide-react';
+import { Leaf } from 'lucide-react';
 import { ThemeToggle } from '@/components/ui/theme-toggle';
 import { TreeLinkLogo } from '../components/TreeLinkLogo';
 
 export const AuthLayout = ({ children, title, subtitle, footer }) => {
 	return (
-		<div className='min-h-screen auth-gradient flex items-center justify-center p-4 md:p-8'>
-			<div className='absolute top-4 right-4 z-10'>
+		<div className='auth-gradient flex min-h-screen items-center justify-center p-4 md:p-8'>
+			<div className='auth-orb auth-orb--one' aria-hidden />
+			<div className='auth-orb auth-orb--two' aria-hidden />
+
+			<div className='absolute right-4 top-4 z-10'>
 				<ThemeToggle />
 			</div>
 
-			<div className='relative z-10 w-full max-w-6xl grid lg:grid-cols-2 gap-10 lg:gap-16 items-center'>
+			<div className='relative z-10 grid w-full max-w-6xl items-center gap-10 lg:grid-cols-2 lg:gap-16'>
 				<motion.div
 					initial={{ opacity: 0, x: -20 }}
 					animate={{ opacity: 1, x: 0 }}
-					transition={{ duration: 0.5 }}
-					className='hidden lg:flex flex-col gap-6 px-4'
+					transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+					className='hidden flex-col gap-6 px-4 lg:flex'
 				>
-					<div className='inline-flex items-center gap-2 rounded-full border bg-card px-4 py-1.5 text-sm font-medium w-fit shadow-sm'>
-						<Sparkles className='h-4 w-4 text-primary' />
+					<TreeLinkLogo showText imageClassName='h-10 w-10' textClassName='text-xl' />
+
+					<p className='text-xs font-semibold uppercase tracking-[0.16em] text-primary'>
 						Tu link en bio, reinventado
-					</div>
-					<h2 className='text-4xl xl:text-5xl font-bold tracking-tight leading-[1.1]'>
-						Un link para compartir todo lo que creas.
-					</h2>
-					<p className='text-lg text-muted-foreground max-w-md leading-relaxed'>
-						TreeLink reúne tus redes, contactos y proyectos en un solo lugar. Personalízalo en minutos y compártelo donde quieras.
 					</p>
-					<div className='flex gap-8 pt-2'>
-						<div>
-							<p className='text-2xl font-bold text-primary'>1 link</p>
-							<p className='text-sm text-muted-foreground'>para todo</p>
+
+					<h2 className='font-display max-w-lg text-4xl font-bold tracking-tight xl:text-[2.75rem]'>
+						Un link para compartir{' '}
+						<span className='text-primary'>todo</span> lo que creas.
+					</h2>
+
+					<p className='max-w-md text-base leading-relaxed text-muted-foreground'>
+						TreeLink reúne tus redes, contactos y proyectos en un solo lugar. Personalízalo en
+						minutos y compártelo donde quieras.
+					</p>
+
+					<div className='flex gap-10 pt-2'>
+						<div className='stat-chip'>
+							<p className='stat-chip-value'>1</p>
+							<p className='stat-chip-label'>link para todo</p>
 						</div>
-						<div>
-							<p className='text-2xl font-bold text-primary'>∞</p>
-							<p className='text-sm text-muted-foreground'>redes sociales</p>
+						<div className='stat-chip'>
+							<p className='stat-chip-value'>∞</p>
+							<p className='stat-chip-label'>redes sociales</p>
 						</div>
-						<div>
-							<p className='text-2xl font-bold text-primary'>0</p>
-							<p className='text-sm text-muted-foreground'>complicaciones</p>
+						<div className='stat-chip'>
+							<p className='stat-chip-value'>0</p>
+							<p className='stat-chip-label'>complicaciones</p>
 						</div>
 					</div>
+
+					<motion.div
+						className='mt-2 flex items-center gap-3 text-sm text-muted-foreground'
+						initial={{ opacity: 0 }}
+						animate={{ opacity: 1 }}
+						transition={{ delay: 0.4 }}
+					>
+						<span className='badge-primary-icon flex h-9 w-9 items-center justify-center rounded-xl'>
+							<Leaf className='h-4 w-4 text-primary' />
+						</span>
+						Crece tu presencia digital con un diseño limpio y memorable.
+					</motion.div>
 				</motion.div>
 
 				<motion.div
 					initial={{ opacity: 0, y: 20 }}
 					animate={{ opacity: 1, y: 0 }}
-					transition={{ duration: 0.5, delay: 0.1 }}
-					className='w-full max-w-md mx-auto lg:max-w-none'
+					transition={{ duration: 0.5, delay: 0.06, ease: [0.22, 1, 0.36, 1] }}
+					className='mx-auto w-full max-w-md lg:max-w-none'
 				>
-					<div className='rounded-3xl border-2 border-border bg-card p-8 md:p-10 shadow-xl'>
-						<div className='mb-8 text-center lg:text-left'>
-							<TreeLinkLogo className='mb-6' imageClassName='h-10 w-10' />
-							<h1 className='text-2xl font-bold tracking-tight'>{title}</h1>
-							{subtitle && <p className='text-muted-foreground mt-2'>{subtitle}</p>}
+					<div className='auth-panel'>
+						<div className='mb-7 text-center lg:text-left'>
+							<div className='mb-5 flex justify-center lg:hidden'>
+								<TreeLinkLogo showText imageClassName='h-9 w-9' />
+							</div>
+							<h1 className='font-display text-2xl font-bold tracking-tight md:text-[1.75rem]'>
+								{title}
+							</h1>
+							{subtitle && (
+								<p className='mt-2 leading-relaxed text-muted-foreground'>{subtitle}</p>
+							)}
 						</div>
 						{children}
-						{footer && <div className='mt-6 text-sm text-muted-foreground text-center lg:text-left'>{footer}</div>}
+						{footer && (
+							<div className='mt-6 text-center text-sm text-muted-foreground'>
+								{footer}
+							</div>
+						)}
 					</div>
 				</motion.div>
 			</div>
