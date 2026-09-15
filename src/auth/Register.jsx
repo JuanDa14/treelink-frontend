@@ -61,7 +61,7 @@ const Register = () => {
 		return (
 			<AuthLayout
 				title='Revisa tu correo'
-				subtitle='Te enviamos un enlace para activar tu cuenta'
+				subtitle='Te enviamos un enlace. Revisa también spam.'
 			>
 				<div className='flex flex-col items-center text-center gap-4 py-2'>
 					<div className='flex h-16 w-16 items-center justify-center rounded-full bg-secondary'>
@@ -69,8 +69,8 @@ const Register = () => {
 					</div>
 					<p className='text-sm text-muted-foreground leading-relaxed'>
 						Enviamos un correo a{' '}
-						<strong className='text-foreground'>{pendingEmail}</strong>. Abre el enlace de verificación
-						para activar tu cuenta y luego inicia sesión.
+						<strong className='text-foreground'>{pendingEmail}</strong>. Abre el enlace para
+						activar tu cuenta. Si no lo ves, revisa spam.
 					</p>
 					<ResendVerificationButton email={pendingEmail} className='w-full' />
 					<Button asChild variant='outline' className='w-full h-12'>

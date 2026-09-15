@@ -37,7 +37,7 @@ export const login = (body) => {
 			if (message.toLowerCase().includes('verifica')) {
 				dispatch(
 					setVerificationHint(
-						'Revisa tu bandeja de entrada y haz clic en el enlace de verificación. Si no lo encuentras, revisa spam.'
+						'Revisa tu correo y spam. Abre el enlace de verificación para activar tu cuenta.'
 					)
 				);
 			}
@@ -83,7 +83,7 @@ export const register = (body) => {
 			const { data } = await userApi.post('/register', body);
 
 			if (data.ok) {
-				toast.success('Revisa tu correo para verificar tu cuenta');
+				toast.success(data.message || 'Revisa tu correo y spam para verificar tu cuenta');
 				return { ok: true, message: data.message };
 			}
 
@@ -137,7 +137,7 @@ export const loginWithGoogle = ({ tokenId, email }) => {
 			if (message.toLowerCase().includes('verifica')) {
 				dispatch(
 					setVerificationHint(
-						'Revisa tu bandeja de entrada y haz clic en el enlace de verificación. Si no lo encuentras, revisa spam.'
+						'Revisa tu correo y spam. Abre el enlace de verificación para activar tu cuenta.'
 					)
 				);
 			}

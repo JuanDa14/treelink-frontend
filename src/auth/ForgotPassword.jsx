@@ -19,7 +19,7 @@ const ForgotPassword = () => {
 	return (
 		<AuthLayout
 			title={isLoggedIn ? 'Cambiar contraseña' : 'Recuperar cuenta'}
-			subtitle='Te enviaremos un código de 6 dígitos para restablecer tu contraseña'
+			subtitle='Te enviaremos un código. Revisa también spam.'
 			footer={
 				isLoggedIn ? (
 					<Link className='font-semibold text-primary hover:underline' to='/'>

@@ -144,9 +144,7 @@ export const PasswordResetFlow = ({ email, authenticated = false, onComplete }) 
 					<CheckCircle2 className='h-5 w-5 shrink-0 text-primary mt-0.5' />
 					<div className='space-y-1'>
 						<p className='text-sm font-semibold text-foreground'>Contraseña actualizada</p>
-						<p className='text-sm text-muted-foreground'>
-							Tu nueva contraseña ya está activa. Puedes seguir editando tu configuración.
-						</p>
+						<p className='text-sm text-muted-foreground'>Listo. Ya puedes continuar.</p>
 					</div>
 				</div>
 			</div>
@@ -159,8 +157,8 @@ export const PasswordResetFlow = ({ email, authenticated = false, onComplete }) 
 				<div className='flex items-start gap-3'>
 					<MailCheck className='h-5 w-5 shrink-0 text-primary mt-0.5' />
 					<p className='text-sm text-foreground'>
-						Ingresa el código de 6 dígitos que enviamos a{' '}
-						<span className='font-medium'>{email}</span>
+						Ingresa el código enviado a <span className='font-medium'>{email}</span>. Si no
+						llega, revisa spam.
 					</p>
 				</div>
 
@@ -187,8 +185,7 @@ export const PasswordResetFlow = ({ email, authenticated = false, onComplete }) 
 						Contraseña
 					</p>
 					<p className='text-sm text-muted-foreground'>
-						Te enviaremos un código a tu correo. Lo ingresas aquí mismo y defines tu nueva
-						contraseña sin salir de la configuración.
+						Te enviaremos un código. Revisa tu correo y spam.
 					</p>
 				</div>
 			</div>
@@ -199,7 +196,7 @@ export const PasswordResetFlow = ({ email, authenticated = false, onComplete }) 
 				disabled={sendingCode}
 				onClick={handleSendCode}
 			>
-				{sendingCode ? 'Enviando código...' : 'Enviar código de verificación'}
+				{sendingCode ? 'Enviando...' : 'Enviar código'}
 			</Button>
 		</div>
 	);

@@ -30,7 +30,7 @@ const ResetPassword = () => {
 		return (
 			<AuthLayout
 				title='Enlace no válido'
-				subtitle='Usa el código de 6 dígitos que recibiste por correo o solicita uno nuevo.'
+				subtitle='Solicita un código nuevo o usa el que recibiste.'
 				footer={
 					<Link className='font-semibold text-primary hover:underline' to='/auth/forgot-password'>
 						Solicitar código
@@ -43,10 +43,10 @@ const ResetPassword = () => {
 	return (
 		<AuthLayout
 			title='Restablecer contraseña'
-			subtitle='Ingresa y confirma tu nueva contraseña'
+			subtitle='Elige tu nueva contraseña'
 			footer={
 				<Link className='font-semibold text-primary hover:underline' to='/auth/forgot-password'>
-					Usar código de verificación
+					Usar código
 				</Link>
 			}
 		>
