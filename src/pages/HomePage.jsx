@@ -20,7 +20,7 @@ export const HomePage = () => {
 	return (
 		<Layout>
 			<div className='container max-w-6xl py-8 lg:py-10'>
-				<div className='dashboard-shell'>
+				<div className={cn('dashboard-shell', isIdle && 'lg:grid-cols-1')}>
 					<div
 						className={cn(
 							'min-w-0',
@@ -88,40 +88,42 @@ export const HomePage = () => {
 						)}
 					</div>
 
-					<aside className='dashboard-preview'>
-						<motion.div
-							className='dashboard-preview-sticky'
-							initial={{ opacity: 0, x: 16 }}
-							animate={{ opacity: 1, x: 0 }}
-							transition={{ delay: 0.12, duration: 0.45 }}
-						>
-							<p className='text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground'>
-								Vista previa
-							</p>
-							<div className='phone-mockup'>
-								<div className='tree-page-bg tree-page-bg--contained phone-mockup-screen'>
-									<div className='w-full'>
-										<TreeProfileHeader
-											imageURL={imageURL}
-											username={username}
-											name={name}
-											subtitle={bio || 'Toca un enlace para visitarlo'}
-											compact
-										/>
-										<LinkList publicView />
+					{!isIdle && (
+						<aside className='dashboard-preview'>
+							<motion.div
+								className='dashboard-preview-sticky'
+								initial={{ opacity: 0, x: 16 }}
+								animate={{ opacity: 1, x: 0 }}
+								transition={{ delay: 0.12, duration: 0.45 }}
+							>
+								<p className='text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground'>
+									Vista previa
+								</p>
+								<div className='phone-mockup'>
+									<div className='tree-page-bg tree-page-bg--contained phone-mockup-screen'>
+										<div className='w-full'>
+											<TreeProfileHeader
+												imageURL={imageURL}
+												username={username}
+												name={name}
+												subtitle={bio || 'Toca un enlace para visitarlo'}
+												compact
+											/>
+											<LinkList publicView />
+										</div>
 									</div>
 								</div>
-							</div>
-							<a
-								href={publicUrl}
-								target='_blank'
-								rel='noopener noreferrer'
-								className='max-w-[320px] truncate text-center text-sm font-medium text-primary hover:underline'
-							>
-								{publicUrl}
-							</a>
-						</motion.div>
-					</aside>
+								<a
+									href={publicUrl}
+									target='_blank'
+									rel='noopener noreferrer'
+									className='max-w-[320px] truncate text-center text-sm font-medium text-primary hover:underline'
+								>
+									{publicUrl}
+								</a>
+							</motion.div>
+						</aside>
+					)}
 				</div>
 			</div>
 			<ModalForm />
