@@ -23,7 +23,7 @@ export const TextareaFormik = ({ text, name, placeholder, rows = 3, classNameTex
 				rows={rows}
 				placeholder={placeholder}
 				className={cn(
-					'flex min-h-[88px] w-full rounded-2xl border-2 border-input bg-background px-4 py-3 text-sm font-medium ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:border-primary/40 transition-colors disabled:cursor-not-allowed disabled:opacity-50 resize-none',
+					'flex min-h-[88px] w-full rounded-xl border border-input bg-card px-4 py-2 text-sm font-medium shadow-soft ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:border-primary/45 transition-all disabled:cursor-not-allowed disabled:opacity-50 resize-none',
 					classNameInput,
 					showError && 'border-destructive focus-visible:ring-destructive'
 				)}

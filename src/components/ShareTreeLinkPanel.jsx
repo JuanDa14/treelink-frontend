@@ -8,6 +8,7 @@ import {
 	Link2,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
 
 const SOCIAL_NETWORKS = [
 	{
@@ -39,7 +40,7 @@ const SOCIAL_NETWORKS = [
 	},
 ];
 
-export const ShareTreeLinkPanel = ({ publicUrl, username }) => {
+export const ShareTreeLinkPanel = ({ publicUrl, username, compact = false }) => {
 	const [copied, setCopied] = useState(false);
 	const shareText = `Mira mi TreeLink @${username}`;
 
@@ -72,61 +73,65 @@ export const ShareTreeLinkPanel = ({ publicUrl, username }) => {
 	}, [copied]);
 
 	return (
-		<div className='rounded-3xl border-2 border-border bg-card p-6 space-y-5'>
+		<div className={cn('surface-panel space-y-5', compact ? 'p-5' : 'p-6')}>
 			<div className='flex items-start gap-3'>
-				<div className='flex h-10 w-10 shrink-0 items-center justify-center rounded-full badge-primary-icon'>
+				<div className='flex h-10 w-10 shrink-0 items-center justify-center rounded-xl badge-primary-icon'>
 					<Share2 className='h-5 w-5 text-primary' />
 				</div>
 				<div>
-					<h3 className='font-bold text-lg'>Comparte tu TreeLink</h3>
-					<p className='text-sm text-muted-foreground mt-1'>
-						Abre tu página, copia el enlace o compártelo directamente en tus redes.
+					<h3 className='font-display text-lg font-bold tracking-tight'>Comparte tu TreeLink</h3>
+					<p className='mt-1 text-sm leading-relaxed text-muted-foreground'>
+						Abre tu página, copia el enlace o compártelo en tus redes.
 					</p>
 				</div>
 			</div>
 
-			<div className='rounded-2xl border-2 border-border bg-secondary px-4 py-3'>
-				<p className='text-xs font-semibold uppercase tracking-wide text-muted-foreground mb-1'>Tu URL pública</p>
-				<p className='text-sm font-mono break-all text-foreground'>{publicUrl}</p>
+			<div className='rounded-xl border border-border/80 bg-secondary/60 px-4 py-3'>
+				<p className='mb-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-muted-foreground'>
+					Tu URL pública
+				</p>
+				<p className='break-all font-mono text-sm text-foreground'>{publicUrl}</p>
 			</div>
 
-			<div className='flex flex-col sm:flex-row gap-2'>
-				<Button onClick={handleOpen} variant='default' className='flex-1'>
+			<div className='flex flex-col gap-2 sm:flex-row'>
+				<Button onClick={handleOpen} variant='default' className='flex-1 rounded-xl'>
 					<ExternalLink className='mr-2 h-4 w-4' />
 					Abrir mi página
 				</Button>
-				<Button onClick={handleCopy} variant='outline' className='flex-1'>
+				<Button onClick={handleCopy} variant='outline' className='flex-1 rounded-xl'>
 					{copied ? <Check className='mr-2 h-4 w-4 text-primary' /> : <Copy className='mr-2 h-4 w-4' />}
 					{copied ? '¡Copiado!' : 'Copiar link'}
 				</Button>
 			</div>
 
 			{typeof navigator !== 'undefined' && navigator.share && (
-				<Button onClick={handleNativeShare} variant='secondary' className='w-full'>
+				<Button onClick={handleNativeShare} variant='secondary' className='w-full rounded-xl'>
 					<Share2 className='mr-2 h-4 w-4' />
 					Compartir desde el dispositivo
 				</Button>
 			)}
 
-			<div>
-				<p className='text-xs font-semibold uppercase tracking-wide text-muted-foreground mb-3'>
-					Compartir en redes
-				</p>
-				<div className='grid grid-cols-2 sm:grid-cols-3 gap-2'>
-					{SOCIAL_NETWORKS.map(({ id, label, getUrl }) => (
-						<a
-							key={id}
-							href={getUrl(publicUrl, shareText)}
-							target='_blank'
-							rel='noopener noreferrer'
-							className='share-social-btn'
-						>
-							<Link2 className='h-4 w-4 shrink-0' />
-							{label}
-						</a>
-					))}
+			{!compact && (
+				<div>
+					<p className='mb-3 text-[11px] font-semibold uppercase tracking-[0.12em] text-muted-foreground'>
+						Compartir en redes
+					</p>
+					<div className='grid grid-cols-2 gap-2 sm:grid-cols-3'>
+						{SOCIAL_NETWORKS.map(({ id, label, getUrl }) => (
+							<a
+								key={id}
+								href={getUrl(publicUrl, shareText)}
+								target='_blank'
+								rel='noopener noreferrer'
+								className='share-social-btn'
+							>
+								<Link2 className='h-4 w-4 shrink-0' />
+								{label}
+							</a>
+						))}
+					</div>
 				</div>
-			</div>
+			)}
 		</div>
 	);
 };

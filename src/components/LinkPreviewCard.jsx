@@ -4,38 +4,40 @@ import { cn } from '@/lib/utils';
 
 export const LinkPreviewCard = ({ name, url, description, imageURL, icon, featured, isActive }) => {
 	return (
-		<div className='rounded-3xl border-2 border-border bg-card p-6 shadow-sm sticky top-24'>
+		<div className='surface-panel p-6 sticky top-24'>
 			<p className='text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-4'>Vista previa</p>
-			<div className='tree-page-bg rounded-2xl px-4 py-6 min-h-[200px]'>
-				<button
-					type='button'
-					className={cn(
-						'link-pill w-full pointer-events-none',
-						featured && 'link-pill-featured',
-						isActive === false && 'opacity-50'
-					)}
-				>
-					<LinkThumbnail
-						imageURL={imageURL instanceof File ? URL.createObjectURL(imageURL) : imageURL}
-						icon={icon}
-						name={name}
-						className='h-8 w-8'
-						iconClassName='h-4 w-4'
-					/>
-					<span className='flex flex-col items-start min-w-0 text-left'>
-						<span className='flex items-center gap-1.5 font-semibold capitalize truncate w-full'>
-							{name || 'Nombre del enlace'}
-							{featured && <FeaturedStar />}
-						</span>
-						{description && (
-							<span className='text-xs text-muted-foreground font-normal truncate w-full'>{description}</span>
+			<div className='tree-page-bg tree-page-bg--contained rounded-2xl px-4 py-6 min-h-[200px]'>
+				<div className='relative z-10'>
+					<button
+						type='button'
+						className={cn(
+							'link-pill w-full pointer-events-none',
+							featured && 'link-pill-featured',
+							isActive === false && 'opacity-50'
 						)}
-					</span>
-				</button>
-				{isActive === false && (
-					<p className='text-center text-xs text-muted-foreground mt-3'>Oculto en tu página pública</p>
-				)}
-				{url && <p className='text-center text-[10px] text-muted-foreground mt-2 truncate'>{url}</p>}
+					>
+						<LinkThumbnail
+							imageURL={imageURL instanceof File ? URL.createObjectURL(imageURL) : imageURL}
+							icon={icon}
+							name={name}
+							className='h-8 w-8'
+							iconClassName='h-4 w-4'
+						/>
+						<span className='flex flex-col items-start min-w-0 text-left'>
+							<span className='flex items-center gap-1.5 font-semibold capitalize truncate w-full'>
+								{name || 'Nombre del enlace'}
+								{featured && <FeaturedStar />}
+							</span>
+							{description && (
+								<span className='text-xs text-muted-foreground font-normal truncate w-full'>{description}</span>
+							)}
+						</span>
+					</button>
+					{isActive === false && (
+						<p className='text-center text-xs text-muted-foreground mt-3'>Oculto en tu página pública</p>
+					)}
+					{url && <p className='text-center text-[10px] text-muted-foreground mt-2 truncate'>{url}</p>}
+				</div>
 			</div>
 		</div>
 	);

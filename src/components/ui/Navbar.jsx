@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, NavLink } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
-import { Menu, LogOut, User, Home, Plus, Eye, ExternalLink, X } from 'lucide-react';
+import { Menu, LogOut, User, Home, Eye, ExternalLink, X } from 'lucide-react';
 import { logoutUser } from '../../redux';
 import { openProfile, changeStateMenuMobile } from '../../redux/slices/uiSlice';
 import { ModalProfile } from '../modal';
@@ -34,73 +34,68 @@ export const Navbar = () => {
 
 	return (
 		<>
-			<nav className='sticky top-0 z-40 border-b border-border/60 bg-background/90 backdrop-blur-lg'>
-				<div className='container flex h-16 items-center justify-between gap-4'>
-					<TreeLinkLogo />
+			<header className='app-header'>
+				<div className='app-header-bar'>
+					<TreeLinkLogo showText imageClassName='h-7 w-7' textClassName='hidden sm:inline text-base' />
 
-					<div className='hidden md:flex items-center gap-1 bg-secondary/80 rounded-full p-1'>
+					<nav className='app-header-nav' aria-label='Principal'>
 						{navLinks.map(({ to, label, icon: Icon }) => (
 							<NavLink
 								key={to}
 								to={to}
 								className={({ isActive }) =>
-									cn(
-										'flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-medium transition-all',
-										isActive
-											? 'bg-background text-foreground shadow-sm'
-											: 'text-muted-foreground hover:text-foreground'
-									)
+									cn('app-header-link', isActive && 'app-header-link-active')
 								}
 							>
-								<Icon className='h-4 w-4' />
+								<Icon className='h-3.5 w-3.5' />
 								{label}
 							</NavLink>
 						))}
-					</div>
+					</nav>
 
-					<div className='flex items-center gap-2'>
-						<Button asChild size='sm' className='hidden sm:inline-flex'>
-							<Link to='/new-link'>
-								<Plus className='h-4 w-4' />
-								Añadir link
-							</Link>
-						</Button>
-						<ThemeToggle />
+					<div className='flex items-center gap-1.5'>
+						<div className='hidden sm:block'>
+							<ThemeToggle />
+						</div>
+
 						<DropdownMenu>
 							<DropdownMenuTrigger asChild>
-								<Button variant='ghost' className='relative h-10 w-10 rounded-full p-0'>
-									<Avatar className='h-9 w-9 ring-2 ring-border'>
+								<Button variant='ghost' className='relative h-9 w-9 rounded-full p-0'>
+									<Avatar className='h-8 w-8 ring-1 ring-border'>
 										<AvatarImage src={imageURL} alt={name} />
-										<AvatarFallback>{name?.charAt(0)?.toUpperCase()}</AvatarFallback>
+										<AvatarFallback className='text-xs font-semibold'>
+											{name?.charAt(0)?.toUpperCase()}
+										</AvatarFallback>
 									</Avatar>
 								</Button>
 							</DropdownMenuTrigger>
-							<DropdownMenuContent align='end' className='w-56 rounded-2xl'>
+							<DropdownMenuContent align='end' className='w-56 rounded-xl'>
 								<DropdownMenuLabel>
 									<p className='font-semibold'>{name}</p>
-									<p className='text-xs text-muted-foreground font-normal truncate'>{email}</p>
+									<p className='truncate text-xs font-normal text-muted-foreground'>{email}</p>
 								</DropdownMenuLabel>
 								<DropdownMenuSeparator />
-								<DropdownMenuItem asChild className='rounded-xl'>
+								<DropdownMenuItem asChild className='rounded-lg'>
 									<a href={publicUrl} target='_blank' rel='noopener noreferrer'>
 										<ExternalLink className='mr-2 h-4 w-4' />
 										Abrir mi página
 									</a>
 								</DropdownMenuItem>
-								<DropdownMenuItem onClick={() => dispatch(openProfile())} className='rounded-xl'>
+								<DropdownMenuItem onClick={() => dispatch(openProfile())} className='rounded-lg'>
 									<User className='mr-2 h-4 w-4' />
 									Configuración
 								</DropdownMenuItem>
-								<DropdownMenuItem onClick={() => dispatch(logoutUser())} className='rounded-xl'>
+								<DropdownMenuItem onClick={() => dispatch(logoutUser())} className='rounded-lg'>
 									<LogOut className='mr-2 h-4 w-4' />
 									Cerrar sesión
 								</DropdownMenuItem>
 							</DropdownMenuContent>
 						</DropdownMenu>
+
 						<Button
 							variant='ghost'
 							size='icon'
-							className='md:hidden relative'
+							className='relative h-9 w-9 md:hidden'
 							onClick={() => dispatch(changeStateMenuMobile())}
 							aria-label={menuMobile ? 'Cerrar menú' : 'Abrir menú'}
 						>
@@ -121,7 +116,7 @@ export const Navbar = () => {
 				</div>
 
 				<ModalProfile />
-			</nav>
+			</header>
 
 			<MobileSidebar />
 		</>

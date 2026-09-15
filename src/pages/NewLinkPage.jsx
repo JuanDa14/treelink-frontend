@@ -2,7 +2,7 @@ import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { Formik } from 'formik';
 import { motion } from 'framer-motion';
-import { ArrowLeft, Link2 } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 import { InputFormik, LinkIconPicker, LinkPreviewCard, SwitchFormik, TextareaFormik } from '../components';
@@ -32,14 +32,7 @@ const NewLinkPage = () => {
 
 	return (
 		<Layout>
-			<div className='container py-8 max-w-5xl'>
-				<Button variant='ghost' size='sm' asChild className='mb-6 rounded-full'>
-					<Link to='/'>
-						<ArrowLeft className='mr-2 h-4 w-4' />
-						Volver
-					</Link>
-				</Button>
-
+			<div className='container max-w-5xl py-8 lg:py-10'>
 				<Formik
 					initialValues={INITIAL_VALUES}
 					onSubmit={async (values, { setSubmitting }) => {
@@ -49,18 +42,25 @@ const NewLinkPage = () => {
 					validationSchema={newLinkSchema}
 				>
 					{({ handleSubmit, values, isSubmitting }) => (
-						<div className='grid lg:grid-cols-[1fr_320px] gap-8 items-start'>
+						<div className='grid items-start gap-8 lg:grid-cols-[1fr_300px]'>
 							<motion.div
-								initial={{ opacity: 0, y: 16 }}
+								initial={{ opacity: 0, y: 14 }}
 								animate={{ opacity: 1, y: 0 }}
-								className='rounded-3xl border-2 border-border bg-card p-8 shadow-sm'
+								className='surface-panel p-6 sm:p-8'
 							>
-								<div className='flex items-center gap-3 mb-6'>
-									<div className='flex h-12 w-12 items-center justify-center rounded-full badge-primary-icon'>
-										<Link2 className='h-6 w-6 text-primary' />
-									</div>
-									<div>
-										<h1 className='text-2xl font-bold tracking-tight'>Nuevo enlace</h1>
+								<div className='mb-6 flex items-start gap-3'>
+									<Button
+										variant='ghost'
+										size='icon'
+										asChild
+										className='mt-0.5 h-10 w-10 shrink-0 rounded-xl text-muted-foreground hover:text-foreground hover:bg-secondary'
+									>
+										<Link to='/' aria-label='Volver a enlaces'>
+											<ArrowLeft className='h-5 w-5' />
+										</Link>
+									</Button>
+									<div className='min-w-0 pt-0.5'>
+										<h1 className='font-display text-2xl font-bold tracking-tight'>Nuevo enlace</h1>
 										<p className='text-sm text-muted-foreground'>
 											Elige un icono o sube tu propia imagen.
 										</p>

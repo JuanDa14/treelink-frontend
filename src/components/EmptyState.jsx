@@ -2,6 +2,7 @@ import { motion } from 'framer-motion';
 import { Link2, Sparkles } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
 
 export const EmptyState = ({
 	title = 'Tu página está vacía',
@@ -11,20 +12,24 @@ export const EmptyState = ({
 	secondaryLabel,
 	onSecondaryAction,
 	secondaryLoading = false,
+	className,
 }) => {
 	return (
 		<motion.div
-			initial={{ opacity: 0, y: 16 }}
+			initial={{ opacity: 0, y: 12 }}
 			animate={{ opacity: 1, y: 0 }}
 			transition={{ duration: 0.4 }}
-			className='flex flex-col items-center justify-center gap-5 py-14 px-6 text-center rounded-3xl border-2 border-dashed border-border bg-secondary/30'
+			className={cn(
+				'flex w-full flex-col items-center justify-center gap-5 px-6 py-10 text-center',
+				className
+			)}
 		>
-			<div className='flex h-16 w-16 items-center justify-center rounded-full bg-primary/10'>
-				<Link2 className='h-8 w-8 text-primary' />
+			<div className='badge-primary-icon flex h-14 w-14 items-center justify-center rounded-xl'>
+				<Link2 className='h-7 w-7 text-primary' />
 			</div>
-			<div className='space-y-2 max-w-sm'>
-				<h3 className='text-lg font-bold'>{title}</h3>
-				<p className='text-sm text-muted-foreground leading-relaxed'>
+			<div className='max-w-sm space-y-2'>
+				<h3 className='font-display text-lg font-bold tracking-tight'>{title}</h3>
+				<p className='text-sm leading-relaxed text-muted-foreground'>
 					{description ||
 						'Añade enlaces a tus redes, portfolio, tienda o cualquier contenido que quieras compartir.'}
 				</p>

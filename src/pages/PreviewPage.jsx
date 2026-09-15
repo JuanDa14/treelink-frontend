@@ -7,25 +7,34 @@ import { buildPublicUrl } from '../utils';
 
 const PreviewPage = () => {
 	const { imageURL, username, name, bio } = useSelector((state) => state.auth.user);
-
 	const publicUrl = buildPublicUrl(username);
 
 	return (
 		<Layout>
-			<div className='container py-8 max-w-5xl'>
-				<motion.div
-					initial={{ opacity: 0, y: 12 }}
+			<div className='container max-w-5xl py-8 lg:py-10'>
+				<motion.header
+					initial={{ opacity: 0, y: -8 }}
 					animate={{ opacity: 1, y: 0 }}
-					className='mb-8'
+					transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+					className='page-header'
 				>
-					<h1 className='text-3xl font-bold tracking-tight'>Vista previa</h1>
-					<p className='text-muted-foreground mt-1'>Así verán tu página los visitantes</p>
-				</motion.div>
+					<p className='mb-2 text-xs font-semibold uppercase tracking-[0.14em] text-primary'>
+						Vista previa
+					</p>
+					<h1 className='page-header-title'>Así te ven</h1>
+					<p className='page-header-subtitle'>
+						Simula tu página pública y compártela en un clic.
+					</p>
+				</motion.header>
 
-				<div className='grid items-start gap-10 lg:grid-cols-2 lg:gap-12'>
-					<div className='flex w-full justify-center'>
+				<div className='grid items-start gap-10 lg:grid-cols-2 lg:gap-14'>
+					<motion.div
+						className='flex w-full justify-center'
+						initial={{ opacity: 0, scale: 0.97 }}
+						animate={{ opacity: 1, scale: 1 }}
+						transition={{ delay: 0.08, duration: 0.45 }}
+					>
 						<div className='phone-mockup'>
-							<div className='phone-mockup-notch' />
 							<div className='tree-page-bg tree-page-bg--contained phone-mockup-screen'>
 								<div className='w-full'>
 									<TreeProfileHeader
@@ -38,16 +47,15 @@ const PreviewPage = () => {
 								</div>
 							</div>
 						</div>
-					</div>
+					</motion.div>
 
-					<div className='w-full space-y-6'>
+					<div className='w-full space-y-5'>
 						<ShareTreeLinkPanel publicUrl={publicUrl} username={username} />
-						<div className='rounded-2xl border-2 border-dashed border-border bg-secondary p-6 text-center'>
-							<p className='text-sm text-muted-foreground'>
-								¿Quieres cambiar algo? Edita tus enlaces desde <strong>Enlaces</strong> o ajusta tu perfil en{' '}
-								<strong>Configuración</strong>.
-							</p>
-						</div>
+						<p className='px-1 text-center text-sm leading-relaxed text-muted-foreground lg:text-left'>
+							¿Quieres cambiar algo? Edita tus enlaces desde{' '}
+							<span className='font-semibold text-foreground'>Enlaces</span> o ajusta tu perfil en{' '}
+							<span className='font-semibold text-foreground'>Configuración</span>.
+						</p>
 					</div>
 				</div>
 			</div>

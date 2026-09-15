@@ -1,19 +1,18 @@
 import { motion } from 'framer-motion';
-import { Navbar, Footer } from '../components';
+import { Navbar } from '../components';
 
 export const Layout = ({ children, classNameMain }) => {
 	return (
-		<div className='flex min-h-screen flex-col bg-background'>
+		<div className='app-shell flex min-h-screen flex-col'>
 			<Navbar />
 			<motion.main
-				initial={{ opacity: 0 }}
-				animate={{ opacity: 1 }}
-				transition={{ duration: 0.3 }}
-				className={`flex-1 w-full mx-auto ${classNameMain || ''}`}
+				initial={{ opacity: 0, y: 6 }}
+				animate={{ opacity: 1, y: 0 }}
+				transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+				className={`mx-auto w-full flex-1 ${classNameMain || ''}`}
 			>
 				{children}
 			</motion.main>
-			<Footer />
 		</div>
 	);
 };

@@ -7,7 +7,7 @@ export const SwitchFormik = ({ name, label, description }) => {
 	const [field, , helpers] = useField({ name, type: 'checkbox' });
 
 	return (
-		<div className='flex items-center justify-between gap-4 rounded-2xl border-2 border-border bg-secondary/40 px-4 py-3'>
+		<div className='flex items-center justify-between gap-4 rounded-2xl border border-border/80 bg-secondary/50 px-4 py-3 shadow-soft'>
 			<div className='space-y-0.5'>
 				<Label htmlFor={name} className='text-sm font-semibold cursor-pointer'>
 					{label}

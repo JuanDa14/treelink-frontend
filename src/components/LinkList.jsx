@@ -63,7 +63,16 @@ export const LinkList = ({ sortable = false, publicView = false }) => {
 	};
 
 	if (loading) {
-		return <Spinner className='min-h-[30vh]' label='Cargando enlaces...' />;
+		if (publicView) {
+			return (
+				<div className='w-full space-y-3 py-2'>
+					{[1, 2, 3].map((i) => (
+						<div key={i} className='h-12 animate-pulse rounded-2xl bg-secondary/70' />
+					))}
+				</div>
+			);
+		}
+		return <Spinner className='min-h-0' label='Cargando enlaces...' />;
 	}
 
 	const handleSeedDefaults = async () => {
@@ -73,6 +82,14 @@ export const LinkList = ({ sortable = false, publicView = false }) => {
 	};
 
 	if (visibleLinks.length === 0) {
+		if (publicView) {
+			return (
+				<p className='px-4 py-8 text-center text-sm text-muted-foreground'>
+					Aún no hay enlaces públicos.
+				</p>
+			);
+		}
+
 		return (
 			<EmptyState
 				description='Empieza desde cero o carga enlaces de ejemplo (Instagram, YouTube, web y contacto) para ver cómo queda tu página.'
@@ -85,7 +102,7 @@ export const LinkList = ({ sortable = false, publicView = false }) => {
 
 	if (!sortable) {
 		return (
-			<ul className='space-y-3 w-full'>
+			<ul className='w-full space-y-3'>
 				{visibleLinks.map((link) => (
 					<li key={link._id}>
 						<ItemLink {...link} publicView={publicView} />

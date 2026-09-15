@@ -46,7 +46,7 @@ export const GoogleLoginButton = ({ onSuccess, onError, mode = 'signin' }) => {
 	return (
 		<div ref={containerRef} className='relative h-12 w-full'>
 			<div
-				className='flex h-12 w-full items-center justify-center gap-2.5 rounded-full border-2 border-border bg-background text-sm font-semibold shadow-sm'
+				className='flex h-12 w-full items-center justify-center gap-2.5 rounded-full border border-border/80 bg-background/90 text-sm font-semibold shadow-soft hover:border-primary/35 transition-all'
 				aria-hidden
 			>
 				<GoogleIcon />
